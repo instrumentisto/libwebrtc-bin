@@ -12,15 +12,8 @@ foreach($line in $lines){
   }
 }
 
-$7Z_DIR = Join-Path (Resolve-Path ".").Path "7z"
-
 if (!(Test-Path vswhere.exe)) {
   Invoke-WebRequest -Uri "https://github.com/microsoft/vswhere/releases/download/2.8.4/vswhere.exe" -OutFile vswhere.exe
-}
-
-if (!(Test-Path $7Z_DIR\7z.exe)) {
-  Invoke-WebRequest -Uri "https://jaist.dl.sourceforge.net/project/sevenzip/7-Zip/19.00/7z1900-x64.exe" -OutFile 7z-x64.exe
-  ./7z-x64.exe /S /D="""$7Z_DIR"""
 }
 
 # vsdevcmd.bat の設定を入れる
@@ -104,6 +97,8 @@ if (!(Test-Path $BUILD_DIR)) {
 
 gclient sync --with_branch_heads -r $WEBRTC_COMMIT
 git apply $PATCH_DIR\4k.patch
+
+git apply --ignore-space-change -v $PATCH_DIR\win_dynamic_crt.patch
 Pop-Location
 
 Get-PSDrive
@@ -175,11 +170,11 @@ Copy-Item $BUILD_DIR\release_x64\obj\webrtc.lib $BUILD_DIR\package\webrtc\releas
 if (!(Test-Path $PACKAGE_DIR)) {
   New-Item $PACKAGE_DIR -ItemType Directory -Force
 }
-if (Test-Path $PACKAGE_DIR\libwebrtc-win-x64.7z) {
-  Remove-Item -Force -Path $PACKAGE_DIR\libwebrtc-win-x64.7z
+if (Test-Path $PACKAGE_DIR\libwebrtc-win-x64.tar) {
+  Remove-Item -Force -Path $PACKAGE_DIR\libwebrtc-win-x64.tar
 }
 Push-Location $BUILD_DIR\package\webrtc
-  cmd /s /c """$7Z_DIR\7z.exe""" a -bsp0 -t7z:r -ssc -ms+ $PACKAGE_DIR\libwebrtc-win-x64.7z *
+  tar -cvf $PACKAGE_DIR\libwebrtc-win-x64.tar *.*
 Pop-Location
 
 
@@ -197,9 +192,9 @@ Copy-Item $BUILD_DIR\release_x86\obj\webrtc.lib $BUILD_DIR\package\webrtc\releas
 if (!(Test-Path $PACKAGE_DIR)) {
   New-Item $PACKAGE_DIR -ItemType Directory -Force
 }
-if (Test-Path $PACKAGE_DIR\libwebrtc-win-x86.7z) {
-  Remove-Item -Force -Path $PACKAGE_DIR\libwebrtc-win-x86.7z
+if (Test-Path $PACKAGE_DIR\libwebrtc-win-x86.tar) {
+  Remove-Item -Force -Path $PACKAGE_DIR\libwebrtc-win-x86.tar
 }
 Push-Location $BUILD_DIR\package\webrtc
-  cmd /s /c """$7Z_DIR\7z.exe""" a -bsp0 -t7z:r -ssc -ms+ $PACKAGE_DIR\libwebrtc-win-x86.7z *
+  tar -cvf $PACKAGE_DIR\libwebrtc-win-x86.tar *.*
 Pop-Location
