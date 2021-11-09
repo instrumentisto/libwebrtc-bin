@@ -2,15 +2,13 @@ name: build
 
 on:
   push:
-    tags:
-      - '*'
     paths-ignore:
       - '**.md'
       - 'LICENSE'
   pull_request:
 
 jobs:
-build-linux:
+  build-linux:
     strategy:
       fail-fast: false
       matrix:
@@ -68,8 +66,8 @@ build-linux:
         with:
           name: libwebrtc-win-x86.tar
           path: package/libwebrtc-win-x86.tar
-  
-   build-ios:
+
+  build-ios:
     runs-on: macos-11
     steps:
       - uses: actions/checkout@v2
@@ -124,11 +122,12 @@ build-linux:
             ext: tar
             type: application/x-tar
     name: Release ${{ matrix.name }}
+    if: contains(github.ref, 'tags/')
     needs:
-      - build-linux
-      - build-macos
-      - build-windows
-      - build-ios
+     - build-linux
+     - build-macos
+     - build-windows
+     - build-ios
     runs-on: ubuntu-latest
     steps:
       - name: Download ${{ matrix.name }}
