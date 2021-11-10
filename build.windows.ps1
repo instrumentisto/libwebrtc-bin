@@ -97,7 +97,6 @@ if (!(Test-Path $BUILD_DIR)) {
 
 gclient sync --with_branch_heads -r $WEBRTC_COMMIT
 git apply $PATCH_DIR\4k.patch
-
 git apply --ignore-space-change -v $PATCH_DIR\win_dynamic_crt.patch
 Pop-Location
 
@@ -170,11 +169,11 @@ Copy-Item $BUILD_DIR\release_x64\obj\webrtc.lib $BUILD_DIR\package\webrtc\releas
 if (!(Test-Path $PACKAGE_DIR)) {
   New-Item $PACKAGE_DIR -ItemType Directory -Force
 }
-if (Test-Path $PACKAGE_DIR\libwebrtc-win-x64.tar) {
-  Remove-Item -Force -Path $PACKAGE_DIR\libwebrtc-win-x64.tar
+if (Test-Path $PACKAGE_DIR\libwebrtc-win-x64.tar.xz) {
+  Remove-Item -Force -Path $PACKAGE_DIR\libwebrtc-win-x64.tar.xz
 }
 Push-Location $BUILD_DIR\package\webrtc
-  tar -cvf $PACKAGE_DIR\libwebrtc-win-x64.tar *.*
+  tar -Jcf $PACKAGE_DIR\libwebrtc-win-x64.tar.xz *.*
 Pop-Location
 
 
@@ -192,9 +191,9 @@ Copy-Item $BUILD_DIR\release_x86\obj\webrtc.lib $BUILD_DIR\package\webrtc\releas
 if (!(Test-Path $PACKAGE_DIR)) {
   New-Item $PACKAGE_DIR -ItemType Directory -Force
 }
-if (Test-Path $PACKAGE_DIR\libwebrtc-win-x86.tar) {
-  Remove-Item -Force -Path $PACKAGE_DIR\libwebrtc-win-x86.tar
+if (Test-Path $PACKAGE_DIR\libwebrtc-win-x86.tar.xz) {
+  Remove-Item -Force -Path $PACKAGE_DIR\libwebrtc-win-x86.tar.xz
 }
 Push-Location $BUILD_DIR\package\webrtc
-  tar -cvf $PACKAGE_DIR\libwebrtc-win-x86.tar *.*
+  tar -Jcf $PACKAGE_DIR\libwebrtc-win-x86.tar.xz *.*
 Pop-Location

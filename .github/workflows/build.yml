@@ -58,13 +58,13 @@ jobs:
       - name: Upload artifact x64
         uses: actions/upload-artifact@v2
         with:
-          name: libwebrtc-win-x64.tar
-          path: package/libwebrtc-win-x64.tar
+          name: libwebrtc-win-x64.tar.xz
+          path: package/libwebrtc-win-x64.tar.xz
       - name: Upload artifact x86
         uses: actions/upload-artifact@v2
         with:
-          name: libwebrtc-win-x86.tar
-          path: package/libwebrtc-win-x86.tar
+          name: libwebrtc-win-x86.tar.xz
+          path: package/libwebrtc-win-x86.tar.xz
 
   build-ios:
     runs-on: macos-11
@@ -115,11 +115,11 @@ jobs:
             ext: zip
             type: application/zip
           - name: win-x64
-            ext: tar
-            type: application/x-tar
+            ext: tar.xz
+            type: application/x-xz
           - name: win-x86
-            ext: tar
-            type: application/x-tar
+            ext: tar.xz
+            type: application/x-xz
     name: Release ${{ matrix.name }}
     if: contains(github.ref, 'tags/')
     needs:
