@@ -76,5 +76,5 @@ common-copy: generate-licenses
 
 	rsync -amv '--include=*/' '--include=*.h' '--include=*.hpp' '--exclude=*' $(SRC_DIR)/. $(PACKAGE_DIR)/include/.
 
-	cp -f $(BUILD_DIR_DEBUG)/../LICENSE.md $(PACKAGE_DIR)/NOTICE
+	cp -f $(BUILD_DIR_DEBUG)/LICENSE.md $(PACKAGE_DIR)/NOTICE
 	echo '$(WEBRTC_VERSION)' > $(PACKAGE_DIR)/VERSION
