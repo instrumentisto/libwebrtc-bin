@@ -12,7 +12,6 @@ jobs:
       fail-fast: false
       matrix:
         name:
-          - linux-arm64
           - linux-x64
     runs-on: ubuntu-latest
     steps:
@@ -32,8 +31,6 @@ jobs:
       fail-fast: false
       matrix:
         name:
-          - macos-arm64
-          - macos-x64
     runs-on: macos-11
     steps:
       - uses: actions/checkout@v2

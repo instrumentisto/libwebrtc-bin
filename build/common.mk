@@ -60,7 +60,7 @@ common-package: copy
 
 .PHONY: generate-licenses
 generate-licenses:
-	python3 $(SRC_DIR)/tools_webrtc/libs/generate_licenses.py --target :webrtc $(BUILD_DIR_DEBUG)/../ $(BUILD_DIR_DEBUG)/../
+	python3 $(SRC_DIR)/tools_webrtc/libs/generate_licenses.py --target :webrtc $(BUILD_DIR_DEBUG) $(BUILD_DIR_DEBUG)
 
 .PHONY: common-copy
 common-copy: generate-licenses
