@@ -12,6 +12,7 @@ jobs:
       fail-fast: false
       matrix:
         name:
+          - linux-arm64
           - linux-x64
     runs-on: ubuntu-latest
     steps:
