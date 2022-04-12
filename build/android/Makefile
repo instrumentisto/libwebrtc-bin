@@ -9,6 +9,32 @@ TARGET_CPU =
 
 include ../common.mk
 
+EXTRA_GN_ARGS_RELEASE := \
+	is_debug=false \
+	is_java_debug=false \
+	$(RTC_USE_H264) \
+	rtc_build_tools=false \
+	rtc_build_examples=false \
+	rtc_include_tests=false \
+	is_clang=true \
+	is_component_build=false \
+	rtc_enable_protobuf=false \
+	rtc_build_json=true \
+	use_rtti=true
+
+EXTRA_GN_ARGS_DEBUG := \
+	is_debug=true \
+	is_java_debug=false \
+	$(RTC_USE_H264) \
+	rtc_build_tools=false \
+	rtc_build_examples=false \
+	rtc_include_tests=false \
+	is_clang=true \
+	is_component_build=false \
+	rtc_enable_protobuf=false \
+	rtc_build_json=true \
+	use_rtti=true
+
 .PHONY: all
 all: clean build package
 
@@ -66,7 +92,7 @@ patch: common-patch
 
 define build-android
 	cd $(SRC_DIR) && \
-	python3 $(DEPOT_TOOLS_DIR)/gn.py gen $(BUILD_DIR_DEBUG)/static/$1   --args='$(CC_WRAPPER) target_os="android" target_cpu="$2" $3 is_debug=true  $(RTC_USE_H264) rtc_build_tools=false rtc_build_examples=false rtc_include_tests=false use_custom_libcxx=false is_clang=true is_component_build=false rtc_enable_protobuf=false rtc_build_json=true use_rtti=true' && \
+	gn gen $(BUILD_DIR_DEBUG)/static/$1 --args='$(EXTRA_GN_ARGS_DEBUG) $(CC_WRAPPER) target_os="android" target_cpu="$2" $3' && \
 	ninja -C $(BUILD_DIR_DEBUG)/static/$1 && \
 	ninja -C $(BUILD_DIR_DEBUG)/static/$1 native_api
 
@@ -75,7 +101,7 @@ define build-android
 	$(SRC_DIR)/third_party/llvm-build/Release+Asserts/bin/llvm-ar -rc $(BUILD_DIR_DEBUG)/static/$1/libwebrtc.a `find . -name '*.o'`
 
 
-	python3 $(DEPOT_TOOLS_DIR)/gn.py gen $(BUILD_DIR_RELEASE)/static/$1 --args='$(CC_WRAPPER) target_os="android" target_cpu="$2" $3 is_debug=false $(RTC_USE_H264) rtc_build_tools=false rtc_build_examples=false rtc_include_tests=false use_custom_libcxx=false is_clang=true is_component_build=false rtc_enable_protobuf=false rtc_build_json=true use_rtti=true' && \
+	gn gen $(BUILD_DIR_RELEASE)/static/$1 --args='$(EXTRA_GN_ARGS_RELEASE) $(CC_WRAPPER) target_os="android" target_cpu="$2" $3' && \
 	ninja -C $(BUILD_DIR_RELEASE)/static/$1 && \
 	ninja -C $(BUILD_DIR_RELEASE)/static/$1 native_api
 
@@ -100,7 +126,7 @@ build: patch
 	  --build-dir $(BUILD_DIR_RELEASE)/aar \
 	  --output $(BUILD_DIR_RELEASE)/libwebrtc.aar \
 	  --arch armeabi-v7a arm64-v8a x86_64 \
-	  --extra-gn-args '$(CC_WRAPPER) is_debug=false $(RTC_USE_H264) rtc_build_tools=false rtc_build_examples=false rtc_include_tests=false is_clang=true is_component_build=false rtc_enable_protobuf=false rtc_build_json=true use_rtti=true'
+	  --extra-gn-args '$(EXTRA_GN_ARGS) $(CC_WRAPPER)'
 
 	$(call build-android,armeabi-v7a,arm,arm_version=7)
 	$(call build-android,arm64-v8a,arm64)

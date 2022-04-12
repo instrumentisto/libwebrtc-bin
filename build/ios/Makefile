@@ -9,6 +9,14 @@ TARGET_CPU =
 
 include ../common.mk
 
+EXTRA_GN_ARGS := \
+	use_rtti=true \
+	rtc_libvpx_build_vp9=true \
+	rtc_include_tests=false \
+	rtc_build_tools=false \
+	rtc_build_examples=false \
+	rtc_use_h264=false
+
 .PHONY: all
 all: clean build package
 
@@ -24,34 +32,11 @@ package:
 patch: common-patch
 	echo "apply iOS patches ..." \
 	&& cd $(SRC_DIR) \
-	&& patch -p1 < $(PATCH_DIR)/disable_gdwarf-aranges.patch \
-	&& patch -p1 < $(PATCH_DIR)/ios_disable_iossim.patch
+	&& patch -p1 < $(PATCH_DIR)/ios_disable_mllvm.patch
 
 .PHONY: build
 build: patch
 	cd $(SRC_DIR)/tools_webrtc/ios && \
-	python3 build_ios_libs.py -o $(BUILD_DIR_DEBUG) --build_config debug --bitcode --extra-gn-args '\
-	  use_xcode_clang=true \
-	  use_rtti=true \
-	  enable_dsyms=true \
-	  rtc_libvpx_build_vp9=true \
-	  rtc_include_tests=false \
-	  rtc_build_tools=false \
-	  rtc_build_examples=false \
-	  rtc_use_h264=false \
-	  libcxx_abi_unstable=false \
-	  $(CC_WRAPPER) \
-	' && \
-	python3 build_ios_libs.py -o $(BUILD_DIR_RELEASE) --build_config release --bitcode --extra-gn-args '\
-	  use_xcode_clang=true \
-	  use_rtti=true \
-	  enable_dsyms=true \
-	  rtc_libvpx_build_vp9=true \
-	  rtc_include_tests=false \
-	  rtc_build_tools=false \
-	  rtc_build_examples=false \
-	  rtc_use_h264=false \
-	  libcxx_abi_unstable=false \
-	  $(CC_WRAPPER) \
-	'
+	python3 build_ios_libs.py -o $(BUILD_DIR_DEBUG)   --build_config debug   --bitcode --extra-gn-args '$(EXTRA_GN_ARGS) $(CC_WRAPPER)' && \
+	python3 build_ios_libs.py -o $(BUILD_DIR_RELEASE) --build_config release --bitcode --extra-gn-args '$(EXTRA_GN_ARGS) $(CC_WRAPPER)'
 

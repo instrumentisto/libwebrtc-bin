@@ -9,6 +9,36 @@ TARGET_CPU ?= x64
 
 include ../common.mk
 
+EXTRA_GN_ARGS_DEBUG := \
+	target_os="$(TARGET_OS)" \
+	target_cpu="$(TARGET_CPU)" \
+	is_debug=true \
+	$(RTC_USE_H264) \
+	$(RTC_USE_X11) \
+	rtc_include_tests=false \
+	rtc_build_tools=false \
+	rtc_build_examples=false \
+	rtc_use_pipewire=false \
+	rtc_build_json=true \
+	use_rtti=true \
+	use_custom_libcxx=false \
+	use_custom_libcxx_for_host=false
+
+EXTRA_GN_ARGS_RELEASE := \
+	target_os="$(TARGET_OS)" \
+	target_cpu="$(TARGET_CPU)" \
+	is_debug=false \
+	$(RTC_USE_H264) \
+	$(RTC_USE_X11) \
+	rtc_include_tests=false \
+	rtc_build_tools=false \
+	rtc_build_examples=false \
+	rtc_use_pipewire=false \
+	rtc_build_json=true \
+	use_rtti=true \
+	use_custom_libcxx=false \
+	use_custom_libcxx_for_host=false
+
 .PHONY: all
 all: clean build package
 
@@ -24,5 +54,7 @@ patch: common-patch
 .PHONY: build
 build: download patch
 	cd $(SRC_DIR) && \
-	gn gen $(BUILD_DIR_DEBUG)   --args='$(CC_WRAPPER) target_os="$(TARGET_OS)" target_cpu="$(TARGET_CPU)" is_debug=true  $(RTC_USE_H264) $(RTC_USE_X11) rtc_include_tests=false rtc_build_tools=false rtc_build_examples=false rtc_use_pipewire=false rtc_build_json=true use_rtti=true use_custom_libcxx=false use_custom_libcxx_for_host=false' && \
-	ninja -C $(BUILD_DIR_DEBUG)
+	gn gen $(BUILD_DIR_DEBUG)   --args='$(EXTRA_GN_ARGS_DEBUG)   $(CC_WRAPPER)' && \
+	gn gen $(BUILD_DIR_RELEASE) --args='$(EXTRA_GN_ARGS_RELEASE) $(CC_WRAPPER)' && \
+	ninja -C $(BUILD_DIR_DEBUG) && \
+	ninja -C $(BUILD_DIR_RELEASE)
