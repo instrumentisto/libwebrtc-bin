@@ -35,7 +35,8 @@ endif
 .PHONY: common-clean
 clean:
 	rm -rf $(PACKAGE_DIR)/*
-	rm -rf $(BUILD_DIR)
+	rm -rf $(BUILD_DIR_DEBUG)
+	rm -rf $(BUILD_DIR_RELEASE)
 
 .PHONY: download
 download:
@@ -59,17 +60,20 @@ common-package: copy
 
 .PHONY: generate-licenses
 generate-licenses:
-	python3 $(SRC_DIR)/tools_webrtc/libs/generate_licenses.py --target :webrtc $(BUILD_DIR) $(BUILD_DIR)
+	python3 $(SRC_DIR)/tools_webrtc/libs/generate_licenses.py --target :webrtc $(BUILD_DIR_RELEASE) $(BUILD_DIR_RELEASE)
 
 .PHONY: common-copy
 common-copy: generate-licenses
 	rm -rf $(PACKAGE_DIR)/{lib,include,NOTICE,VERSION}
-	mkdir -p $(PACKAGE_DIR)/lib
+	mkdir -p $(PACKAGE_DIR)/debug
+	mkdir -p $(PACKAGE_DIR)/release
 	mkdir -p $(PACKAGE_DIR)/include
-	cp $(BUILD_DIR)/obj/libwebrtc.a $(PACKAGE_DIR)/lib/libwebrtc.a
-	cp $(BUILD_DIR)/obj/third_party/boringssl/libboringssl.a $(PACKAGE_DIR)/lib/libboringssl.a
+	cp $(BUILD_DIR_DEBUG)/obj/libwebrtc.a $(PACKAGE_DIR)/debug/libwebrtc.a
+	cp $(BUILD_DIR_DEBUG)/obj/third_party/boringssl/libboringssl.a $(PACKAGE_DIR)/debug/libboringssl.a
+	cp $(BUILD_DIR_RELEASE)/obj/libwebrtc.a $(PACKAGE_DIR)/release/libwebrtc.a
+	cp $(BUILD_DIR_RELEASE)/obj/third_party/boringssl/libboringssl.a $(PACKAGE_DIR)/release/libboringssl.a
 
 	rsync -amv '--include=*/' '--include=*.h' '--include=*.hpp' '--exclude=*' $(SRC_DIR)/. $(PACKAGE_DIR)/include/.
 
-	cp -f $(BUILD_DIR)/LICENSE.md $(PACKAGE_DIR)/NOTICE
+	cp -f $(BUILD_DIR_RELEASE)/LICENSE.md $(PACKAGE_DIR)/NOTICE
 	echo '$(WEBRTC_VERSION)' > $(PACKAGE_DIR)/VERSION

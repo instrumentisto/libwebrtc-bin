@@ -59,7 +59,8 @@ $(1).build: prepare $(CCACHE) $(1).fetch sync
 
 .PHONY: $(1).build-nofetch
 $(1).build-nofetch: $(CCACHE) sync
-	rm -rf $(BUILD_DIR)
+	rm -rf $(BUILD_DIR_DEBUG)
+	rm -rf $(BUILD_DIR_RELEASE)
 	make $(SUB_DIR_OPTS) -C $(1) build
 
 .PHONY: $(1).copy
@@ -98,5 +99,6 @@ sync:
 .PHONY: clean
 clean:
 	rm -rf $(WEBRTC_DIR)
-	rm -rf $(BUILD_DIR)
+	rm -rf $(BUILD_DIR_DEBUG)
+	rm -rf $(BUILD_DIR_RELEASE)
 	rm -rf $(PACKAGE_DIR)
