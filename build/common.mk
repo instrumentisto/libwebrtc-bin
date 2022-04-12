@@ -56,11 +56,11 @@ common-patch:
 .PHONY: common-package
 common-package: copy
 	cd $(PACKAGE_DIR) && \
-	tar -Jcf $(subst $(space),,$(PACKAGE_NAME)).tar.xz include lib NOTICE VERSION
+	tar -Jcf $(subst $(space),,$(PACKAGE_NAME)).tar.xz include debug release NOTICE VERSION
 
 .PHONY: generate-licenses
 generate-licenses:
-	python3 $(SRC_DIR)/tools_webrtc/libs/generate_licenses.py --target :webrtc $(BUILD_DIR_RELEASE) $(BUILD_DIR_RELEASE)
+	python3 $(SRC_DIR)/tools_webrtc/libs/generate_licenses.py --target :webrtc $(BUILD_DIR_DEBUG)../ $(BUILD_DIR_DEBUG)../
 
 .PHONY: common-copy
 common-copy: generate-licenses
@@ -75,5 +75,5 @@ common-copy: generate-licenses
 
 	rsync -amv '--include=*/' '--include=*.h' '--include=*.hpp' '--exclude=*' $(SRC_DIR)/. $(PACKAGE_DIR)/include/.
 
-	cp -f $(BUILD_DIR_RELEASE)/LICENSE.md $(PACKAGE_DIR)/NOTICE
+	cp -f $(BUILD_DIR_DEBUG)/../LICENSE.md $(PACKAGE_DIR)/NOTICE
 	echo '$(WEBRTC_VERSION)' > $(PACKAGE_DIR)/VERSION

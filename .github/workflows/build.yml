@@ -22,7 +22,7 @@ jobs:
       - name: Disk Cleanup
         run: ./disk_cleanup.sh
       - name: Build
-        run: make -C docker ${{ matrix.name }}
+        run: make -C docker USE_X11=1 ${{ matrix.name }}
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
