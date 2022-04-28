@@ -14,6 +14,7 @@ jobs:
         name:
           - linux-arm64
           - linux-x64
+          - android
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -64,15 +65,30 @@ jobs:
           name: libwebrtc-win-x86.tar.gz
           path: package/libwebrtc-win-x86.tar.gz
 
+  build-ios:
+    runs-on: macos-11
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build
+        run: make -C build USE_CCACHE=0 ios
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: libwebrtc-ios.zip
+          path: package/libwebrtc-ios.zip
+
   release:
     strategy:
       fail-fast: false
+      max-parallel: 1
       matrix:
         name:
           - linux-arm64
           - linux-x64
           - macos-arm64
           - macos-x64
+          - android
+          - ios
           - win-x64
         include:
           - name: linux-arm64
@@ -87,6 +103,12 @@ jobs:
           - name: macos-x64
             ext: tar.xz
             type: application/x-xz
+          - name: android
+            ext: tar.xz
+            type: application/x-xz
+          - name: ios
+            ext: zip
+            type: application/zip
           - name: win-x64
             ext: tar.gz
             type: application/gzip
@@ -96,6 +118,7 @@ jobs:
      - build-linux
      - build-macos
      - build-windows
+     - build-ios
     runs-on: ubuntu-latest
     steps:
       - name: Download ${{ matrix.name }}
