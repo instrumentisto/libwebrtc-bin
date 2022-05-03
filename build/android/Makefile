@@ -128,14 +128,14 @@ build: patch
 	  --arch armeabi-v7a arm64-v8a x86_64 \
 	  --extra-gn-args '$(EXTRA_GN_ARGS_RELEASE) $(CC_WRAPPER)'
 
-	$(call build-debug-android, armeabi-v7a,arm,arm_version=7)
-	$(call build-android,       armeabi-v7a,arm,arm_version=7)
+	$(call build-debug-android,armeabi-v7a,arm,arm_version=7)
+	$(call build-android,armeabi-v7a,arm,arm_version=7)
 
-	$(call build-debug-android, arm64-v8a,arm64)
-	$(call build-android,       arm64-v8a,arm64)
+	$(call build-debug-android,arm64-v8a,arm64)
+	$(call build-android,arm64-v8a,arm64)
 
-	$(call build-debug-android, x86_64,x64)
-	$(call build-android,       x86_64,x64)
+	$(call build-debug-android,x86_64,x64)
+	$(call build-android,x86_64,x64)
 
 
 	cd $(BUILD_DIR_DEBUG) && \
