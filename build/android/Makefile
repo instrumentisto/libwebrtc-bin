@@ -92,6 +92,17 @@ patch: common-patch
 
 define build-android
 	cd $(SRC_DIR) && \
+	gn gen $(BUILD_DIR_RELEASE)/static/$1 --args='$(EXTRA_GN_ARGS_RELEASE) $(CC_WRAPPER) target_os="android" target_cpu="$2" $3' && \
+	ninja -C $(BUILD_DIR_RELEASE)/static/$1 && \
+	ninja -C $(BUILD_DIR_RELEASE)/static/$1 native_api
+
+	cd $(BUILD_DIR_RELEASE)/static/$1/obj && \
+	rm -f sdk/android/libjingle_peerconnection_so/jni_onload.o && \
+	$(SRC_DIR)/third_party/llvm-build/Release+Asserts/bin/llvm-ar -rc $(BUILD_DIR_RELEASE)/static/$1/libwebrtc.a `find . -name '*.o'`
+endef
+
+define build-debug-android
+	cd $(SRC_DIR) && \
 	gn gen $(BUILD_DIR_DEBUG)/static/$1 --args='$(EXTRA_GN_ARGS_DEBUG) $(CC_WRAPPER) target_os="android" target_cpu="$2" $3' && \
 	ninja -C $(BUILD_DIR_DEBUG)/static/$1 && \
 	ninja -C $(BUILD_DIR_DEBUG)/static/$1 native_api
@@ -99,17 +110,6 @@ define build-android
 	cd $(BUILD_DIR_DEBUG)/static/$1/obj && \
 	rm -f sdk/android/libjingle_peerconnection_so/jni_onload.o && \
 	$(SRC_DIR)/third_party/llvm-build/Release+Asserts/bin/llvm-ar -rc $(BUILD_DIR_DEBUG)/static/$1/libwebrtc.a `find . -name '*.o'`
-
-
-	gn gen $(BUILD_DIR_RELEASE)/static/$1 --args='$(EXTRA_GN_ARGS_RELEASE) $(CC_WRAPPER) target_os="android" target_cpu="$2" $3' && \
-	ninja -C $(BUILD_DIR_RELEASE)/static/$1 && \
-	ninja -C $(BUILD_DIR_RELEASE)/static/$1 native_api
-
-	cd $(SRC_DIR) && \
-	cd $(BUILD_DIR_RELEASE)/static/$1/obj && \
-	rm -f sdk/android/libjingle_peerconnection_so/jni_onload.o && \
-	$(SRC_DIR)/third_party/llvm-build/Release+Asserts/bin/llvm-ar -rc $(BUILD_DIR_RELEASE)/static/$1/libwebrtc.a `find . -name '*.o'`
-
 endef
 
 .PHONY: build
@@ -128,9 +128,15 @@ build: patch
 	  --arch armeabi-v7a arm64-v8a x86_64 \
 	  --extra-gn-args '$(EXTRA_GN_ARGS) $(CC_WRAPPER)'
 
-	$(call build-android,armeabi-v7a,arm,arm_version=7)
-	$(call build-android,arm64-v8a,arm64)
-	$(call build-android,x86_64,x64)
+	$(call build-debug-android, armeabi-v7a,arm,arm_version=7)
+	$(call build-android,       armeabi-v7a,arm,arm_version=7)
+
+	$(call build-debug-android, arm64-v8a,arm64)
+	$(call build-android,       arm64-v8a,arm64)
+
+	$(call build-debug-android, x86_64,x64)
+	$(call build-android,       x86_64,x64)
+
 
 	cd $(BUILD_DIR_DEBUG) && \
 	unzip -q libwebrtc.aar && \
