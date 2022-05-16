@@ -12,6 +12,7 @@ jobs:
       fail-fast: false
       matrix:
         name:
+          - linux-arm
           - linux-arm64
           - linux-x64
           - android
@@ -83,6 +84,7 @@ jobs:
       max-parallel: 1
       matrix:
         name:
+          - linux-arm
           - linux-arm64
           - linux-x64
           - macos-arm64
@@ -91,6 +93,9 @@ jobs:
           - ios
           - win-x64
         include:
+          - name: linux-arm
+            ext: tar.xz
+            type: application/x-xz
           - name: linux-arm64
             ext: tar.xz
             type: application/x-xz
