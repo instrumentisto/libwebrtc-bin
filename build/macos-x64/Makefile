@@ -21,6 +21,8 @@ EXTRA_GN_ARGS_DEBUG := \
 	rtc_build_tools=false \
 	rtc_build_examples=false \
 	rtc_libvpx_build_vp9=true \
+	rtc_enable_symbol_export=true \
+	rtc_enable_objc_symbol_export=true \
 	is_component_build=false \
 	use_rtti=true
 
@@ -36,6 +38,8 @@ EXTRA_GN_ARGS_RELEASE := \
 	rtc_build_tools=false \
 	rtc_build_examples=false \
 	rtc_libvpx_build_vp9=true \
+	rtc_enable_symbol_export=true \
+	rtc_enable_objc_symbol_export=true \
 	is_component_build=false \
 	use_rtti=true
 
@@ -58,17 +62,19 @@ build: patch
 	gn gen $(BUILD_DIR_RELEASE) --args='$(EXTRA_GN_ARGS_RELEASE) $(CC_WRAPPER)' && \
 	ninja -C $(BUILD_DIR_DEBUG) && \
 	ninja -C $(BUILD_DIR_DEBUG) \
-	  builtin_audio_decoder_factory \
-	  default_task_queue_factory \
-	  native_api \
-	  default_codec_factory_objc \
-	  peerconnection \
-	  videocapture_objc && \
+	  api/audio_codecs:builtin_audio_decoder_factory \
+	  api/task_queue:default_task_queue_factory \
+	  sdk:native_api \
+	  sdk:default_codec_factory_objc \
+	  pc:peerconnection \
+	  sdk:videocapture_objc \
+	  sdk:mac_framework_objc && \
 	ninja -C $(BUILD_DIR_RELEASE) && \
 	ninja -C $(BUILD_DIR_RELEASE) \
-	  builtin_audio_decoder_factory \
-	  default_task_queue_factory \
-	  native_api \
-	  default_codec_factory_objc \
-	  peerconnection \
-	  videocapture_objc
+	  api/audio_codecs:builtin_audio_decoder_factory \
+	  api/task_queue:default_task_queue_factory \
+	  sdk:native_api \
+	  sdk:default_codec_factory_objc \
+	  pc:peerconnection \
+	  sdk:videocapture_objc \
+	  sdk:mac_framework_objc
