@@ -81,6 +81,7 @@ jobs:
   release:
     strategy:
       fail-fast: false
+      max-parallel: 1
       matrix:
         name:
           - linux-arm
