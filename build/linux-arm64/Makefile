@@ -12,8 +12,8 @@ include ../common.mk
 EXTRA_GN_ARGS := \
 	target_os="$(TARGET_OS)" \
 	target_cpu="$(TARGET_CPU)" \
-	$(RTC_USE_H264) \
-	$(RTC_USE_X11) \
+	rtc_use_h264=true \
+	rtc_use_x11=true \
 	rtc_include_tests=false \
 	rtc_build_tools=false \
 	rtc_build_examples=false \

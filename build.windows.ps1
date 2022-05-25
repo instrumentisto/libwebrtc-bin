@@ -27,12 +27,10 @@ if ($path) {
     }
   }
   # dbghelp.dll が無いと怒られてしまうので所定の場所にコピーする (管理者権限で実行する必要がある)
-  foreach ($arch in @("x64", "x86")) {
-    $debuggerpath = join-path $path "Common7\IDE\Extensions\TestPlatform\Extensions\Cpp\$arch\dbghelp.dll"
-    if (!(Test-Path "C:\Program Files (x86)\Windows Kits\10\Debuggers\$arch")) {
-      New-Item "C:\Program Files (x86)\Windows Kits\10\Debuggers\$arch" -ItemType Directory -Force
-      Copy-Item $debuggerpath "C:\Program Files (x86)\Windows Kits\10\Debuggers\$arch\dbghelp.dll"
-    }
+  $debuggerpath = join-path $path "Common7\IDE\Extensions\TestPlatform\Extensions\Cpp\x64\dbghelp.dll"
+  if (!(Test-Path "C:\Program Files (x86)\Windows Kits\10\Debuggers\x64")) {
+    New-Item "C:\Program Files (x86)\Windows Kits\10\Debuggers\x64" -ItemType Directory -Force
+    Copy-Item $debuggerpath "C:\Program Files (x86)\Windows Kits\10\Debuggers\x64\dbghelp.dll"
   }
 }
 
@@ -109,17 +107,9 @@ Push-Location $WEBRTC_DIR\src
   # WebRTC Releaseビルド x64
   gn gen $BUILD_DIR\release_x64 --args='is_debug=false treat_warnings_as_errors=false rtc_use_h264=false rtc_include_tests=false rtc_build_tools=false rtc_build_examples=false is_component_build=false use_rtti=true strip_debug_info=true symbol_level=0 use_custom_libcxx=false'
   ninja -C "$BUILD_DIR\release_x64"
-
-  # WebRTC Debugビルド x86
-  gn gen $BUILD_DIR\debug_x86 --args='target_os=\"win\" target_cpu=\"x86\" treat_warnings_as_errors=false rtc_use_h264=false rtc_include_tests=false rtc_build_tools=false rtc_build_examples=false is_component_build=false use_rtti=true use_custom_libcxx=false'
-  ninja -C "$BUILD_DIR\debug_x86"
-
-  # WebRTC Releaseビルド x86
-  gn gen $BUILD_DIR\release_x86 --args='target_os=\"win\" target_cpu=\"x86\" is_debug=false treat_warnings_as_errors=false rtc_use_h264=false rtc_include_tests=false rtc_build_tools=false rtc_build_examples=false is_component_build=false use_rtti=true strip_debug_info=true symbol_level=0 use_custom_libcxx=false'
-  ninja -C "$BUILD_DIR\release_x86"
 Pop-Location
 
-foreach ($build in @("debug_x64", "release_x64", "debug_x86", "release_x86")) {
+foreach ($build in @("debug_x64", "release_x64")) {
   ninja -C "$BUILD_DIR\$build" audio_device_module_from_input_and_output
 
   # このままだと webrtc.lib に含まれないファイルがあるので、いくつか追加する
@@ -173,26 +163,4 @@ if (Test-Path $PACKAGE_DIR\libwebrtc-win-x64.tar.gz) {
 }
 Push-Location $BUILD_DIR\package\webrtc
   tar -zcf $PACKAGE_DIR\libwebrtc-win-x64.tar.gz *.*
-Pop-Location
-
-
-# ライセンス生成 (x86)
-Push-Location $WEBRTC_DIR\src
-  vpython tools_webrtc\libs\generate_licenses.py --target :webrtc "$BUILD_DIR\" "$BUILD_DIR\debug_x86" "$BUILD_DIR\release_x86"
-Pop-Location
-Copy-Item "$BUILD_DIR\LICENSE.md" "$BUILD_DIR\package\webrtc\NOTICE"
-
-# x86用ファイル一式作成
-Copy-Item $BUILD_DIR\debug_x86\obj\webrtc.lib $BUILD_DIR\package\webrtc\debug\
-Copy-Item $BUILD_DIR\release_x86\obj\webrtc.lib $BUILD_DIR\package\webrtc\release\
-
-# ファイルを圧縮する
-if (!(Test-Path $PACKAGE_DIR)) {
-  New-Item $PACKAGE_DIR -ItemType Directory -Force
-}
-if (Test-Path $PACKAGE_DIR\libwebrtc-win-x86.tar.gz) {
-  Remove-Item -Force -Path $PACKAGE_DIR\libwebrtc-win-x86.tar.gz
-}
-Push-Location $BUILD_DIR\package\webrtc
-  tar -zcf $PACKAGE_DIR\libwebrtc-win-x86.tar.gz *.*
 Pop-Location

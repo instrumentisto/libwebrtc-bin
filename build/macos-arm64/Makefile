@@ -15,7 +15,7 @@ EXTRA_GN_ARGS := \
 	enable_stripping=true \
 	enable_dsyms=true \
 	treat_warnings_as_errors=false \
-	$(RTC_USE_H264) \
+	rtc_use_h264=true \
 	rtc_include_tests=false \
 	rtc_build_tools=false \
 	rtc_build_examples=false \
@@ -31,7 +31,9 @@ EXTRA_GN_ARGS := \
 all: clean build package
 
 .PHONY: package
-package: common-package
+package: copy
+	cd $(PACKAGE_DIR) && \
+	tar -Jcf $(subst $(space),,$(PACKAGE_NAME)).tar.xz include debug release NOTICE VERSION Frameworks
 
 .PHONY: copy
 copy: common-copy

@@ -12,7 +12,7 @@ include ../common.mk
 EXTRA_GN_ARGS := \
 	is_debug=false \
 	is_java_debug=false \
-	$(RTC_USE_H264) \
+	rtc_use_h264=true \
 	rtc_build_tools=false \
 	rtc_build_examples=false \
 	rtc_include_tests=false \
