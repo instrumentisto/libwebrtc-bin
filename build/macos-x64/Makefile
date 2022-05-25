@@ -9,12 +9,11 @@ TARGET_CPU ?= x64
 
 include ../common.mk
 
-EXTRA_GN_ARGS_DEBUG := \
+EXTRA_GN_ARGS := \
 	target_os="mac" \
 	target_cpu="$(TARGET_CPU)" \
 	enable_stripping=true \
 	enable_dsyms=true \
-	is_debug=true \
 	treat_warnings_as_errors=false \
 	$(RTC_USE_H264) \
 	rtc_include_tests=false \
@@ -24,24 +23,9 @@ EXTRA_GN_ARGS_DEBUG := \
 	rtc_enable_symbol_export=true \
 	rtc_enable_objc_symbol_export=true \
 	is_component_build=false \
-	use_rtti=true
-
-EXTRA_GN_ARGS_RELEASE := \
-	target_os="mac" \
-	target_cpu="$(TARGET_CPU)" \
-	enable_stripping=true \
-	enable_dsyms=true \
-	is_debug=false \
-	treat_warnings_as_errors=false \
-	$(RTC_USE_H264) \
-	rtc_include_tests=false \
-	rtc_build_tools=false \
-	rtc_build_examples=false \
-	rtc_libvpx_build_vp9=true \
-	rtc_enable_symbol_export=true \
-	rtc_enable_objc_symbol_export=true \
-	is_component_build=false \
-	use_rtti=true
+	use_rtti=true \
+	use_custom_libcxx=false \
+    use_custom_libcxx_for_host=false
 
 .PHONY: all
 all: clean build package
@@ -58,8 +42,8 @@ patch: common-patch
 .PHONY: build
 build: patch
 	cd $(SRC_DIR) && \
-	gn gen $(BUILD_DIR_DEBUG)   --args='$(EXTRA_GN_ARGS_DEBUG)   $(CC_WRAPPER)' && \
-	gn gen $(BUILD_DIR_RELEASE) --args='$(EXTRA_GN_ARGS_RELEASE) $(CC_WRAPPER)' && \
+	gn gen $(BUILD_DIR_DEBUG) --args='$(EXTRA_GN_ARGS_DEBUG) $(CC_WRAPPER)' && \
+	gn gen $(BUILD_DIR_RELEASE) --args='$(EXTRA_GN_ARGS_RELEASE) is_debug=false $(CC_WRAPPER)' && \
 	ninja -C $(BUILD_DIR_DEBUG) && \
 	ninja -C $(BUILD_DIR_DEBUG) \
 	  api/audio_codecs:builtin_audio_decoder_factory \

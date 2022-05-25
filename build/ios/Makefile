@@ -15,7 +15,9 @@ EXTRA_GN_ARGS := \
 	rtc_include_tests=false \
 	rtc_build_tools=false \
 	rtc_build_examples=false \
-	rtc_use_h264=false
+	rtc_use_h264=false \
+	use_custom_libcxx=false \
+	use_custom_libcxx_for_host=false
 
 .PHONY: all
 all: clean build package
@@ -37,6 +39,6 @@ patch: common-patch
 .PHONY: build
 build: patch
 	cd $(SRC_DIR)/tools_webrtc/ios && \
-	python3 build_ios_libs.py -o $(BUILD_DIR_DEBUG)   --build_config debug   --bitcode --extra-gn-args '$(EXTRA_GN_ARGS) $(CC_WRAPPER)' && \
-	python3 build_ios_libs.py -o $(BUILD_DIR_RELEASE) --build_config release --bitcode --extra-gn-args '$(EXTRA_GN_ARGS) $(CC_WRAPPER)'
+	python3 build_ios_libs.py -o $(BUILD_DIR_DEBUG) --build_config debug --bitcode --extra-gn-args '$(EXTRA_GN_ARGS) $(CC_WRAPPER)' && \
+	python3 build_ios_libs.py -o $(BUILD_DIR_RELEASE) --build_config release --bitcode --extra-gn-args '$(EXTRA_GN_ARGS) is_debug=false $(CC_WRAPPER)'
 

@@ -18,25 +18,11 @@ ifneq (x$(TARGET_CPU),x)
 PACKAGE_NAME += -$(TARGET_CPU)
 endif
 
-ifeq ($(USE_H264),1)
-RTC_USE_H264 := rtc_use_h264=true
-PACKAGE_NAME += -h264
-else
-RTC_USE_H264 := rtc_use_h264=false
-endif
-
-ifeq ($(USE_X11),1)
-RTC_USE_X11 := rtc_use_x11=true
-PACKAGE_NAME += -x11
-else
-RTC_USE_X11 := rtc_use_x11=false
-endif
 
 .PHONY: common-clean
 clean:
 	rm -rf $(PACKAGE_DIR)/*
-	rm -rf $(BUILD_DIR_DEBUG)
-	rm -rf $(BUILD_DIR_RELEASE)
+	rm -rf $(BUILD_DIR)
 
 .PHONY: download
 download:
@@ -49,7 +35,6 @@ common-patch:
 	echo "apply patches ..." \
 	&& cd $(SRC_DIR) \
 	&& patch -p1 < $(PATCH_DIR)/nacl_armv6_2.patch \
-	&& patch -p2 < $(PATCH_DIR)/4k.patch \
 	&& patch -p2 < $(PATCH_DIR)/macos_h264_encoder.patch \
 	&& patch -p2 < $(PATCH_DIR)/disable_use_hermetic_xcode_on_linux.patch \
 	&& patch -p2 < $(PATCH_DIR)/add_licenses.patch
