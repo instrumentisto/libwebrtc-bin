@@ -12,7 +12,6 @@ jobs:
       fail-fast: false
       matrix:
         name:
-          - linux-arm
           - linux-arm64
           - linux-x64
           - android
