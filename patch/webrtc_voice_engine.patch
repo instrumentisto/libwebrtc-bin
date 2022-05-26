@@ -1,0 +1,18 @@
+--- a/src/media/engine/webrtc_voice_engine.cc
++++ b/src/media/engine/webrtc_voice_engine.cc
+@@ -477,6 +477,7 @@ bool WebRtcVoiceEngine::ApplyOptions(const AudioOptions& options_in) {
+   }
+ #endif
+ 
++#if !defined(WEBRTC_WIN)
+   if (options.echo_cancellation) {
+     // Check if platform supports built-in EC. Currently only supported on
+     // Android and in combination with Java based audio layer.
+@@ -497,6 +498,7 @@ bool WebRtcVoiceEngine::ApplyOptions(const AudioOptions& options_in) {
+       }
+     }
+   }
++#endif
+ 
+   if (options.auto_gain_control) {
+     bool built_in_agc_avaliable = adm()->BuiltInAGCIsAvailable();
