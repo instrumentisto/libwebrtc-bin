@@ -15,7 +15,7 @@ EXTRA_GN_ARGS := \
 	rtc_include_tests=false \
 	rtc_build_tools=false \
 	rtc_build_examples=false \
-	rtc_use_h264=false
+	rtc_use_h264=true
 
 .PHONY: all
 all: clean build package
