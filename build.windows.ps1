@@ -159,9 +159,9 @@ Copy-Item $BUILD_DIR\release_x64\obj\webrtc.lib $BUILD_DIR\package\webrtc\releas
 if (!(Test-Path $PACKAGE_DIR)) {
   New-Item $PACKAGE_DIR -ItemType Directory -Force
 }
-if (Test-Path $PACKAGE_DIR\libwebrtc-win-x64.tar.xz) {
-  Remove-Item -Force -Path $PACKAGE_DIR\libwebrtc-win-x64.tar.xz
+if (Test-Path $PACKAGE_DIR\libwebrtc-win-x64.tar.gz) {
+  Remove-Item -Force -Path $PACKAGE_DIR\libwebrtc-win-x64.tar.gz
 }
 Push-Location $BUILD_DIR\package\webrtc
-  tar -Jcf $PACKAGE_DIR\libwebrtc-win-x64.tar.xz *.*
+  tar -czvf $PACKAGE_DIR\libwebrtc-win-x64.tar.gz *.*
 Pop-Location

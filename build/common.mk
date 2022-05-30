@@ -42,7 +42,7 @@ common-patch:
 .PHONY: common-package
 common-package: copy
 	cd $(PACKAGE_DIR) && \
-	tar -Jcf $(subst $(space),,$(PACKAGE_NAME)).tar.xz include debug release NOTICE VERSION
+	tar -czvf $(subst $(space),,$(PACKAGE_NAME)).tar.gz include debug release NOTICE VERSION
 
 .PHONY: generate-licenses
 generate-licenses:

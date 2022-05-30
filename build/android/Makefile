@@ -28,7 +28,7 @@ all: clean build package
 .PHONY: package
 package: copy
 	cd $(PACKAGE_DIR) && \
-	tar -Jcf $(subst $(space),,$(PACKAGE_NAME)).tar.xz aar jar include lib NOTICE VERSION
+	tar -czvf $(subst $(space),,$(PACKAGE_NAME)).tar.gz aar jar include lib NOTICE VERSION
 
 .PHONY: copy
 copy:

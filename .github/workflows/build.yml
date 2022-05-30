@@ -25,8 +25,8 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
-          name: libwebrtc-${{ matrix.name }}.tar.xz
-          path: package/libwebrtc-${{ matrix.name }}.tar.xz
+          name: libwebrtc-${{ matrix.name }}.tar.gz
+          path: package/libwebrtc-${{ matrix.name }}.tar.gz
 
   build-macos:
     strategy:
@@ -43,8 +43,8 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
-          name: libwebrtc-${{ matrix.name }}.tar.xz
-          path: package/libwebrtc-${{ matrix.name }}.tar.xz
+          name: libwebrtc-${{ matrix.name }}.tar.gz
+          path: package/libwebrtc-${{ matrix.name }}.tar.gz
 
   build-windows:
     runs-on: windows-2019
@@ -57,8 +57,8 @@ jobs:
       - name: Upload artifact x64
         uses: actions/upload-artifact@v2
         with:
-          name: libwebrtc-win-x64.tar.xz
-          path: package/libwebrtc-win-x64.tar.xz
+          name: libwebrtc-win-x64.tar.gz
+          path: package/libwebrtc-win-x64.tar.gz
 
   build-ios:
     runs-on: macos-11
@@ -69,8 +69,8 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
-          name: libwebrtc-ios.tar.xz
-          path: package/libwebrtc-ios.tar.xz
+          name: libwebrtc-ios.tar.gz
+          path: package/libwebrtc-ios.tar.gz
 
   release:
     strategy:
@@ -97,7 +97,7 @@ jobs:
       - name: Download ${{ matrix.name }}
         uses: actions/download-artifact@v2
         with:
-          name: libwebrtc-${{ matrix.name }}.tar.xz
+          name: libwebrtc-${{ matrix.name }}.tar.gz
       - name: Upload ${{ matrix.name }} Release asset
         uses: ncipollo/release-action@v1
         with:
@@ -105,6 +105,6 @@ jobs:
           allowUpdates: true
           draft: false
           prerelease: false
-          artifactContentType: application/x-xz
-          artifacts: libwebrtc-${{ matrix.name }}.tar.xz
+          artifactContentType: application/gzip
+          artifacts: libwebrtc-${{ matrix.name }}.tar.gz
           token: ${{ secrets.GITHUB_TOKEN }}
