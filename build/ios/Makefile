@@ -15,7 +15,7 @@ EXTRA_GN_ARGS := \
 	rtc_include_tests=false \
 	rtc_build_tools=false \
 	rtc_build_examples=false \
-	rtc_use_h264=true
+	rtc_use_h264=false
 
 .PHONY: all
 all: clean build package
@@ -24,7 +24,7 @@ all: clean build package
 package:
 	mkdir -p $(PACKAGE_DIR) && \
 	cd $(BUILD_DIR) && \
-	zip -9 -r $(PACKAGE_DIR)/$(subst $(space),,$(PACKAGE_NAME)).zip WebRTC.xcframework/*
+	tar -Jcf $(PACKAGE_DIR)/$(subst $(space),,$(PACKAGE_NAME)).tar.xz WebRTC.xcframework/*
 
 .PHONY: patch
 patch: common-patch
