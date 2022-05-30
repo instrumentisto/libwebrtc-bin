@@ -57,8 +57,8 @@ jobs:
       - name: Upload artifact x64
         uses: actions/upload-artifact@v2
         with:
-          name: libwebrtc-win-x64.tar.gz
-          path: package/libwebrtc-win-x64.tar.gz
+          name: libwebrtc-win-x64.tar.xz
+          path: package/libwebrtc-win-x64.tar.xz
 
   build-ios:
     runs-on: macos-11
@@ -69,8 +69,8 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
-          name: libwebrtc-ios.zip
-          path: package/libwebrtc-ios.zip
+          name: libwebrtc-ios.tar.xz
+          path: package/libwebrtc-ios.tar.xz
 
   release:
     strategy:
