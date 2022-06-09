@@ -98,6 +98,10 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: libwebrtc-${{ matrix.name }}.tar.gz
+
+      - name: Generate SHA256 checksums
+        run: sha256sum libwebrtc-${{ matrix.name }}.tar.gz > libwebrtc-${{ matrix.name }}.tar.gz.sha256sum
+
       - name: Upload ${{ matrix.name }} Release asset
         uses: ncipollo/release-action@v1
         with:
@@ -105,6 +109,5 @@ jobs:
           allowUpdates: true
           draft: false
           prerelease: false
-          artifactContentType: application/gzip
-          artifacts: libwebrtc-${{ matrix.name }}.tar.gz
+          artifacts: "libwebrtc-${{ matrix.name }}.tar.gz,libwebrtc-${{ matrix.name }}.tar.gz.sha256sum"
           token: ${{ secrets.GITHUB_TOKEN }}

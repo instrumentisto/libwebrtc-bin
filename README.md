@@ -1,8 +1,8 @@
 # libwebrtc binaries
 
-![build](https://github.com/crow-misia/libwebrtc-bin/workflows/build/badge.svg)
-[![JitPack](https://jitpack.io/v/crow-misia/libwebrtc-bin.svg)](https://jitpack.io/#crow-misia/libwebrtc-bin)
-[![License](https://img.shields.io/github/license/crow-misia/libwebrtc-bin)](LICENSE)
+![build](https://github.com/instrumentisto/libwebrtc-bin/workflows/build/badge.svg)
+[![JitPack](https://jitpack.io/v/instrumentisto/libwebrtc-bin.svg)](https://jitpack.io/#instrumentisto/libwebrtc-bin)
+[![License](https://img.shields.io/github/license/instrumentisto/libwebrtc-bin)](LICENSE)
 
 This repository contains build scripts that can be used to build statically linked libwebrtc binaries.
 
