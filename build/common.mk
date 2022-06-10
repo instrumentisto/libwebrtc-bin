@@ -18,7 +18,6 @@ ifneq (x$(TARGET_CPU),x)
 PACKAGE_NAME += -$(TARGET_CPU)
 endif
 
-
 .PHONY: common-clean
 clean:
 	rm -rf $(PACKAGE_DIR)/*
@@ -61,5 +60,5 @@ common-copy: generate-licenses
 
 	rsync -amv '--include=*/' '--include=*.h' '--include=*.hpp' '--exclude=*' $(SRC_DIR)/. $(PACKAGE_DIR)/include/.
 
-	cp -f $(BUILD_DIR_DEBUG)/LICENSE.md $(PACKAGE_DIR)/NOTICE
+	cp -f $(BUILD_DIR_RELEASE)/LICENSE.md $(PACKAGE_DIR)/NOTICE
 	echo '$(WEBRTC_VERSION)' > $(PACKAGE_DIR)/VERSION
