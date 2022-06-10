@@ -34,7 +34,8 @@ jobs:
             arch: arm64
           - os: macos
             arch: x64
-          #- os: windows
+          - os: windows
+            arch: x64
     runs-on: ${{ ((matrix.os == 'ios' || matrix.os == 'macos') && 'macos-11')
                  || (matrix.os == 'windows' && 'windows-19')
                  || 'ubuntu-latest' }}
@@ -50,20 +51,19 @@ jobs:
       - run: .\disk_cleanup.bat
         if: ${{ matrix.os == 'windows' }}
 
-      - run: mkdir -p package/ && touch package/libwebrtc-${{ steps.build.outputs.TARGET }}.tar.gz
-#      - run: make -C docker ${{ steps.build.outputs.TARGET }}
-#        if: ${{ matrix.os == 'android' || matrix.os == 'linux' }}
-#      - run: make -C build USE_CCACHE=0 ${{ steps.build.outputs.TARGET }}
-#        if: ${{ matrix.os == 'ios' || matrix.os == 'macos' }}
-#      - run: .\build.windows.bat
-#        if: ${{ matrix.os == 'windows' }}
+      - run: make -C docker ${{ steps.build.outputs.TARGET }}
+        if: ${{ matrix.os == 'android' || matrix.os == 'linux' }}
+      - run: make -C build USE_CCACHE=0 ${{ steps.build.outputs.TARGET }}
+        if: ${{ matrix.os == 'ios' || matrix.os == 'macos' }}
+      - run: .\build.windows.bat
+        if: ${{ matrix.os == 'windows' }}
 
       - uses: actions/upload-artifact@v3
         with:
           name: build
           path: package/libwebrtc-${{ steps.build.outputs.TARGET }}.tar.gz
           if-no-files-found: error
-        #if: ${{ startsWith(github.ref, 'refs/tags/') }}
+        if: ${{ startsWith(github.ref, 'refs/tags/') }}
 
 
 
@@ -75,9 +75,13 @@ jobs:
   release-github:
     name: Release on GitHub
     needs: ["build"]
-    #if: ${{ startsWith(github.ref, 'refs/tags/') }}
+    if: ${{ startsWith(github.ref, 'refs/tags/') }}
     runs-on: ubuntu-latest
     steps:
+      - name: Parse release version
+        id: release
+        run: echo ::set-output name=VERSION::${GITHUB_REF#refs/tags/}
+
       - uses: actions/download-artifact@v3
         with:
           name: build
@@ -87,14 +91,11 @@ jobs:
         run: ls -1 | xargs -I {} sh -c "sha256sum {} > {}.sha256sum"
         working-directory: package/
 
-      - run: ls -l package/
-
-#      - name: Upload ${{ matrix.name }} Release asset
-#        uses: ncipollo/release-action@v1
-#        with:
-#          name: Release m${{ github.ref }}
-#          allowUpdates: true
-#          draft: false
-#          prerelease: false
-#          artifacts: "libwebrtc-${{ matrix.name }}.tar.gz,libwebrtc-${{ matrix.name }}.tar.gz.sha256sum"
-#          token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: softprops/action-gh-release@v1
+        with:
+          name: ${{ steps.release.outputs.VERSION }}
+          files: |
+            package/libwebrtc-*.tar.gz
+            package/libwebrtc-*.tar.gz.sha256sum
+          fail_on_unmatched_files: true
+          prerelease: ${{ contains(steps.release.outputs.VERSION, '-') }}
