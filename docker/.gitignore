@@ -1,8 +1,8 @@
-/VERSION
-/LICENSE
-/NOTICE
 /build/
 /config/
-/scripts/
 /patch/
+/scripts/
 /Dockerfile
+/LICENSE
+/NOTICE
+/VERSION

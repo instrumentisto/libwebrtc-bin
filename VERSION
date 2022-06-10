@@ -4,7 +4,6 @@ WEBRTC_SEMANTIC_VERSION=101.0.4951.64
 WEBRTC_COMMIT=34e12465a46da3c220eab0489881cd89a4d659d2
 
 PACKAGE_NAMES= \
-  linux-arm \
   linux-arm64 \
   linux-x64 \
   macos-x64 \
@@ -13,7 +12,6 @@ PACKAGE_NAMES= \
   android
 
 DOCKER_PACKAGE_NAMES= \
-  linux-arm \
   linux-arm64 \
   linux-x64 \
   android

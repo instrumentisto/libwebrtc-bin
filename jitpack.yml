@@ -1,2 +1,2 @@
 install:
-   - ./publishAar.sh
+  - ./publishAar.sh
