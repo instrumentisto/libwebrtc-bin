@@ -77,4 +77,3 @@ endef
 endif
 
 $(foreach pkg, $(DOCKER_PACKAGE_NAMES), $(eval $(call generateRules,$(pkg))))
-

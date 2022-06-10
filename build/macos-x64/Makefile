@@ -48,21 +48,19 @@ build: patch
 	gn gen $(BUILD_DIR_RELEASE) --args='$(EXTRA_GN_ARGS_RELEASE) is_debug=false $(CC_WRAPPER)' && \
 	ninja -C $(BUILD_DIR_DEBUG) && \
 	ninja -C $(BUILD_DIR_DEBUG) \
-	  api/audio_codecs:builtin_audio_decoder_factory \
-	  api/task_queue:default_task_queue_factory \
-	  sdk:native_api \
-	  sdk:default_codec_factory_objc \
-	  pc:peerconnection \
-	  sdk:videocapture_objc \
-	  sdk:mac_framework_objc && \
+		api/audio_codecs:builtin_audio_decoder_factory \
+		api/task_queue:default_task_queue_factory \
+		sdk:native_api \
+		sdk:default_codec_factory_objc \
+		pc:peerconnection \
+		sdk:videocapture_objc \
+		sdk:mac_framework_objc && \
 	ninja -C $(BUILD_DIR_RELEASE) && \
 	ninja -C $(BUILD_DIR_RELEASE) \
-	  api/audio_codecs:builtin_audio_decoder_factory \
-	  api/task_queue:default_task_queue_factory \
-	  sdk:native_api \
-	  sdk:default_codec_factory_objc \
-	  pc:peerconnection \
-	  sdk:videocapture_objc \
-	  sdk:mac_framework_objc
-
-
+		api/audio_codecs:builtin_audio_decoder_factory \
+		api/task_queue:default_task_queue_factory \
+		sdk:native_api \
+		sdk:default_codec_factory_objc \
+		pc:peerconnection \
+		sdk:videocapture_objc \
+		sdk:mac_framework_objc

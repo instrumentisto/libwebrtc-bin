@@ -36,4 +36,3 @@ patch: common-patch
 build: patch
 	cd $(SRC_DIR)/tools_webrtc/ios && \
 	python3 build_ios_libs.py -o $(BUILD_DIR) --build_config release --bitcode --extra-gn-args '$(EXTRA_GN_ARGS) $(CC_WRAPPER)'
-
