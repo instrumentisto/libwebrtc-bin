@@ -6,7 +6,7 @@ WEBRTC_COMMIT="$3"
 case "$4" in
   "android")             FETCH_TARGET="webrtc_android" ;;
   "ios")                 FETCH_TARGET="webrtc_ios" ;;
-  "linux-*" | "macos-*") FETCH_TARGET="webrtc" ;;
+  "linux-"* | "macos-"*) FETCH_TARGET="webrtc" ;;
   *) echo "Unknown build target: $4"; exit 1 ;;
 esac
 
