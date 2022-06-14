@@ -1,92 +1,50 @@
-# libwebrtc binaries
+[`libwebrtc`] binaries
+======================
 
-![build](https://github.com/instrumentisto/libwebrtc-bin/workflows/build/badge.svg)
-[![JitPack](https://jitpack.io/v/instrumentisto/libwebrtc-bin.svg)](https://jitpack.io/#instrumentisto/libwebrtc-bin)
-[![License](https://img.shields.io/github/license/instrumentisto/libwebrtc-bin)](LICENSE)
+[![JitPack](https://jitpack.io/v/instrumentisto/libwebrtc-bin.svg "JitPack")](https://jitpack.io/#instrumentisto/libwebrtc-bin)
+[![CI](https://github.com/instrumentisto/libwebrtc-bin/workflows/CI/badge.svg?branch=main "CI")](https://github.com/instrumentisto/libwebrtc-bin/actions?query=workflow%3ACI+branch%3Amain)
 
-This repository contains build scripts that can be used to build statically linked libwebrtc binaries.
+Build scripts for statically linked [`libwebrtc`] binaries, used by [Instrumentisto Flutter-WebRTC].
 
-## Status
 
-The following table displays the current state of this project, including
-supported platforms and architectures.
 
-## Status
 
-<table>
-  <tr>
-    <td align="center"></td>
-    <td align="center">x86</td>
-    <td align="center">x64</td>
-    <td align="center">arm</td>
-    <td align="center">arm64</td>
-  </tr>
-  <tr>
-    <th align="center">Linux</th>
-    <td align="center">-</td>
-    <td align="center">✔</td>
-    <td align="center">✔</td>
-    <td align="center">✔</td>
-  </tr>
-  <tr>
-    <th align="center">macOS</th>
-    <td align="center">-</td>
-    <td align="center">✔</td>
-    <td align="center">-</td>
-    <td align="center">✔</td>
-  </tr>
-  <tr>
-    <th align="center">Windows</th>
-    <td align="center">✔</td>
-    <td align="center">✔</td>
-    <td align="center">-</td>
-    <td align="center">-</td>
-  </tr>
-  <tr>
-    <th align="center">iOS</th>
-    <td align="center">-</td>
-    <td align="center">✔</td>
-    <td align="center">-</td>
-    <td align="center">✔</td>
-  </tr>
-  <tr>
-    <th align="center">Android</th>
-    <td align="center">-</td>
-    <td align="center">✔</td>
-    <td align="center">✔</td>
-    <td align="center">✔</td>
-  </tr>
-</table>
+## Build matrix
 
-## Prerequisites
+|         |          x64           |         arm64          |
+|--------:|:----------------------:|:----------------------:| 
+| Android | `.aar` (`.a` + `.jar`) | `.aar` (`.a` + `.jar`) | 
+|     iOS |     `.xcframework`     |     `.xcframework`     | 
+|   Linux |          `.a`          |          `.a`          | 
+|   macOS |          `.a`          |          `.a`          | 
+| Windows |         `.lib`         |                        | 
 
-- Make
-- Python 3.8 (optional for Windows since it will use the interpreter located
-  inside the `depot_tools` installation)
 
-## Building
 
-### Linux / macOS / iOS / Android
 
-```
-cd build
-make [options] [platform]
-```
+## References 
 
-check `[options]` and `[platform]` by executing `make help`.
+- https://webrtc.googlesource.com/src
+- https://github.com/crow-misia/libwebrtc-bin
+- https://github.com/aisouard/libwebrtc
+- https://github.com/shiguredo/shiguredo-webrtc-windows
 
-### Windows
 
-```
-build.windows.bat
-```
+
 
 ## License
 
-Apache License 2.0
+Copyright © 2022 Instrumentisto Team, <https://github.com/instrumentisto>
 
-## Reference
+This repository is subject to the terms of the [Blue Oak Model License 1.0.0](https://github.com/instrumentisto/libwebrtc-bin/blob/main/LICENSE.md). If a copy of the [BlueOak-1.0.0](https://spdx.org/licenses/BlueOak-1.0.0.html) license was not distributed with this file, You can obtain one at <https://blueoakcouncil.org/license/1.0.0>.
 
-- https://webrtc.googlesource.com/src/
-- https://github.com/aisouard/libwebrtc
-- https://github.com/shiguredo/shiguredo-webrtc-windows
+Forked from [`crow-misia/libwebrtc-bin`](https://github.com/crow-misia/libwebrtc-bin), which is licensed under the [Apache License 2.0](https://github.com/crow-misia/libwebrtc-bin/blob/main/LICENSE).
+
+[`libwebrtc`] itself is licensed under the [BSD 3-Clause "New" or "Revised" License](https://webrtc.googlesource.com/src/+/refs/heads/main).
+
+
+
+
+[`crow-misia/libwebrtc-bin`]: https://github.com/crow-misia/libwebrtc-bin
+[`libwebrtc`]: https://webrtc.googlesource.com/src
+[Instrumentisto Flutter-WebRTC]: https://github.com/instrumentisto/flutter-webrtc
