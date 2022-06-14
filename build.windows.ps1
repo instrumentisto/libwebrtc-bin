@@ -50,6 +50,7 @@ $Env:DEPOT_TOOLS_WIN_TOOLCHAIN = "0"
 $Env:PYTHONIOENCODING = "utf-8"
 
 # TODO: バージョンファイルコピー
+vpython tools_webrtc\libs\generate_licenses.py
 $WEBRTC_VERSION | Out-File $BUILD_DIR\package\webrtc\VERSION
 
 # depot_tools
