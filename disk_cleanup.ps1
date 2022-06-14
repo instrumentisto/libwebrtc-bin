@@ -1,8 +1,5 @@
 Get-PSDrive
 
-# Cache 済み Docker Image の削除
-docker rmi $(docker images -q -a)
-
 # Android SDK の削除
 Remove-Item -Recurse -Force $Env:ANDROID_HOME
 Remove-Item -Recurse -Force $Env:ANDROID_NDK_HOME
