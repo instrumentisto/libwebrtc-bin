@@ -24,7 +24,7 @@ RUN apt update \
 RUN update-java-alternatives -s java-1.11.0-openjdk-amd64
 
 COPY build/ /root/build/
-COPY Makefile VERSION LICENSE /root/
+COPY Makefile VERSION /root/
 COPY scripts/ /root/scripts/
 
 RUN cd /root/ \

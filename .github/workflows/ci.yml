@@ -6,7 +6,7 @@ on:
     tags: ["*"]
   pull_request:
     branches: ["main"]
-    paths-ignore: ["**.md", "LICENSE"]
+    paths-ignore: ["**.md"]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}

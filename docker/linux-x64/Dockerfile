@@ -18,7 +18,7 @@ RUN apt update \
                    rsync
 
 COPY build/ /root/build/
-COPY Makefile VERSION LICENSE /root/
+COPY Makefile VERSION /root/
 COPY scripts/ /root/scripts/
 
 RUN cd /root/ \
