@@ -23,16 +23,16 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - os: android
-          - os: ios
-          - os: linux
-            arch: arm64
-          - os: linux
-            arch: x64
-          - os: macos
-            arch: arm64
-          - os: macos
-            arch: x64
+#          - os: android
+#          - os: ios
+#          - os: linux
+#            arch: arm64
+#          - os: linux
+#            arch: x64
+#          - os: macos
+#            arch: arm64
+#          - os: macos
+#            arch: x64
           - os: windows
             arch: x64
     runs-on: ${{ ((matrix.os == 'ios' || matrix.os == 'macos') && 'macos-11')
@@ -50,8 +50,9 @@ jobs:
         if: ${{ matrix.os == 'android' || matrix.os == 'linux' }}
       - run: make -C build USE_CCACHE=0 ${{ matrix.os }}${{ matrix.arch != '' && format('-{0}', matrix.arch) || '' }}
         if: ${{ matrix.os == 'ios' || matrix.os == 'macos' }}
-      - run: .\build.windows.bat
-        if: ${{ matrix.os == 'windows' }}
+      #- run: .\build.windows.bat
+      #  if: ${{ matrix.os == 'windows' }}
+      - run: which make
 
       - uses: actions/upload-artifact@v3
         with:

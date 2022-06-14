@@ -1,5 +1,6 @@
 # Copyright 2019, Shiguredo Inc, melpon and enm10k
 # Copyright 2019, Zenichi Amano
+# Copyright 2022, Instrumentisto Team
 # original: https://github.com/shiguredo/shiguredo-webrtc-windows/blob/master/gabuild.ps1
 
 # VERSIONファイル読み込み
@@ -21,7 +22,7 @@ if (!(Test-Path vswhere.exe)) {
 $path = .\vswhere.exe -latest -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath
 if ($path) {
   $batpath = join-path $path 'Common7\Tools\vsdevcmd.bat'
-  if (test-path $batpath) {
+  if (Test-Path $batpath) {
     cmd /s /c """$batpath"" $args && set" | Where-Object { $_ -match '(\w+)=(.*)' } | ForEach-Object {
       $null = new-item -force -path "Env:\$($Matches[1])" -value $Matches[2]
     }
