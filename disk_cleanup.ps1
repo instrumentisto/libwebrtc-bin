@@ -3,7 +3,9 @@ $ErrorActionPreference = "Stop"
 Get-PSDrive
 
 # Android SDK の削除
-Remove-Item -Recurse -Force $Env:ANDROID_HOME
+if (Test-Path $Env:ANDROID_HOME) {
+  Remove-Item -Recurse -Force $Env:ANDROID_HOME
+}
 Remove-Item -Recurse -Force $Env:ANDROID_NDK_HOME
 
 # JVM の削除
