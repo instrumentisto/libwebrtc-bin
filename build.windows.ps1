@@ -163,5 +163,5 @@ if (Test-Path $PACKAGE_DIR\libwebrtc-windows-x64.tar.gz) {
   Remove-Item -Force -Path $PACKAGE_DIR\libwebrtc-windows-x64.tar.gz
 }
 Push-Location $BUILD_DIR\package\webrtc
-  tar -czvf $PACKAGE_DIR\libwebrtc-windows-x64.tar.gz *.*
+  tar -czvf $PACKAGE_DIR\libwebrtc-windows-x64.tar.gz include debug release NOTICE VERSION
 Pop-Location
