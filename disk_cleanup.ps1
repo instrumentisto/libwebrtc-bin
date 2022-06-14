@@ -4,7 +4,7 @@ Get-PSDrive
 
 # Android SDK の削除
 if (Test-Path $Env:ANDROID_HOME) {
-  Remove-Item -Recurse -Force $Env:ANDROID_HOME
+  Remove-Item $Env:ANDROID_HOME -Recurse -Force
 }
 Remove-Item -Recurse -Force $Env:ANDROID_NDK_HOME
 
