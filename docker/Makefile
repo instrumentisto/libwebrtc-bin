@@ -49,7 +49,7 @@ $(1).prepare:
 	rm -rf VERSION build scripts Dockerfile
 	cp -a ../VERSION ../build ../scripts .
 	cp -a ./${1}/Dockerfile ./
-	DOCKER_BUILDKIT=1 $(DOCKER) build -t libwebrtc-$(1):$(IMAGE_VERSION) .
+	DOCKER_BUILDKIT=1 $(DOCKER) build --pull -t libwebrtc-$(1):$(IMAGE_VERSION) .
 	rm -rf VERSION build scripts Dockerfile
 
 .PHONY: $(1).edit

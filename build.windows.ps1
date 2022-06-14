@@ -1,7 +1,9 @@
 # Copyright 2019, Shiguredo Inc, melpon and enm10k
 # Copyright 2019, Zenichi Amano
-# Copyright 2022, Instrumentisto Team
+# Copyright 2022, Instrumentisto Team, rogurotus and tyranron
 # original: https://github.com/shiguredo/shiguredo-webrtc-windows/blob/master/gabuild.ps1
+
+$ErrorActionPreference = "Stop"
 
 # VERSIONファイル読み込み
 $lines = get-content VERSION
@@ -46,6 +48,9 @@ $PACKAGE_DIR = Join-Path $REPO_DIR.Path "package"
 $Env:GYP_MSVS_VERSION = "2019"
 $Env:DEPOT_TOOLS_WIN_TOOLCHAIN = "0"
 $Env:PYTHONIOENCODING = "utf-8"
+
+# TODO: バージョンファイルコピー
+$WEBRTC_VERSION | Out-File $BUILD_DIR\package\webrtc\VERSION
 
 # depot_tools
 if (Test-Path $DEPOT_TOOLS_DIR) {
@@ -131,9 +136,6 @@ foreach ($build in @("debug_x64", "release_x64")) {
   Move-Item $BUILD_DIR\$build\webrtc.lib $BUILD_DIR\$build\obj\webrtc.lib -Force
 }
 
-# バージョンファイルコピー
-$WEBRTC_VERSION | Out-File $BUILD_DIR\package\webrtc\VERSION
-
 # WebRTC のヘッダーだけをパッケージングする
 if (Test-Path $BUILD_DIR\package) {
   Remove-Item -Force -Recurse -Path $BUILD_DIR\package
@@ -145,6 +147,8 @@ robocopy "$WEBRTC_DIR\src" "$BUILD_DIR\package\webrtc\include" *.h *.hpp /S /NP 
 New-Item $BUILD_DIR\package\webrtc\debug -ItemType Directory -Force
 New-Item $BUILD_DIR\package\webrtc\release -ItemType Directory -Force
 
+# バージョンファイルコピー
+$WEBRTC_VERSION | Out-File $BUILD_DIR\package\webrtc\VERSION
 
 # ライセンス生成 (x64)
 Push-Location $WEBRTC_DIR\src

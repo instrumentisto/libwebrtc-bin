@@ -1,3 +1,5 @@
+$ErrorActionPreference = "Stop"
+
 Get-PSDrive
 
 # Android SDK の削除
