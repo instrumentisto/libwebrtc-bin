@@ -15,10 +15,9 @@ function Exec
   param(
     [Parameter(Position=0,Mandatory=1)][scriptblock]$cmd,
     [int[]]$SuccessCodes = @(0)
-
   )
   & $cmd
-  if ($SuccessCodes -notcontains $LastExitCode) {
+  if (($SuccessCodes -notcontains $LastExitCode) -and ($ErrorActionPreference -eq "Stop")) {
     exit $LastExitCode
   }
 }
@@ -169,7 +168,7 @@ $WEBRTC_VERSION | Out-File $BUILD_DIR\package\webrtc\VERSION
 
 # ライセンス生成 (x64)
 Push-Location $WEBRTC_DIR\src
-  Exec { vpython tools_webrtc\libs\generate_licenses.py --target : webrtc "$BUILD_DIR\" "$BUILD_DIR\debug_x64" "$BUILD_DIR\release_x64" }
+  Exec { python tools_webrtc\libs\generate_licenses.py --target : webrtc "$BUILD_DIR\" "$BUILD_DIR\debug_x64" "$BUILD_DIR\release_x64" }
 Pop-Location
 Copy-Item "$BUILD_DIR\LICENSE.md" "$BUILD_DIR\package\webrtc\NOTICE"
 
