@@ -81,8 +81,7 @@ jobs:
       - name: Verify release version matches VERSION file
         run: >-
           test "${{ steps.release.outputs.VERSION }}" \
-             == $(grep 'WEBRTC_SEMANTIC_VERSION=' VERSION | cut -d '=' -f2 \
-                                                          | tr -d '\n')
+             == $(grep 'WEBRTC_VERSION=' VERSION | cut -d '=' -f2 | tr -d '\n')
         if: ${{ !contains(steps.release.outputs.VERSION, '-') }}
 
       - uses: actions/download-artifact@v3

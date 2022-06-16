@@ -2,14 +2,9 @@
 
 set -ex
 
-while IFS="=" read -r key value; do
-  case "$key" in
-    "WEBRTC_SEMANTIC_VERSION") VERSION="$value" ;;
-  esac
-done < ./VERSION
+VERSION=$(grep 'WEBRTC_VERSION=' VERSION | cut -d '=' -f2 | tr -d '\n')
 
 AAR_URL="https://github.com/instrumentisto/libwebrtc-bin/releases/download/${VERSION}/libwebrtc-android.tar.gz"
-echo "AAR_URL=${AAR_URL}"
 
 mkdir -p package/
 cd package/
