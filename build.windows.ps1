@@ -117,10 +117,6 @@ Exec { gclient sync --with_branch_heads -r $WEBRTC_COMMIT }
 Exec { git apply --ignore-space-change -v $PATCH_DIR\add_licenses.patch }
 Exec { git apply --ignore-space-change -v $PATCH_DIR\webrtc_voice_engine.patch }
 Exec { git apply --ignore-space-change -v $PATCH_DIR\win_dynamic_crt.patch }
-
-Exec { vpython3 tools_webrtc\libs\generate_licenses.py --target : webrtc "$BUILD_DIR\" }
-echo "wut"
-exit 7
 Pop-Location
 
 Get-PSDrive
@@ -173,7 +169,7 @@ $WEBRTC_VERSION | Out-File $BUILD_DIR\package\webrtc\VERSION
 
 # ライセンス生成 (x64)
 Push-Location $WEBRTC_DIR\src
-  Exec { python tools_webrtc\libs\generate_licenses.py --target : webrtc "$BUILD_DIR\" "$BUILD_DIR\debug_x64" "$BUILD_DIR\release_x64" }
+  Exec { vpython3 tools_webrtc\libs\generate_licenses.py --target :webrtc "$BUILD_DIR\" "$BUILD_DIR\debug_x64" "$BUILD_DIR\release_x64" }
 Pop-Location
 Copy-Item "$BUILD_DIR\LICENSE.md" "$BUILD_DIR\package\webrtc\NOTICE"
 
