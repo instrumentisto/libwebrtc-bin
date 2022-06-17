@@ -23,16 +23,16 @@ jobs:
       fail-fast: false
       matrix:
         include:
-#          - os: android
-#          - os: ios
-#          - os: linux
-#            arch: arm64
-#          - os: linux
-#            arch: x64
-#          - os: macos
-#            arch: arm64
-#          - os: macos
-#            arch: x64
+          - os: android
+          - os: ios
+          - os: linux
+            arch: arm64
+          - os: linux
+            arch: x64
+          - os: macos
+            arch: arm64
+          - os: macos
+            arch: x64
           - os: windows
             arch: x64
     runs-on: ${{ ((matrix.os == 'ios' || matrix.os == 'macos') && 'macos-11')
