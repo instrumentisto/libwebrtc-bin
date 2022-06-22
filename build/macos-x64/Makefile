@@ -44,8 +44,8 @@ patch: common-patch
 .PHONY: build
 build: patch
 	cd $(SRC_DIR) && \
-	gn gen $(BUILD_DIR_DEBUG) --args='$(EXTRA_GN_ARGS_DEBUG) $(CC_WRAPPER)' && \
-	gn gen $(BUILD_DIR_RELEASE) --args='$(EXTRA_GN_ARGS_RELEASE) is_debug=false $(CC_WRAPPER)' && \
+	gn gen $(BUILD_DIR_DEBUG) --args='$(EXTRA_GN_ARGS) $(CC_WRAPPER)' && \
+	gn gen $(BUILD_DIR_RELEASE) --args='$(EXTRA_GN_ARGS) is_debug=false $(CC_WRAPPER)' && \
 	ninja -C $(BUILD_DIR_DEBUG) && \
 	ninja -C $(BUILD_DIR_DEBUG) \
 		api/audio_codecs:builtin_audio_decoder_factory \
@@ -64,3 +64,8 @@ build: patch
 		pc:peerconnection \
 		sdk:videocapture_objc \
 		sdk:mac_framework_objc
+
+	cd $(BUILD_DIR_DEBUG)/obj && \
+	/usr/bin/ar -rc $(BUILD_DIR_DEBUG)/obj/libwebrtc.a `find . -name '*.o'`
+	cd $(BUILD_DIR_RELEASE)/obj && \
+	/usr/bin/ar -rc $(BUILD_DIR_RELEASE)/obj/libwebrtc.a `find . -name '*.o'`
