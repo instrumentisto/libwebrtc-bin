@@ -1,9 +1,11 @@
+name: Check new version
+
 on:
   schedule:
-    - cron:  '30 5 * * 1'
+    - cron: "30 5 * * 1"
 
 jobs:
-  check-chrome:
+  check:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
