@@ -11,6 +11,7 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Patch ./VERSION
+        id: patch_ver
         run: ./upgrade-ver.sh
 
       - name: Create Pull Request
