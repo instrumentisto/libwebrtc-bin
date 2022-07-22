@@ -10,17 +10,18 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Patch ./VERSION
-        id: patch_ver
-        run: ./upgrade-ver.sh
+      - run: ./upgrade-ver.sh
+        id: patch
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4
         with:
-          token: ${{ secrets.GH_INSTRUMENTISTO_BOT_PAT }}
-          commit-message: Upgrade to ${{ steps.patch_ver.outputs.version }} version
-          branch: upgrade-to-${{ steps.patch_ver.outputs.version }}
-          title: Upgrade to ${{ steps.patch_ver.outputs.version }}
-          body: Upgrade libwebrtc version to ${{ steps.patch_ver.outputs.version }}.
-          labels: k::version
+          commit-message: Upgrade to ${{ steps.patch.outputs.version }} version
+          branch: upgrade-to-${{ steps.patch.outputs.version }}
           delete-branch: true
+          title: Upgrade to ${{ steps.patch.outputs.version }}
+          body: Upgrade `libwebrtc` version to ${{ steps.patch.outputs.version }}.
+          labels: |
+            enhancement
+            k::version
+          token: ${{ secrets.GH_INSTRUMENTISTO_BOT_PAT }}
