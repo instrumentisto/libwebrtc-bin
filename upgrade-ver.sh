@@ -10,10 +10,7 @@ if [[ "$res" != *"\"webrtc\""* ]]; then
     exit 1
 fi
 echo "$res" |
-sed 's/,/\n/g' |
-sed 's/["|\}|\{|\[]//g' |
-sed 's/]//g' |
-grep '^version\|^webrtc' |
+jq -r '"version:\(.[0].version)\nwebrtc:\(.[0].hashes.webrtc)"' |
 while read data; do
     name=$(echo "$data" | cut -d':' -f1)
     value=$(echo "$data" | cut -d':' -f2)
