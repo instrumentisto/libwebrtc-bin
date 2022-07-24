@@ -16,8 +16,9 @@ if [[ "$newCommit" = "null" ]]; then
   exit 1
 fi
 
-sed -i.bk "s/^WEBRTC_VERSION=.*$/WEBRTC_VERSION=$newVersion/g" ./VERSION
-sed -i.bk "s/^WEBRTC_COMMIT=.*$/WEBRTC_COMMIT=$newCommit/g" ./VERSION
+sed -i.bk -e "s/^WEBRTC_VERSION=.*$/WEBRTC_VERSION=$newVersion/g" \
+          -e "s/^WEBRTC_COMMIT=.*$/WEBRTC_COMMIT=$newCommit/g" \
+    ./VERSION
 
 echo "::set-output name=version::$newVersion"
 echo "::set-output name=commit::$newCommit"
