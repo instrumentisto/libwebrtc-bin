@@ -120,3 +120,4 @@ webrtc/
 webrtc-cache/
 webrtc_build/
 
+/VERSION.bk

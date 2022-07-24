@@ -11,16 +11,16 @@ jobs:
       - uses: actions/checkout@v3
 
       - run: ./upgrade-ver.sh
-        id: patch
+        id: new
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4
         with:
-          commit-message: Upgrade to ${{ steps.patch.outputs.version }} version
-          branch: upgrade-to-${{ steps.patch.outputs.version }}
+          commit-message: Upgrade to ${{ steps.new.outputs.version }} version
+          branch: upgrade-to-${{ steps.new.outputs.version }}
           delete-branch: true
-          title: Upgrade to ${{ steps.patch.outputs.version }}
-          body: Upgrade `libwebrtc` version to ${{ steps.patch.outputs.version }}.
+          title: Upgrade to ${{ steps.new.outputs.version }}
+          body: Upgrade `libwebrtc` version to ${{ steps.new.outputs.version }}.
           labels: |
             enhancement
             k::version
