@@ -117,7 +117,7 @@ Exec { gclient sync --with_branch_heads -r $WEBRTC_COMMIT }
 Exec { git apply --ignore-space-change -v $PATCH_DIR\add_licenses.patch }
 Exec { git apply --ignore-space-change -v $PATCH_DIR\webrtc_voice_engine.patch }
 Exec { git apply --ignore-space-change -v $PATCH_DIR\win_dynamic_crt.patch }
-Exec { git apply --ignore-space-change -v $PATCH_DIR\windows_fix_type_traits.patch.patch }
+Exec { git apply --ignore-space-change -v $PATCH_DIR\windows_fix_type_traits.patch }
 Pop-Location
 
 Get-PSDrive
