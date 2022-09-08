@@ -1,7 +1,7 @@
-diff --git a/third_party/abseil-cpp/absl/meta/type_traits.h b/third_party/abseil-cpp/absl/meta/type_traits.h
+diff --git a/src/third_party/abseil-cpp/absl/meta/type_traits.h b/src/third_party/abseil-cpp/absl/meta/type_traits.h
 index d886cb30a81..b4734383e5e 100644
---- a/third_party/abseil-cpp/absl/meta/type_traits.h
-+++ b/third_party/abseil-cpp/absl/meta/type_traits.h
+--- a/src/third_party/abseil-cpp/absl/meta/type_traits.h
++++ b/src/third_party/abseil-cpp/absl/meta/type_traits.h
 @@ -490,9 +490,13 @@ struct is_trivially_move_assignable
  // `is_trivially_assignable<T&, const T&>`.
  template <typename T>
