@@ -118,6 +118,7 @@ Exec { git apply --ignore-space-change -v $PATCH_DIR\add_licenses.patch }
 Exec { git apply --ignore-space-change -v $PATCH_DIR\webrtc_voice_engine.patch }
 Exec { git apply --ignore-space-change -v $PATCH_DIR\win_dynamic_crt.patch }
 Exec { git apply --ignore-space-change -v $PATCH_DIR\windows_fix_type_traits.patch }
+Exec { git apply --ignore-space-change -v $PATCH_DIR\windows_fix_towupper.patch }
 Pop-Location
 
 Get-PSDrive
