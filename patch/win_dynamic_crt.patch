@@ -1,6 +1,6 @@
 --- a/src/build/config/win/BUILD.gn
 +++ b/src/build/config/win/BUILD.gn
-@@ -486,7 +486,7 @@ config("default_crt") {
+@@ -470,7 +470,7 @@ config("default_crt") {
        configs = [ ":dynamic_crt" ]
      } else {
        # Desktop Windows: static CRT.
