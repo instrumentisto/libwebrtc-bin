@@ -28,7 +28,7 @@ package:
 
 .PHONY: patch
 patch: common-patch
-	echo "skip iOS patches ..." \
+
 .PHONY: build
 build: patch
 	cd $(SRC_DIR)/tools_webrtc/ios && \
