@@ -14,4 +14,11 @@ index f353139..0e046b7 100644
  
    // When `std::launder` or equivalent are not available, we rely on undefined
    // behavior, which works as intended on Abseil's officially supported
-
+@@ -213,7 +209,6 @@ T& ObjectInLocalStorage(TypeErasedState* const state) {
+ #pragma GCC diagnostic pop
+ #endif
+ 
+-#endif
+ }
+ 
+ // The type for functions issuing lifetime-related operations: move and dispose
