@@ -113,3 +113,22 @@ jobs:
             package/libwebrtc-*.zip
           fail_on_unmatched_files: true
           prerelease: ${{ contains(steps.release.outputs.VERSION, '-') }}
+
+  release-cocoapods:
+    name: Release on CocoaPods
+    needs: ["build"]
+    if: ${{ startsWith(github.ref, 'refs/tags/') }}
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Install Cocoapods
+      run: gem install cocoapods
+
+    - name: Deploy to Cocoapods
+      run: |
+        set -eo pipefail
+        pod lib lint --allow-warnings
+        pod trunk push --allow-warnings
+      env:
+        COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}

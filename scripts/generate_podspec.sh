@@ -1,12 +1,12 @@
 #!/bin/bash
 
-# usage: generate_podspec.sh OUTPUT_FILE VERSION
+# usage: generate_podspec.sh OUTPUT_DIR VERSION
 
-DIR=$(cd $1 && pwd)
+OUTPUT_DIR=$(cd $1 && pwd)
 WEBRTC_VERSION=$2
 
-echo Output PodSpec to $DIR/MedeaWebRTC.podspec
-cat << EOF > $DIR/MedeaWebRTC.podspec
+echo Output PodSpec to $OUTPUT_DIR/MedeaWebRTC.podspec
+cat << EOF > $OUTPUT_DIR/MedeaWebRTC.podspec
 Pod::Spec.new do |spec|
     spec.name         = "MedeaWebRTC"
     spec.version      = "$WEBRTC_VERSION"
@@ -18,7 +18,7 @@ Pod::Spec.new do |spec|
     spec.ios.deployment_target = '10.0'
     spec.osx.deployment_target = '10.11'
   
-    spec.source       = { :http => "https://github.com/webrtc-sdk/Specs/releases/download/$WEBRTC_VERSION/WebRTC.xcframework.zip" }
+    spec.source       = { :http => "https://github.com/instrumentisto/libwebrtc-bin/releases/download/$WEBRTC_VERSION/libwebrtc-ios.zip" }
     spec.vendored_frameworks = "WebRTC.xcframework"
 end
 EOF
