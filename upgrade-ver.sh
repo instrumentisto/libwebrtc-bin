@@ -20,11 +20,11 @@ sed -i.bk -e "s/^WEBRTC_VERSION=.*$/WEBRTC_VERSION=$newVersion/g" \
           -e "s/^WEBRTC_COMMIT=.*$/WEBRTC_COMMIT=$newCommit/g" \
     ./VERSION
 
-cat << EOF > ./MedeaWebRTC.podspec
+cat << EOF > ./MedeaLibWebRTC.podspec
 Pod::Spec.new do |spec|
-  spec.name         = "MedeaWebRTC"
+  spec.name         = "MedeaLibWebRTC"
   spec.version      = "$newVersion"
-  spec.summary      = "WebRTC pre-compiled library for Darwin used by Instrumentisto Flutter-WebRTC."
+  spec.summary      = "Pre-compiled \`libwebrtc\` library for Darwin used by Medea Flutter-WebRTC."
 
   spec.homepage     = "https://github.com/instrumentisto/libwebrtc-bin"
   spec.license      = { :type => 'BSD', :file => 'WebRTC.xcframework/LICENSE' }
