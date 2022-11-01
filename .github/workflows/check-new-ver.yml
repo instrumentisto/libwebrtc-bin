@@ -12,7 +12,6 @@ jobs:
 
       - run: ./upgrade-ver.sh
         id: new
-      - run: ./scripts/generate_podspec.sh ./ '${{ steps.new.outputs.version }}'
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4
