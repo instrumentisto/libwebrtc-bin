@@ -1,5 +1,5 @@
 Pod::Spec.new do |spec|
-  spec.name = "MedeaLibWebRTC"
+  spec.name = "instrumentisto-libwebrtc-bin"
   spec.version = "106.0.5249.119"
   spec.summary = "Pre-compiled `libwebrtc` library for Darwin used by Medea Flutter-WebRTC."
 

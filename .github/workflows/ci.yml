@@ -67,7 +67,7 @@ jobs:
   #############
 
   publish-cocoapods:
-    name: publish on CocoaPods
+    name: publish to CocoaPods
     needs: ["release-github"]
     if: ${{ startsWith(github.ref, 'refs/tags/') }}
     runs-on: macos-latest
@@ -75,11 +75,8 @@ jobs:
     - uses: actions/checkout@v3
     - run: gem install cocoapods
 
-    - name: Publish to CocoaPods
-      run: |
-        set -eo pipefail
-        pod lib lint --allow-warnings
-        pod trunk push --allow-warnings
+    - run: pod lib lint --allow-warnings
+    - run: pod trunk push --allow-warnings
       env:
         COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
 
