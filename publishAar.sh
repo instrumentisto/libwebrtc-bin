@@ -9,7 +9,7 @@ AAR_URL="https://github.com/instrumentisto/libwebrtc-bin/releases/download/${VER
 mkdir -p package/
 cd package/
 
-curl -L -O "${AAR_URL}"
+curl -fL -O "${AAR_URL}"
 tar xf libwebrtc-android.tar.gz
 
 mvn install:install-file -Dfile=aar/libwebrtc.aar \

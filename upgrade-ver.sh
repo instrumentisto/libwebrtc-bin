@@ -19,6 +19,14 @@ fi
 sed -i.bk -e "s/^WEBRTC_VERSION=.*$/WEBRTC_VERSION=$newVersion/g" \
           -e "s/^WEBRTC_COMMIT=.*$/WEBRTC_COMMIT=$newCommit/g" \
     ./VERSION
+sed -i.bk -e "s/spec\.version =.*$/spec.version = \"$newVersion\"/g" \
+          -e "s/\/download\/.*\//\/download\/$newVersion\//g" \
+    ./instrumentisto-libwebrtc-bin.podspec
 
-echo "::set-output name=version::$newVersion"
-echo "::set-output name=commit::$newCommit"
+echo "version=$newVersion"
+echo "commit=$newCommit"
+
+if [ ! -z "$GITHUB_OUTPUT" ]; then
+  echo "version=$newVersion" >> $GITHUB_OUTPUT
+  echo "commit=$newCommit" >> $GITHUB_OUTPUT
+fi

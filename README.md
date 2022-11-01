@@ -1,10 +1,11 @@
 [`libwebrtc`] binaries
 ======================
 
+[![CocoaPods](https://img.shields.io/cocoapods/v/instrumentisto-libwebrtc-bin "CocoaPods")](https://cocoapods.org/pods/instrumentisto-libwebrtc-bin)
 [![JitPack](https://jitpack.io/v/instrumentisto/libwebrtc-bin.svg "JitPack")](https://jitpack.io/#instrumentisto/libwebrtc-bin)
 [![CI](https://github.com/instrumentisto/libwebrtc-bin/workflows/CI/badge.svg?branch=main "CI")](https://github.com/instrumentisto/libwebrtc-bin/actions?query=workflow%3ACI+branch%3Amain)
 
-Build scripts for statically linked [`libwebrtc`] binaries, used by [Instrumentisto Flutter-WebRTC].
+Build scripts for statically linked [`libwebrtc`] binaries, used by [Medea Flutter-WebRTC].
 
 
 
@@ -47,4 +48,4 @@ Forked from [`crow-misia/libwebrtc-bin`](https://github.com/crow-misia/libwebrtc
 
 [`crow-misia/libwebrtc-bin`]: https://github.com/crow-misia/libwebrtc-bin
 [`libwebrtc`]: https://webrtc.googlesource.com/src
-[Instrumentisto Flutter-WebRTC]: https://github.com/instrumentisto/flutter-webrtc
+[Medea Flutter-WebRTC]: https://github.com/instrumentisto/flutter-webrtc
