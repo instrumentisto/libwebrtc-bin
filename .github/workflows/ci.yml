@@ -62,55 +62,27 @@ jobs:
 
 
 
-  ###########
-  # Testing #
-  ###########
-
-  lint-cocoapods:
-    name: pod lib lint
-    needs: ["build"]
-    runs-on: macos-latest
-    steps:
-      - uses: actions/checkout@v3
-      - run: gem install cocoapods
-
-      - uses: actions/download-artifact@v3
-        with:
-          name: build
-          path: package/libwebrtc-ios.zip
-      - run: unzip package/libwebrtc-ios.zip -d ./
-
-      - run: pod lib lint --allow-warnings
-
-
-
-
   #############
   # Releasing #
   #############
 
   publish-cocoapods:
     name: publish to CocoaPods
-    needs: ["lint-cocoapods", "release-github"]
+    needs: ["release-github"]
     if: ${{ startsWith(github.ref, 'refs/tags/') }}
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v3
       - run: gem install cocoapods
 
-      - uses: actions/download-artifact@v3
-        with:
-          name: build
-          path: package/libwebrtc-ios.zip
-      - run: unzip package/libwebrtc-ios.zip -d ./
-
+      - run: pod lib lint --allow-warnings
       - run: pod trunk push --allow-warnings
         env:
           COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
 
   release-github:
     name: release on GitHub
-    needs: ["build", "lint-cocoapods"]
+    needs: ["build"]
     if: ${{ startsWith(github.ref, 'refs/tags/') }}
     runs-on: ubuntu-latest
     steps:

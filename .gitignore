@@ -120,6 +120,4 @@ webrtc/
 webrtc-cache/
 webrtc_build/
 
-/WebRTC.xcframework/
-
 /VERSION.bk
