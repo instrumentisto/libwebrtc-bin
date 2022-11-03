@@ -36,6 +36,7 @@ common-patch:
 	&& patch -p1 < $(PATCH_DIR)/nacl_armv6_2.patch \
 	&& patch -p2 < $(PATCH_DIR)/macos_h264_encoder.patch \
 	&& patch -p2 < $(PATCH_DIR)/disable_use_hermetic_xcode_on_linux.patch \
+	&& patch -p2 < $(PATCH_DIR)/linux_fix_launder.patch \
 	&& patch -p2 < $(PATCH_DIR)/add_licenses.patch
 
 .PHONY: common-package

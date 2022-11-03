@@ -1,0 +1,24 @@
+diff --git a/src/third_party/abseil-cpp/absl/functional/internal/any_invocable.h b/src/third_party/abseil-cpp/absl/functional/internal/any_invocable.h
+index f353139..0e046b7 100644
+--- a/src/third_party/abseil-cpp/absl/functional/internal/any_invocable.h
++++ b/src/third_party/abseil-cpp/absl/functional/internal/any_invocable.h
+@@ -195,11 +195,7 @@ union TypeErasedState {
+ template <class T>
+ T& ObjectInLocalStorage(TypeErasedState* const state) {
+   // We launder here because the storage may be reused with the same type.
+-#if ABSL_INTERNAL_CPLUSPLUS_LANG >= 201703L
+-  return *std::launder(reinterpret_cast<T*>(&state->storage));
+-#elif ABSL_HAVE_BUILTIN(__builtin_launder)
+   return *__builtin_launder(reinterpret_cast<T*>(&state->storage));
+-#else
+ 
+   // When `std::launder` or equivalent are not available, we rely on undefined
+   // behavior, which works as intended on Abseil's officially supported
+@@ -213,7 +209,6 @@ T& ObjectInLocalStorage(TypeErasedState* const state) {
+ #pragma GCC diagnostic pop
+ #endif
+ 
+-#endif
+ }
+ 
+ // The type for functions issuing lifetime-related operations: move and dispose
