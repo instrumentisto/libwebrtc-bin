@@ -7,7 +7,6 @@ Pod::Spec.new do |spec|
   spec.license = { :type => 'BSD', :file => 'WebRTC.xcframework/LICENSE.md' }
   spec.author = { 'Instrumentisto Team' => 'developer@instrumentisto.com' }
   spec.ios.deployment_target = '10.0'
-  spec.osx.deployment_target = '10.11'
 
   spec.source = { :http => "https://github.com/instrumentisto/libwebrtc-bin/releases/download/107.0.5304.87/libwebrtc-ios.zip" }
   spec.vendored_frameworks = "WebRTC.xcframework"
