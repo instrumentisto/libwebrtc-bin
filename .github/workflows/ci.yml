@@ -78,13 +78,10 @@ jobs:
         with:
           version: latest
 
-      # - run: |
-      #     curl -fL -O https://github.com/instrumentisto/libwebrtc-bin/releases/download/107.0.5304.87/libwebrtc-ios.zip
-      #     unzip libwebrtc-ios.zip -d ./
       - run: pod spec lint --allow-warnings --verbose
-      #- run: pod trunk push --allow-warnings
-      #  env:
-      #    COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
+      - run: pod trunk push --allow-warnings
+        env:
+          COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
 
   release-github:
     name: release on GitHub
