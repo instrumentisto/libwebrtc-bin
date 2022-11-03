@@ -19,7 +19,6 @@ jobs:
   ############
 
   build:
-    if: ${{ false }}
     strategy:
       fail-fast: false
       matrix:
@@ -69,8 +68,8 @@ jobs:
 
   publish-cocoapods:
     name: publish to CocoaPods
-    #needs: ["release-github"]
-    #if: ${{ startsWith(github.ref, 'refs/tags/') }}
+    needs: ["release-github"]
+    if: ${{ startsWith(github.ref, 'refs/tags/') }}
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v3
@@ -86,8 +85,7 @@ jobs:
   release-github:
     name: release on GitHub
     needs: ["build"]
-    if: ${{ false }}
-    #if: ${{ startsWith(github.ref, 'refs/tags/') }}
+    if: ${{ startsWith(github.ref, 'refs/tags/') }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
