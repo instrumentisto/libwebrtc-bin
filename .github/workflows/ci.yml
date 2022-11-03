@@ -75,6 +75,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: maxim-lobanov/setup-cocoapods@v1
+        with:
+          version: latest
 
       - run: |
           curl -fL -O https://github.com/instrumentisto/libwebrtc-bin/releases/download/107.0.5304.87/libwebrtc-ios.zip
