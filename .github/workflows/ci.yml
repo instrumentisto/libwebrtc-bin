@@ -76,7 +76,9 @@ jobs:
       - uses: actions/checkout@v3
       - run: gem install cocoapods
 
-      - run: echo $(pwd)
+      - run: |
+          curl -fL -O https://github.com/instrumentisto/libwebrtc-bin/releases/download/107.0.5304.87/libwebrtc-ios.zip
+          unzip libwebrtc-ios.zip -d ./
       - run: pod lib lint --allow-warnings
       #- run: pod trunk push --allow-warnings
       #  env:
