@@ -37,4 +37,3 @@ index 261ffb11c1..442bd5204c 100644
  
  // Note: if any pointers are added to this struct or its sub-structs, it
  // must be fitted with a copy-constructor. This is because it is copied
- 

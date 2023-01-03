@@ -35,7 +35,9 @@ copy: common-copy
 .PHONY: patch
 patch: common-patch
 	cd $(SRC_DIR) && \
-	patch -p2 < $(PATCH_DIR)/4k_linux.patch
+	patch -p2 < $(PATCH_DIR)/4k_linux.patch && \
+	patch -p2 < $(PATCH_DIR)/disable_use_hermetic_xcode_on_linux.patch && \
+	patch -p2 < $(PATCH_DIR)/linux_is_pod_deprecate.patch
 
 .PHONY: build
 build: download patch
@@ -44,3 +46,9 @@ build: download patch
 	gn gen $(BUILD_DIR_RELEASE) --args='$(EXTRA_GN_ARGS) is_debug=false $(CC_WRAPPER)' && \
 	ninja -C $(BUILD_DIR_DEBUG) && \
 	ninja -C $(BUILD_DIR_RELEASE)
+	
+	cd $(BUILD_DIR_DEBUG)/obj && \
+	/usr/bin/ar -rc $(BUILD_DIR_DEBUG)/obj/libwebrtc.a `find . -name '*.o'`
+
+	cd $(BUILD_DIR_RELEASE)/obj && \
+	/usr/bin/ar -rc $(BUILD_DIR_RELEASE)/obj/libwebrtc.a `find . -name '*.o'`

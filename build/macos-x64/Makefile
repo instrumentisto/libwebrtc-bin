@@ -25,7 +25,7 @@ EXTRA_GN_ARGS := \
 	is_component_build=false \
 	use_rtti=true \
 	use_custom_libcxx=false \
-    use_custom_libcxx_for_host=false
+	use_custom_libcxx_for_host=false
 
 .PHONY: all
 all: clean build package
@@ -40,6 +40,8 @@ copy: common-copy
 
 .PHONY: patch
 patch: common-patch
+	cd $(SRC_DIR) && \
+	patch -p2 < $(PATCH_DIR)/macos_h264_encoder.patch
 
 .PHONY: build
 build: patch

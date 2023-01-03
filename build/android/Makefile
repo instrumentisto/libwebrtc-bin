@@ -56,15 +56,16 @@ copy:
 
 .PHONY: patch
 patch: common-patch
-	cd $(SRC_DIR) \
-	&& patch -p2 < $(PATCH_DIR)/android_version.patch \
-	&& patch -p2 < $(PATCH_DIR)/android_use_libunwind.patch \
-	&& $(SCRIPTS_DIR)/generate_android_version.sh $(SRC_DIR) $(WEBRTC_COMMIT) $(WEBRTC_VERSION)
+	cd $(SRC_DIR) && \
+	patch -p2 < $(PATCH_DIR)/disable_use_hermetic_xcode_on_linux.patch && \
+	patch -p2 < $(PATCH_DIR)/android_version.patch && \
+	patch -p2 < $(PATCH_DIR)/android_use_libunwind.patch && \
+	$(SCRIPTS_DIR)/generate_android_version.sh $(SRC_DIR) $(WEBRTC_COMMIT) $(WEBRTC_VERSION)
 
 
 define build-android
 	cd $(SRC_DIR) && \
-	gn gen $(BUILD_DIR)/static/$1 --args='$(EXTRA_GN_ARGS) $(CC_WRAPPER) target_os="android" target_cpu="$2" $3' && \
+	gn gen $(BUILD_DIR)/static/$1 --args='$(EXTRA_GN_ARGS) use_custom_libcxx=false $(CC_WRAPPER) target_os="android" target_cpu="$2" $3' && \
 	ninja -C $(BUILD_DIR)/static/$1 && \
 	ninja -C $(BUILD_DIR)/static/$1 native_api
 
@@ -76,11 +77,11 @@ endef
 .PHONY: build
 build: patch
 	cd $(SRC_DIR) && \
-	python3 $(SRC_DIR)/tools_webrtc/android/build_aar.py \
-		--build-dir $(BUILD_DIR)/aar \
-		--output $(BUILD_DIR)/libwebrtc.aar \
-		--arch armeabi-v7a arm64-v8a x86_64 \
-		--extra-gn-args '$(EXTRA_GN_ARGS) $(CC_WRAPPER)'
+	vpython3 $(SRC_DIR)/tools_webrtc/android/build_aar.py \
+	  --build-dir $(BUILD_DIR)/aar \
+	  --output $(BUILD_DIR)/libwebrtc.aar \
+	  --arch armeabi-v7a arm64-v8a x86_64 \
+	  --extra-gn-args '$(EXTRA_GN_ARGS) $(CC_WRAPPER)'
 
 	$(call build-android,armeabi-v7a,arm,arm_version=7)
 	$(call build-android,arm64-v8a,arm64)

@@ -5,15 +5,16 @@ BASE_DIR := $(realpath ../..)
 include ../env.mk
 
 TARGET_OS ?= linux
-TARGET_CPU ?= arm64
+TARGET_CPU ?= arm
 
 include ../common.mk
 
 EXTRA_GN_ARGS := \
 	target_os="$(TARGET_OS)" \
 	target_cpu="$(TARGET_CPU)" \
-	rtc_use_h264=true \
-	rtc_use_x11=true \
+	is_debug=false \
+	$(RTC_USE_H264) \
+	$(RTC_USE_X11) \
 	rtc_include_tests=false \
 	rtc_build_tools=false \
 	rtc_build_examples=false \
@@ -42,13 +43,9 @@ patch: common-patch
 .PHONY: build
 build: download patch
 	cd $(SRC_DIR) && \
-	gn gen $(BUILD_DIR_DEBUG) --args='$(EXTRA_GN_ARGS) $(CC_WRAPPER)' && \
-	gn gen $(BUILD_DIR_RELEASE) --args='$(EXTRA_GN_ARGS) is_debug=false $(CC_WRAPPER)' && \
-	ninja -C $(BUILD_DIR_DEBUG) && \
-	ninja -C $(BUILD_DIR_RELEASE)
+	gn gen $(BUILD_DIR) --args='$(EXTRA_GN_ARGS) $(CC_WRAPPER)' && \
+	ninja -C $(BUILD_DIR)
 
-	cd $(BUILD_DIR_DEBUG)/obj && \
-	/usr/bin/ar -rc $(BUILD_DIR_DEBUG)/obj/libwebrtc.a `find . -name '*.o'`
+	cd $(BUILD_DIR)/obj && \
+	/usr/bin/ar -rc $(BUILD_DIR)/obj/libwebrtc.a `find . -name '*.o'`
 
-	cd $(BUILD_DIR_RELEASE)/obj && \
-	/usr/bin/ar -rc $(BUILD_DIR_RELEASE)/obj/libwebrtc.a `find . -name '*.o'`
