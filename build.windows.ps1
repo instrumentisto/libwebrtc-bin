@@ -5,6 +5,23 @@
 
 $ErrorActionPreference = "Stop"
 
+# Wraps native commands to handle their errors.
+# Original:
+#   https://stackoverflow.com/a/48999101/1828012
+#   https://stackoverflow.com/a/52784160/1828012
+function Exec
+{
+  [CmdletBinding()]
+  param(
+    [Parameter(Position=0,Mandatory=1)][scriptblock]$cmd,
+    [int[]]$SuccessCodes = @(0)
+  )
+  & $cmd
+  if (($SuccessCodes -notcontains $LastExitCode) -and ($ErrorActionPreference -eq "Stop")) {
+    exit $LastExitCode
+  }
+}
+
 # VERSIONファイル読み込み
 $lines = get-content VERSION
 foreach($line in $lines){
@@ -100,6 +117,7 @@ if (Test-Path .gclient) {
 if (!(Test-Path $BUILD_DIR)) {
   New-Item $BUILD_DIR -ItemType Directory -Force
 }
+
 
 Exec { gclient sync --with_branch_heads -r $WEBRTC_COMMIT }
 Exec { git apply --ignore-space-change -v $PATCH_DIR\add_licenses.patch }
