@@ -19,8 +19,7 @@ EXTRA_GN_ARGS := \
 	is_component_build=false \
 	rtc_enable_protobuf=false \
 	rtc_build_json=true \
-	use_rtti=true \
-	use_custom_libcxx=false
+	use_rtti=true 
 
 .PHONY: all
 all: clean build package

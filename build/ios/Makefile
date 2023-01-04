@@ -24,7 +24,7 @@ all: clean build package
 package:
 	mkdir -p $(PACKAGE_DIR) && \
 	cd $(BUILD_DIR) && \
-	zip -r $(PACKAGE_DIR)/$(subst $(space),,$(PACKAGE_NAME)).zip WebRTC.xcframework/*
+	zip -9 -r $(PACKAGE_DIR)/$(subst $(space),,$(PACKAGE_NAME)).zip WebRTC.xcframework/*
 
 .PHONY: patch
 patch: common-patch

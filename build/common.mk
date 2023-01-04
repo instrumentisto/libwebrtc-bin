@@ -34,9 +34,6 @@ common-patch:
 	echo "apply patches ..." \
 	&& cd $(SRC_DIR) \
 	&& patch -p1 < $(PATCH_DIR)/nacl_armv6_2.patch \
-	&& patch -p2 < $(PATCH_DIR)/macos_h264_encoder.patch \
-	&& patch -p2 < $(PATCH_DIR)/disable_use_hermetic_xcode_on_linux.patch \
-	&& patch -p2 < $(PATCH_DIR)/linux_is_pod_deprecate.patch \
 	&& patch -p2 < $(PATCH_DIR)/add_licenses.patch \
 	&& patch -p2 < $(PATCH_DIR)/4k.patch
 
@@ -56,9 +53,7 @@ common-copy: generate-licenses
 	mkdir -p $(PACKAGE_DIR)/release
 	mkdir -p $(PACKAGE_DIR)/include
 	cp $(BUILD_DIR_DEBUG)/obj/libwebrtc.a $(PACKAGE_DIR)/debug/libwebrtc.a
-	cp $(BUILD_DIR_DEBUG)/obj/third_party/boringssl/libboringssl.a $(PACKAGE_DIR)/debug/libboringssl.a
 	cp $(BUILD_DIR_RELEASE)/obj/libwebrtc.a $(PACKAGE_DIR)/release/libwebrtc.a
-	cp $(BUILD_DIR_RELEASE)/obj/third_party/boringssl/libboringssl.a $(PACKAGE_DIR)/release/libboringssl.a
 
 	rsync -amv '--include=*/' '--include=*.h' '--include=*.hpp' '--exclude=*' $(SRC_DIR)/. $(PACKAGE_DIR)/include/.
 
