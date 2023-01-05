@@ -69,9 +69,9 @@ $Env:PYTHONIOENCODING = "utf-8"
 # depot_tools
 if (Test-Path $DEPOT_TOOLS_DIR) {
   Push-Location $DEPOT_TOOLS_DIR
-     Exec { git checkout . }
-     Exec { git clean -df . }
-     Exec { git pull . }
+    Exec { git checkout . }
+    Exec { git clean -df . }
+    Exec { git pull . }
   Pop-Location
 } else {
   Exec { git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git }
