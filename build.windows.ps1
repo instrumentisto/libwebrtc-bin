@@ -132,7 +132,7 @@ Get-PSDrive
 
 Push-Location $WEBRTC_DIR\src
   # WebRTC Debugビルド x64
-  Exec { gn gen $BUILD_DIR\debug_x64 --args='is_debug=true treat_warnings_as_errors=false rtc_use_h264=true rtc_include_tests=false rtc_build_tools=false rtc_build_examples=false is_component_build=false use_rtti=true use_custom_libcxx=false' }
+  Exec { gn gen $BUILD_DIR\debug_x64 --args='treat_warnings_as_errors=false rtc_use_h264=true rtc_include_tests=false rtc_build_tools=false rtc_build_examples=false is_component_build=false use_rtti=true use_custom_libcxx=false' }
   Exec { ninja -C "$BUILD_DIR\debug_x64" }
 
   # WebRTC Releaseビルド x64
