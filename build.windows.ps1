@@ -66,25 +66,20 @@ $Env:GYP_MSVS_VERSION = "2019"
 $Env:DEPOT_TOOLS_WIN_TOOLCHAIN = "0"
 $Env:PYTHONIOENCODING = "utf-8"
 
-if (Test-Path $DEPOT_TOOLS_DIR) {
-  Remove-Item $DEPOT_TOOLS_DIR -Force -Recurse
-}
-if (Test-Path $WEBRTC_DIR) {
-  Remove-Item $WEBRTC_DIR -Force -Recurse
-}
-if (Test-Path $BUILD_DIR) {
-  Remove-Item $BUILD_DIR -Force -Recurse
-}
-if (Test-Path $PACKAGE_DIR) {
-  Remove-Item $PACKAGE_DIR -Force -Recurse
-}
-
 # depot_tools
-git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
-
+if (Test-Path $DEPOT_TOOLS_DIR) {
+  Push-Location $DEPOT_TOOLS_DIR
+     Exec { git checkout . }
+     Exec { git clean -df . }
+     Exec { git pull . }
+  Pop-Location
+} else {
+  Exec { git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git }
+}
+ 
 $Env:PATH = "$DEPOT_TOOLS_DIR;$Env:PATH"
 # Choco へのパスを削除
-$Env:PATH = $Env:Path.Replace("C:\ProgramData\Chocolatey\bin;", "")
+$Env:PATH = $Env:Path.Replace("C:\ProgramData\Chocolatey\bin;", "");
 
 # WebRTC のソース取得
 New-Item $WEBRTC_DIR -ItemType Directory -Force
@@ -162,11 +157,10 @@ foreach ($build in @("debug_x64", "release_x64")) {
   Move-Item $BUILD_DIR\$build\webrtc.lib $BUILD_DIR\$build\obj\webrtc.lib -Force
 }
 
-# バージョンファイルコピー
-New-Item $BUILD_DIR\package\webrtc -ItemType Directory -Force
-$WEBRTC_VERSION | Out-File $BUILD_DIR\package\webrtc\VERSION
-
 # WebRTC のヘッダーだけをパッケージングする
+if (Test-Path $BUILD_DIR\package) {
+  Remove-Item -Force -Recurse -Path $BUILD_DIR\package
+}
 New-Item $BUILD_DIR\package\webrtc\include -ItemType Directory -Force
 Exec { robocopy "$WEBRTC_DIR\src" "$BUILD_DIR\package\webrtc\include" *.h *.hpp /S /NP /NS /NC /NFL /NDL } -SuccessCodes @(1)
 
@@ -179,7 +173,7 @@ $WEBRTC_VERSION | Out-File $BUILD_DIR\package\webrtc\VERSION
 
 # ライセンス生成 (x64)
 Push-Location $WEBRTC_DIR\src
-  vpython3 tools_webrtc\libs\generate_licenses.py --target :webrtc "$BUILD_DIR\" "$BUILD_DIR\debug_x64" "$BUILD_DIR\release_x64"
+  Exec { vpython3 tools_webrtc\libs\generate_licenses.py --target :webrtc "$BUILD_DIR\" "$BUILD_DIR\debug_x64" "$BUILD_DIR\release_x64" }
 Pop-Location
 Copy-Item "$BUILD_DIR\LICENSE.md" "$BUILD_DIR\package\webrtc\NOTICE"
 
