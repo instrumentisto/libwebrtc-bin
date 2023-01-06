@@ -6,23 +6,21 @@ RUN rm -f /etc/apt/apt.conf.d/docker-clean \
  && echo 'Binary::apt::APT::Keep-Downloaded-Packages "true";' \
     > /etc/apt/apt.conf.d/keep-cache
 
-RUN \
-  apt update \
-  && apt upgrade -y \
-  && apt install -y \
-    build-essential \
-    curl \
-    git \
-    libncurses5 \
-    lsb-release \
-    python \
-    pkg-config \
-    rsync \
-    sudo \
-    openjdk-11-jdk-headless \
-    time \
-    unzip \
-    cmake
+RUN apt update \
+ && apt upgrade -y \
+ && apt install -y build-essential \
+                   curl \
+                   git \
+                   libncurses5 \
+                   lsb-release \
+                   openjdk-11-jdk-headless \
+                   python \
+                   pkg-config \
+                   rsync \
+                   sudo \
+                   time \
+                   unzip \
+                   cmake
 
 RUN update-java-alternatives -s java-1.11.0-openjdk-amd64
 

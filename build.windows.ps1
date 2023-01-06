@@ -76,7 +76,7 @@ if (Test-Path $DEPOT_TOOLS_DIR) {
 } else {
   Exec { git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git }
 }
- 
+
 $Env:PATH = "$DEPOT_TOOLS_DIR;$Env:PATH"
 # Choco へのパスを削除
 $Env:PATH = $Env:Path.Replace("C:\ProgramData\Chocolatey\bin;", "");
@@ -112,7 +112,6 @@ if (Test-Path .gclient) {
 if (!(Test-Path $BUILD_DIR)) {
   New-Item $BUILD_DIR -ItemType Directory -Force
 }
-
 
 Exec { gclient sync --with_branch_heads -r $WEBRTC_COMMIT }
 Exec { git apply --ignore-space-change -v $PATCH_DIR\add_licenses.patch }

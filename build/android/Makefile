@@ -19,7 +19,7 @@ EXTRA_GN_ARGS := \
 	is_component_build=false \
 	rtc_enable_protobuf=false \
 	rtc_build_json=true \
-	use_rtti=true 
+	use_rtti=true
 
 .PHONY: all
 all: clean build package
@@ -77,10 +77,10 @@ endef
 build: patch
 	cd $(SRC_DIR) && \
 	vpython3 $(SRC_DIR)/tools_webrtc/android/build_aar.py \
-	  --build-dir $(BUILD_DIR)/aar \
-	  --output $(BUILD_DIR)/libwebrtc.aar \
-	  --arch armeabi-v7a arm64-v8a x86_64 \
-	  --extra-gn-args '$(EXTRA_GN_ARGS) $(CC_WRAPPER)'
+		--build-dir $(BUILD_DIR)/aar \
+		--output $(BUILD_DIR)/libwebrtc.aar \
+		--arch armeabi-v7a arm64-v8a x86_64 \
+		--extra-gn-args '$(EXTRA_GN_ARGS) $(CC_WRAPPER)'
 
 	$(call build-android,armeabi-v7a,arm,arm_version=7)
 	$(call build-android,arm64-v8a,arm64)
