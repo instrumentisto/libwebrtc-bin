@@ -9,14 +9,14 @@ RUN rm -f /etc/apt/apt.conf.d/docker-clean \
 RUN apt update \
  && apt upgrade -y \
  && apt install -y build-essential \
+                   cmake \
                    curl \
                    git \
                    libncurses5 \
                    lsb-release \
                    python \
                    pkg-config \
-                   rsync \
-                   cmake
+                   rsync
 
 COPY build/ /root/build/
 COPY Makefile VERSION /root/

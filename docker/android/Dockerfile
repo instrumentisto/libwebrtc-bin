@@ -9,6 +9,7 @@ RUN rm -f /etc/apt/apt.conf.d/docker-clean \
 RUN apt update \
  && apt upgrade -y \
  && apt install -y build-essential \
+                   cmake \
                    curl \
                    git \
                    libncurses5 \
@@ -19,8 +20,7 @@ RUN apt update \
                    rsync \
                    sudo \
                    time \
-                   unzip \
-                   cmake
+                   unzip
 
 RUN update-java-alternatives -s java-1.11.0-openjdk-amd64
 
