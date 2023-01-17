@@ -27,6 +27,11 @@ if [ -f "$WEBRTC_DIR/.gclient" ]; then
     git reset --hard;
     git clean -xdf;
   fi
+  if [ -d "$WEBRTC_DIR/src/buildtools" ]; then
+    cd "$WEBRTC_DIR/src/buildtools";
+    git reset --hard;
+    git clean -xdf;
+  fi
 else
   echo "Getting WebRTC...";
   rm -f "$DEPOT_TOOLS_DIR/metrics.cfg"
