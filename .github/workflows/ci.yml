@@ -43,14 +43,14 @@ jobs:
 
       - run: ./disk_cleanup.sh
         if: ${{ matrix.os == 'android' || matrix.os == 'linux' }}
-      - run: .\disk_cleanup.bat
+      - run: powershell .\disk_cleanup.bat
         if: ${{ matrix.os == 'windows' }}
 
       - run: make -C docker ${{ matrix.os }}${{ matrix.arch != '' && format('-{0}', matrix.arch) || '' }}
         if: ${{ matrix.os == 'android' || matrix.os == 'linux' }}
       - run: make -C build USE_CCACHE=0 ${{ matrix.os }}${{ matrix.arch != '' && format('-{0}', matrix.arch) || '' }}
         if: ${{ matrix.os == 'ios' || matrix.os == 'macos' }}
-      - run: .\build.windows.bat
+      - run: powershell .\build.windows.bat
         if: ${{ matrix.os == 'windows' }}
 
       - uses: actions/upload-artifact@v3
