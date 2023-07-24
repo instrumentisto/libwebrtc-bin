@@ -2,10 +2,10 @@ CCACHE_VERSION=4.6
 
 # WebRTC doesn't have its own versioning, so we use Chromium versions:
 # https://chromiumdash.appspot.com/releases
-WEBRTC_VERSION=114.0.5735.198
+WEBRTC_VERSION=115.0.5790.102
 # Look for the concrete revision for WebRTC in:
 # https://chromium.googlesource.com/chromium/src/+/refs/tags/<WEBRTC_VERSION>/DEPS
-WEBRTC_COMMIT=d20849d0710783142175551d81dfe0dcbffcf2b1
+WEBRTC_COMMIT=43670de877297a980bfdd1353dd2eb68360e2f2a
 
 PACKAGE_NAMES= \
   linux-arm64 \
