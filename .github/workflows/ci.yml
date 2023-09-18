@@ -82,6 +82,24 @@ jobs:
         env:
           COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
 
+  publish-android:
+    name: publish (Android)
+    if: ${{ startsWith(github.ref, 'refs/tags/') }}
+    needs: ["release-github"]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: gh-pages
+
+      - run: ./pub.sh
+        shell: bash
+
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Publish android `libwebrtc-${{ steps.release.outputs.version }}`.
+          create_branch: false
+
   release-github:
     name: release (GitHub)
     if: ${{ startsWith(github.ref, 'refs/tags/') }}
