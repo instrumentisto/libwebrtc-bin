@@ -100,8 +100,9 @@ jobs:
 
       - run: mkdir -p package/
       - run: cd package/ && curl -fL -O "https://github.com/instrumentisto/libwebrtc-bin/releases/download/116.0.5845.179/libwebrtc-android.tar.gz"
-      - run: cd package && tar xf libwebrtc-android.tar.gz
-      
+      - run: cd package && tar xf libwebrtc-android.tar.gz && ls
+      - run: ls
+
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
@@ -112,7 +113,7 @@ jobs:
           mvn install:install-file \
             -DgroupId=com.github.instrumentisto \
             -DartifactId=libwebrtc-bin \
-            -Dversion=${{ steps.release.outputs.version }} \
+            -Dversion=116.0.5845.179 \
             -Dfile=./package/aar/libwebrtc.aar \
             -Dpackaging=aar \
             -DgeneratePom=true \
