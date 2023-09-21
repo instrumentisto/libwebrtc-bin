@@ -99,13 +99,7 @@ jobs:
       #     path: package/libwebrtc-android.tar.gz
 
       - run: mkdir -p package/
-      - run: cd package/ && \
-          curl -s https://api.github.com/repos/instrumentisto/libwebrtc-bin/releases/latest \
-          | grep "browser_download_url.*libwebrtc-android.tar.gz" \
-          | cut -d : -f 2,3 \
-          | tr -d \" \
-          | wget -qi -
-
+      - run: cd package/ && curl -fL -O "https://github.com/instrumentisto/libwebrtc-bin/releases/download/116.0.5845.179/libwebrtc-android.tar.gz"
       - run: cd package && tar xf libwebrtc-android.tar.gz
 
       - uses: actions/setup-java@v3
