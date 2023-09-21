@@ -98,22 +98,31 @@ jobs:
         with:
           ref: gh-pages
 
-      # - uses: actions/download-artifact@v3
-      #   with:
-      #     name: build
-      #     path: package/libwebrtc-android.tar.gz
 
-      - run: mkdir -p package/
-      - run: cd package/ && curl -fL -O "https://github.com/instrumentisto/libwebrtc-bin/releases/download/116.0.5845.179/libwebrtc-android.tar.gz"
-      - run: cd package && tar xf libwebrtc-android.tar.gz && ls
+      - run: curl -fL -O "https://github.com/instrumentisto/libwebrtc-bin/releases/download/116.0.5845.179/libwebrtc-android.tar.gz"
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: build
+          path: package/libwebrtc-android.tar.gz
+          if-no-files-found: error
+
+      - run: rm libwebrtc-android.tar.gz && ls
+
+      - uses: actions/download-artifact@v3
+        with:
+          name: build
+          path: package/libwebrtc-android.tar.gz
+
       - run: ls
+      - run: cd package && tar xf libwebrtc-android.tar.gz && ls
 
 
       - run: |
           mvn install:install-file \
             -DgroupId=com.github.instrumentisto \
             -DartifactId=libwebrtc-bin \
-            -Dversion=116.0.5845.179 \
+            -Dversion=116.0.5845.180 \
             -Dfile=./package/aar/libwebrtc.aar \
             -Dpackaging=aar \
             -DgeneratePom=true \
