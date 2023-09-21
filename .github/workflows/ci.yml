@@ -123,6 +123,7 @@ jobs:
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: Publish android `libwebrtc-${{ steps.release.outputs.version }}`.
+          branch: gh-pages
           create_branch: false
 
   # release-github:
