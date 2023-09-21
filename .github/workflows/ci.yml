@@ -115,7 +115,7 @@ jobs:
           path: libwebrtc-android.tar.gz
 
       - run: ls
-      - run: tar xf libwebrtc-android.tar.gz && ls
+      - run: cd libwebrtc-android.tar.gz && ls
 
 
       - run: |
@@ -123,7 +123,7 @@ jobs:
             -DgroupId=com.github.instrumentisto \
             -DartifactId=libwebrtc-bin \
             -Dversion=116.0.5845.180 \
-            -Dfile=./package/aar/libwebrtc.aar \
+            -Dfile=./libwebrtc-android.tar.gz/aar/libwebrtc.aar \
             -Dpackaging=aar \
             -DgeneratePom=true \
             -DlocalRepositoryPath=. \
