@@ -69,8 +69,7 @@ jobs:
   publish-android:
     name: publish (Android)
     if: ${{ startsWith(github.ref, 'refs/tags/') }}
-    #needs: ["release-github"]
-    needs: ["build"]
+    needs: ["release-github"]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -117,7 +116,7 @@ jobs:
 
   publish-cocoapods:
     name: publish (CocoaPods)
-    if: ${{ false && startsWith(github.ref, 'refs/tags/') }}
+    if: ${{ startsWith(github.ref, 'refs/tags/') }}
     needs: ["release-github"]
     runs-on: macos-latest
     steps:
@@ -133,7 +132,7 @@ jobs:
 
   release-github:
     name: release (GitHub)
-    if: ${{ false && startsWith(github.ref, 'refs/tags/') }}
+    if: ${{ startsWith(github.ref, 'refs/tags/') }}
     needs: ["build"]
     runs-on: ubuntu-latest
     steps:
