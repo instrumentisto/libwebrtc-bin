@@ -73,8 +73,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          ref: gh-pages
       - uses: actions/setup-java@v3
         with:
           java-version: "17"
@@ -92,22 +90,36 @@ jobs:
       - run: tar -xzvf libwebrtc-android.tar.gz
         working-directory: package/
 
-      - run: mvn install:install-file
+      - name: Build Maven files
+        run: mvn install:install-file
                  -DgroupId=com.github.instrumentisto
                  -DartifactId=libwebrtc-bin
-                 -Dversion={{ steps.release.outputs.version }}
-                 -Dfile=./package/aar/libwebrtc.aar
+                 -Dversion=${{ steps.release.outputs.version }}
+                 -Dfile=./aar/libwebrtc.aar
                  -Dpackaging=aar
                  -DgeneratePom=true
-                 -DlocalRepositoryPath=.
+                 -DlocalRepositoryPath=./maven/
                  -DcreateChecksum=true
+        working-directory: package/
 
-      - uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          commit_message: |
-            Publish ${{ steps.release.outputs.version }} of `libwebrtc-android`
-          branch: gh-pages
-          create_branch: false
+      - name: Deploy to GitHub Pages
+        run: |
+          set -ex
+
+          git config --local user.email 'actions+${{ github.run_number }}@github.com'
+          git config --local user.name 'GitHub Actions'
+
+          git fetch origin gh-pages:gh-pages
+          git checkout gh-pages
+          git reset --hard
+
+          mkdir -p android/${{ steps.release.outputs.version }}/
+          cp -rf package/maven/* android/${{ steps.release.outputs.version }}/
+
+          git add -v android/${{ steps.release.outputs.version }}/
+          git commit -m 'Release ${{ steps.release.outputs.version }} version of `libwebrtc-android`'
+          git checkout -
+          git push origin gh-pages
 
   publish-cocoapods:
     name: publish (CocoaPods)
