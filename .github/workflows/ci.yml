@@ -74,6 +74,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: gh-pages
       - uses: actions/setup-java@v3
         with:
           java-version: "17"
@@ -96,30 +98,21 @@ jobs:
                  -DgroupId=com.github.instrumentisto
                  -DartifactId=libwebrtc-bin
                  -Dversion=${{ steps.release.outputs.version }}
-                 -Dfile=./aar/libwebrtc.aar
+                 -Dfile=./package/aar/libwebrtc.aar
                  -Dpackaging=aar
                  -DgeneratePom=true
-                 -DlocalRepositoryPath=./maven/
+                 -DlocalRepositoryPath=./android/
                  -DcreateChecksum=true
-        working-directory: package/
 
-      - name: Deploy to GitHub Pages
+      - name: Publish to GitHub Pages
         run: |
           set -ex
 
           git config --local user.email 'actions+${{ github.run_number }}@github.com'
           git config --local user.name 'GitHub Actions'
 
-          git fetch origin gh-pages:gh-pages
-          git checkout gh-pages
-          git reset --hard
-
-          mkdir -p android/${{ steps.release.outputs.version }}/
-          cp -rf package/maven/* android/${{ steps.release.outputs.version }}/
-
-          git add -v android/${{ steps.release.outputs.version }}/
+          git add -v android/
           git commit -m 'Release ${{ steps.release.outputs.version }} version of `libwebrtc-android`'
-          git checkout -
           git push origin gh-pages
 
   publish-cocoapods:
