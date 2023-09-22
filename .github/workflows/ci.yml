@@ -66,6 +66,49 @@ jobs:
   # Releasing #
   #############
 
+  publish-android:
+    name: publish (Android)
+    if: ${{ startsWith(github.ref, 'refs/tags/') }}
+    needs: ["release-github"]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+      - uses: actions/setup-java@v3
+        with:
+          java-version: "17"
+          distribution: temurin
+
+      - name: Parse release version
+        id: release
+        run: echo "version=${GITHUB_REF#refs/tags/}"
+             >> $GITHUB_OUTPUT
+
+      - uses: actions/download-artifact@v3
+        with:
+          name: build
+          path: package/
+      - run: tar -xzvf libwebrtc-android.tar.gz
+        working-directory: package/
+
+      - run: mvn install:install-file
+                 -DgroupId=com.github.instrumentisto
+                 -DartifactId=libwebrtc-bin
+                 -Dversion={{ steps.release.outputs.version }}
+                 -Dfile=./package/aar/libwebrtc.aar
+                 -Dpackaging=aar
+                 -DgeneratePom=true
+                 -DlocalRepositoryPath=.
+                 -DcreateChecksum=true
+
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: |
+            Publish ${{ steps.release.outputs.version }} of `libwebrtc-android`
+          branch: gh-pages
+          create_branch: false
+
   publish-cocoapods:
     name: publish (CocoaPods)
     if: ${{ startsWith(github.ref, 'refs/tags/') }}
@@ -81,47 +124,6 @@ jobs:
       - run: pod trunk push --allow-warnings
         env:
           COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
-
-  publish-android:
-    name: publish (Android)
-    if: ${{ startsWith(github.ref, 'refs/tags/') }}
-    needs: ["release-github"]
-    runs-on: ubuntu-latest
-    steps:
-
-      - uses: actions/checkout@v3
-        with:
-          ref: gh-pages
-
-      - uses: actions/download-artifact@v3
-        with:
-          name: build
-          path: package
-
-      - run: cd package && tar xf libwebrtc-android.tar.gz
-
-      - name: Set up JDK 17
-        uses: actions/setup-java@v3
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-
-      - run: |
-          mvn install:install-file \
-            -DgroupId=com.github.instrumentisto \
-            -DartifactId=libwebrtc-bin \
-            -Dversion={{ steps.release.outputs.version }} \
-            -Dfile=./package/aar/libwebrtc.aar \
-            -Dpackaging=aar \
-            -DgeneratePom=true \
-            -DlocalRepositoryPath=. \
-            -DcreateChecksum=true
-
-      - uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          commit_message: Publish android `libwebrtc-${{ steps.release.outputs.version }}`.
-          branch: gh-pages
-          create_branch: false
 
   release-github:
     name: release (GitHub)
