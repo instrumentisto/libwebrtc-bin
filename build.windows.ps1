@@ -24,7 +24,7 @@ function Exec
 
 # VERSIONファイル読み込み
 $lines = get-content VERSION
-foreach($line in $lines){
+foreach ($line in $lines) {
   # WEBRTC_COMMITの行のみ取得する
   if ($line -match "^WEBRTC_") {
     $name, $value = $line.split("=",2)
