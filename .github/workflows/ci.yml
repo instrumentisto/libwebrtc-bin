@@ -46,6 +46,10 @@ jobs:
       - run: powershell .\disk_cleanup.bat
         if: ${{ matrix.os == 'windows' }}
 
+      - name: Mac deps
+        run: pip install setuptools
+        if: ${{ matrix.os == 'ios' || matrix.os == 'macos' }}
+
       - run: make -C docker ${{ matrix.os }}${{ matrix.arch != '' && format('-{0}', matrix.arch) || '' }}
         if: ${{ matrix.os == 'android' || matrix.os == 'linux' }}
       - run: make -C build USE_CCACHE=0 ${{ matrix.os }}${{ matrix.arch != '' && format('-{0}', matrix.arch) || '' }}

@@ -76,7 +76,6 @@ $(foreach pkg, $(PACKAGE_NAMES), $(eval $(call generateRules,$(pkg))))
 .PHONY: prepare
 prepare:
 	mkdir -p $(THIRD_PARTY_DIR)
-	pip install setuptools
 
 .PHONY: depot_tools
 depot_tools: prepare
