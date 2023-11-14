@@ -12,7 +12,6 @@ index 265d4bc07..71ec29437 100644
 
    if (use_afl) {
 diff --git a/src/buildtools/third_party/libunwind/BUILD.gn b/src/buildtools/third_party/libunwind/BUILD.gn
-index a8287bf..a948450 100644
 --- a/src/buildtools/third_party/libunwind/BUILD.gn
 +++ b/src/buildtools/third_party/libunwind/BUILD.gn
 @@ -21,7 +21,7 @@
