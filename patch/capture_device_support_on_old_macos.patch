@@ -1,0 +1,23 @@
+--- a/src/sdk/objc/components/capturer/RTCCameraVideoCapturer.m
++++ b/src/sdk/objc/components/capturer/RTCCameraVideoCapturer.m
+@@ -118,11 +118,15 @@ - (void)dealloc {
+ }
+
+ + (NSArray<AVCaptureDevice *> *)captureDevices {
+-  AVCaptureDeviceDiscoverySession *session = [AVCaptureDeviceDiscoverySession
+-      discoverySessionWithDeviceTypes:@[ AVCaptureDeviceTypeBuiltInWideAngleCamera ]
+-                            mediaType:AVMediaTypeVideo
+-                             position:AVCaptureDevicePositionUnspecified];
+-  return session.devices;
++  if (@available(macOS 10.15, *)) {
++    AVCaptureDeviceDiscoverySession *session = [AVCaptureDeviceDiscoverySession
++        discoverySessionWithDeviceTypes:@[ AVCaptureDeviceTypeBuiltInWideAngleCamera ]
++                              mediaType:AVMediaTypeVideo
++                              position:AVCaptureDevicePositionUnspecified];
++    return session.devices;
++  } else {
++    return [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo];
++  }
+ }
+
+ + (NSArray<AVCaptureDeviceFormat *> *)supportedFormatsForDevice:(AVCaptureDevice *)device {

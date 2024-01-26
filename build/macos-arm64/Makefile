@@ -47,6 +47,8 @@ copy: common-copy
 
 .PHONY: patch
 patch: common-patch
+	cd $(SRC_DIR) && \
+	patch -p2 < $(PATCH_DIR)/capture_device_support_on_old_macos.patch
 
 .PHONY: build
 build: patch
