@@ -28,6 +28,8 @@ package:
 
 .PHONY: patch
 patch: common-patch
+	cd $(SRC_DIR) && \
+	patch -p2 < $(PATCH_DIR)/enable_ios_scalability_mode.patch
 
 .PHONY: build
 build: patch
