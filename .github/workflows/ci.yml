@@ -231,7 +231,7 @@ jobs:
           path: package/
 
       - name: Generate SHA256 checksums
-        run: ls -1 | xargs -I {} sh -c "sha256sum {} > {}.sha256sum"
+        run: ls -1 | grep libwebrtc-*. | xargs -I {} sh -c "sha256sum {} > {}.sha256sum"
         working-directory: package/
       - name: Show generated SHA256 checksums
         run: cat *.sha256sum
