@@ -119,28 +119,11 @@ jobs:
 
       - uses: actions/download-artifact@v4
         with:
-          name: build-android-armeabi-v7a
-          path: package/
-
-      - uses: actions/download-artifact@v4
-        with:
-          name: build-android-arm64-v8a
-          path: package/
-
-      - uses: actions/download-artifact@v4
-        with:
-          name: build-android-x86_64
-          path: package/
-
-      - uses: actions/download-artifact@v4
-        with:
           name: build-android
           path: package/
 
-      - run: tar -xzvf libwebrtc-android.tar.gz android-static-armeabi-v7a.tar.gz android-static-armeabi-v7a android-static-x86_64
+      - run: tar -xzvf libwebrtc-android.tar.gz 
         working-directory: package/
-
-      - run: make -C buil/android package
 
       - name: Build Maven files
         run: mvn install:install-file
@@ -183,7 +166,7 @@ jobs:
   release-github:
     name: release (GitHub)
     if: ${{ startsWith(github.ref, 'refs/tags/') }}
-    needs: ["build"]
+    needs: ["build", "build-android-static"]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -202,6 +185,26 @@ jobs:
         with:
           name: build-android
           path: package/
+      - run: tar -xzvf libwebrtc-android.tar.gz -C .
+        working-directory: package/
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: build-android-armeabi-v7a
+          path: package/
+      - uses: actions/download-artifact@v4
+        with:
+          name: build-android-arm64-v8a
+          path: package/
+      - uses: actions/download-artifact@v4
+        with:
+          name: build-android-x86_64
+          path: package/
+      - run: for i in android-static*.gz; do tar -xzvf "$i" -C . ;done
+        working-directory: package/
+      - run: tar -czvf libwebrtc-android.tar.gz aar jar include lib NOTICE VERSION
+        working-directory: package/
+
       - uses: actions/download-artifact@v4
         with:
           name: build-ios
