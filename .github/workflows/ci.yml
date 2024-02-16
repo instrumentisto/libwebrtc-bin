@@ -60,22 +60,22 @@ jobs:
         if: ${{ contains('ios macos', matrix.os) }}
 
       - run: make -C docker ${{ matrix.os }}${{ (matrix.arch != '' && matrix.os != 'android')
-                                             && format('-{0}', matrix.arch) }}
+                                             && format('-{0}', matrix.arch) || '' }}
              ${{ (matrix.ext == '.jar'
                   && 'static=no')
               || (matrix.ext == '.a'
-                  && 'static=yes') }}
+                  && 'static=yes') || '' }}
              ${{ matrix.ext == '.a'
                   && format('arch={0}', (matrix.arch == 'arm'
                                          && 'armeabi-v7a')
                                      || (matrix.arch == 'arm64'
                                          && 'arm64-v8a')
                                      || (matrix.arch == 'x64'
-                                         && 'x86_64')) }}
+                                         && 'x86_64')) || '' }}
              ${{ matrix.ext == '.a'
-                  && format('target_cpu={0}', matrix.arch) }}
+                  && format('target_cpu={0}', matrix.arch) || '' }}
              ${{ (matrix.ext == '.a' && matrix.arch == 'arm')
-                  && 'arm_version=7' }}
+                  && 'arm_version=7' || '' }}
         if: ${{ contains('android linux', matrix.os) }}
       - run: make -C build USE_CCACHE=0 ${{ matrix.os }}${{ matrix.arch != '' && format('-{0}', matrix.arch) || '' }}
         if: ${{ contains('ios macos', matrix.os) }}
