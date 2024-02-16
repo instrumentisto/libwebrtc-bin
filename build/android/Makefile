@@ -27,10 +27,10 @@ all: clean build package
 .PHONY: package
 package:
 ifeq ($(static),yes)
-	mkdir -p $(PACKAGE_DIR)/lib/$(arch)
+	mkdir -p $(PACKAGE_DIR)/lib/$(arch)/
 	cp -f $(BUILD_DIR)/static/$(arch)/libwebrtc.a $(PACKAGE_DIR)/lib/$(arch)/
 	cd $(PACKAGE_DIR) && \
-	tar -czvf android-static-$(arch).tar.gz lib
+	tar -czvf libwebrtc-android-$(target_cpu).tar.gz lib
 else
 	make copy
 	cd $(PACKAGE_DIR) && \
@@ -92,8 +92,8 @@ else
 		--extra-gn-args '$(EXTRA_GN_ARGS) $(CC_WRAPPER)'
 
 	cd $(BUILD_DIR) && \
-		unzip -q libwebrtc.aar && \
-		rm -rf jni && \
-		rm -f AndroidManifest.xml && \
-		mv classes.jar libwebrtc.jar
+	unzip -q libwebrtc.aar && \
+	rm -rf jni && \
+	rm -f AndroidManifest.xml && \
+	mv classes.jar libwebrtc.jar
 endif

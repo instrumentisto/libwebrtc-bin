@@ -24,6 +24,16 @@ jobs:
       matrix:
         include:
           - os: android
+            ext: .jar
+          - os: android
+            arch: arm
+            ext: .a
+          - os: android
+            arch: arm64
+            ext: .a
+          - os: android
+            arch: x64
+            ext: .a
           - os: ios
           - os: linux
             arch: arm64
@@ -49,15 +59,26 @@ jobs:
       - run: pip install setuptools
         if: ${{ contains('ios macos', matrix.os) }}
 
-      - run: make -C docker ${{ matrix.os }}${{ matrix.arch != '' && format('-{0}', matrix.arch) || '' }}
-        if: ${{ contains('linux', matrix.os) }}
-
-      - run: make -C docker ${{ matrix.os }}${{ matrix.arch != '' && format('-{0}', matrix.arch) || '' }} static=no
-        if: ${{ contains('android', matrix.os) }}
-
+      - run: make -C docker ${{ matrix.os }}${{ (matrix.arch != '' && matrix.os != 'android')
+                                             && format('-{0}', matrix.arch) }}
+             ${{ (matrix.ext == '.jar'
+                  && 'static=no')
+              || (matrix.ext == '.a'
+                  && 'static=yes') }}
+             ${{ matrix.ext == '.a'
+                  && format('arch={0}', (matrix.arch == 'arm'
+                                         && 'armeabi-v7a')
+                                     || (matrix.arch == 'arm64'
+                                         && 'arm64-v8a')
+                                     || (matrix.arch == 'x64'
+                                         && 'x86_64')) }}
+             ${{ matrix.ext == '.a'
+                  && format('target_cpu={0}', matrix.arch) }}
+             ${{ (matrix.ext == '.a' && matrix.arch == 'arm')
+                  && 'arm_version=7' }}
+        if: ${{ contains('android linux', matrix.os) }}
       - run: make -C build USE_CCACHE=0 ${{ matrix.os }}${{ matrix.arch != '' && format('-{0}', matrix.arch) || '' }}
         if: ${{ contains('ios macos', matrix.os) }}
-
       - run: powershell .\build.windows.bat
         if: ${{ contains('windows', matrix.os) }}
 
@@ -67,32 +88,51 @@ jobs:
           path: package/libwebrtc-${{ matrix.os }}${{ matrix.arch != '' && format('-{0}', matrix.arch) || '' }}.${{ (matrix.os == 'ios' && 'zip') || 'tar.gz' }}
           if-no-files-found: error
 
-  build-android-static:
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - arch: armeabi-v7a
-            target_cpu: arm
-            version: arm_version=7
-          - arch: arm64-v8a
-            target_cpu: arm64
-          - arch: x86_64
-            target_cpu: x64
-
+  repack-android:
+    name: repack (android)
+    needs: ["build"]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - run: ./disk_cleanup.sh
-      - run: make -C docker android static=yes arch=${{ matrix.arch }} target_cpu=${{ matrix.target_cpu }} version=${{ matrix.version }}
-
+      - uses: actions/download-artifact@v4
+        with:
+          name: build-android
+          path: package/
+      - run: tar -xzvf libwebrtc-android.tar.gz -C .
+        working-directory: package/
+      - uses: actions/download-artifact@v4
+        with:
+          name: build-android-arm
+          path: package/
+      - run: tar -xzvf libwebrtc-android-arm.tar.gz -C .
+        working-directory: package/
+      - uses: actions/download-artifact@v4
+        with:
+          name: build-android-arm64
+          path: package/
+      - run: tar -xzvf libwebrtc-android-arm64.tar.gz -C .
+        working-directory: package/
+      - uses: actions/download-artifact@v4
+        with:
+          name: build-android-x64
+          path: package/
+      - run: tar -xzvf libwebrtc-android-x64.tar.gz -C .
+        working-directory: package/
+      - run: rm -rf libwebrtc-android*tar.gz
+        working-directory: package/
+      - run: tar -czvf libwebrtc-android.tar.gz
+                  aar jar include lib NOTICE VERSION
+        working-directory: package/
 
       - uses: actions/upload-artifact@v4
         with:
-          name: build-android-${{ matrix.arch }}
-          path: package/android-static-${{ matrix.arch }}.tar.gz
+          name: repack-android
+          path: package/libwebrtc-android.tar.gz
           if-no-files-found: error
+
+
+
 
   #############
   # Releasing #
@@ -101,7 +141,7 @@ jobs:
   publish-android:
     name: publish (Android)
     if: ${{ startsWith(github.ref, 'refs/tags/') }}
-    needs: ["release-github"]
+    needs: ["build", "repack-android", "release-github"]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -119,10 +159,9 @@ jobs:
 
       - uses: actions/download-artifact@v4
         with:
-          name: build-android
+          name: repack-android
           path: package/
-
-      - run: tar -xzvf libwebrtc-android.tar.gz 
+      - run: tar -xzvf libwebrtc-android.tar.gz
         working-directory: package/
 
       - name: Build Maven files
@@ -166,7 +205,7 @@ jobs:
   release-github:
     name: release (GitHub)
     if: ${{ startsWith(github.ref, 'refs/tags/') }}
-    needs: ["build", "build-android-static"]
+    needs: ["build", "repack-android"]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -183,28 +222,8 @@ jobs:
 
       - uses: actions/download-artifact@v4
         with:
-          name: build-android
+          name: repack-android
           path: package/
-      - run: tar -xzvf libwebrtc-android.tar.gz -C .
-        working-directory: package/
-
-      - uses: actions/download-artifact@v4
-        with:
-          name: build-android-armeabi-v7a
-          path: package/
-      - uses: actions/download-artifact@v4
-        with:
-          name: build-android-arm64-v8a
-          path: package/
-      - uses: actions/download-artifact@v4
-        with:
-          name: build-android-x86_64
-          path: package/
-      - run: for i in android-static*.gz; do tar -xzvf "$i" -C . ;done
-        working-directory: package/
-      - run: tar -czvf libwebrtc-android.tar.gz aar jar include lib NOTICE VERSION
-        working-directory: package/
-
       - uses: actions/download-artifact@v4
         with:
           name: build-ios
@@ -231,7 +250,7 @@ jobs:
           path: package/
 
       - name: Generate SHA256 checksums
-        run: ls -1 | grep libwebrtc-*. | xargs -I {} sh -c "sha256sum {} > {}.sha256sum"
+        run: ls -1 | xargs -I {} sh -c "sha256sum {} > {}.sha256sum"
         working-directory: package/
       - name: Show generated SHA256 checksums
         run: cat *.sha256sum
