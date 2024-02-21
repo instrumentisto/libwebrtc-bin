@@ -791,10 +791,10 @@ index 2eb8d36..5cc28aa 100644
  @end
 diff --git a/src/sdk/objc/api/video_codec/RTCWrappedNativeVideoDecoderFactory.h b/src/sdk/objc/api/video_codec/RTCWrappedNativeVideoDecoderFactory.h
 new file mode 100644
-index 0000000..b0a4e42
+index 0000000..813d5d3
 --- /dev/null
 +++ b/src/sdk/objc/api/video_codec/RTCWrappedNativeVideoDecoderFactory.h
-@@ -0,0 +1,28 @@
+@@ -0,0 +1,29 @@
 +/*
 + *  Copyright 2023 The WebRTC project authors. All Rights Reserved.
 + *
@@ -809,6 +809,7 @@ index 0000000..b0a4e42
 +
 +#import "RTCMacros.h"
 +#import "RTCVideoDecoderFactory.h"
++#import "components/video_codec/MediaCodecUtils.h"
 +
 +NS_ASSUME_NONNULL_BEGIN
 +
@@ -825,10 +826,10 @@ index 0000000..b0a4e42
 +NS_ASSUME_NONNULL_END
 diff --git a/src/sdk/objc/api/video_codec/RTCWrappedNativeVideoDecoderFactory.mm b/src/sdk/objc/api/video_codec/RTCWrappedNativeVideoDecoderFactory.mm
 new file mode 100644
-index 0000000..1a08f0f
+index 0000000..c4717c8
 --- /dev/null
 +++ b/src/sdk/objc/api/video_codec/RTCWrappedNativeVideoDecoderFactory.mm
-@@ -0,0 +1,101 @@
+@@ -0,0 +1,103 @@
 +/*
 + *  Copyright (c) 2013 The WebRTC project authors. All Rights Reserved.
 + *
@@ -903,7 +904,8 @@ index 0000000..1a08f0f
 +  };
 +  RTC_OBJC_TYPE(RTCVideoCodecInfo) *constrainedHighInfo =
 +      [[RTC_OBJC_TYPE(RTCVideoCodecInfo) alloc] initWithName:kRTCVideoCodecH264Name
-+                                                  parameters:constrainedHighParams];
++                                                  parameters:constrainedHighParams
++                                                  scalabiltyModes: H264_SCALABILITY_MODES];
 +
 +  NSDictionary<NSString *, NSString *> *constrainedBaselineParams = @{
 +    @"profile-level-id" : kRTCMaxSupportedH264ProfileLevelConstrainedBaseline,
@@ -912,7 +914,8 @@ index 0000000..1a08f0f
 +  };
 +  RTC_OBJC_TYPE(RTCVideoCodecInfo) *constrainedBaselineInfo =
 +      [[RTC_OBJC_TYPE(RTCVideoCodecInfo) alloc] initWithName:kRTCVideoCodecH264Name
-+                                                  parameters:constrainedBaselineParams];
++                                                  parameters:constrainedBaselineParams
++                                                  scalabiltyModes: H264_SCALABILITY_MODES];
 +
 +  NSMutableArray<RTC_OBJC_TYPE(RTCVideoCodecInfo)*>* result = [@[
 +    constrainedHighInfo,
@@ -932,7 +935,7 @@ index 0000000..1a08f0f
 +@end
 diff --git a/src/sdk/objc/api/video_codec/RTCWrappedNativeVideoEncoderFactory.h b/src/sdk/objc/api/video_codec/RTCWrappedNativeVideoEncoderFactory.h
 new file mode 100644
-index 0000000..74c9b5b
+index 0000000..905ca69
 --- /dev/null
 +++ b/src/sdk/objc/api/video_codec/RTCWrappedNativeVideoEncoderFactory.h
 @@ -0,0 +1,29 @@
@@ -950,6 +953,7 @@ index 0000000..74c9b5b
 +
 +#import "RTCMacros.h"
 +#import "RTCVideoEncoderFactory.h"
++#import "components/video_codec/MediaCodecUtils.h"
 +
 +NS_ASSUME_NONNULL_BEGIN
 +
@@ -959,7 +963,6 @@ index 0000000..74c9b5b
 +RTC_OBJC_EXPORT
 +@interface RTC_OBJC_TYPE (RTCWrapperNativeVideoEncoderFactory) : NSObject <RTC_OBJC_TYPE(RTCVideoEncoderFactory)>
 +
-+
 +- (instancetype)initWithTemplateFactory;
 +
 +@end
@@ -967,10 +970,10 @@ index 0000000..74c9b5b
 +NS_ASSUME_NONNULL_END
 diff --git a/src/sdk/objc/api/video_codec/RTCWrappedNativeVideoEncoderFactory.mm b/src/sdk/objc/api/video_codec/RTCWrappedNativeVideoEncoderFactory.mm
 new file mode 100644
-index 0000000..0b7f68d
+index 0000000..9a39b11
 --- /dev/null
 +++ b/src/sdk/objc/api/video_codec/RTCWrappedNativeVideoEncoderFactory.mm
-@@ -0,0 +1,160 @@
+@@ -0,0 +1,162 @@
 +/*
 + *  Copyright (c) 2017 The WebRTC project authors. All Rights Reserved.
 + *
@@ -1063,7 +1066,8 @@ index 0000000..0b7f68d
 +  };
 +  RTC_OBJC_TYPE(RTCVideoCodecInfo) *constrainedHighInfo =
 +      [[RTC_OBJC_TYPE(RTCVideoCodecInfo) alloc] initWithName:kRTCVideoCodecH264Name
-+                                                  parameters:constrainedHighParams];
++                                                  parameters:constrainedHighParams
++                                                  scalabiltyModes: H264_SCALABILITY_MODES];
 +
 +  NSDictionary<NSString *, NSString *> *constrainedBaselineParams = @{
 +    @"profile-level-id" : kRTCMaxSupportedH264ProfileLevelConstrainedBaseline,
@@ -1072,7 +1076,8 @@ index 0000000..0b7f68d
 +  };
 +  RTC_OBJC_TYPE(RTCVideoCodecInfo) *constrainedBaselineInfo =
 +      [[RTC_OBJC_TYPE(RTCVideoCodecInfo) alloc] initWithName:kRTCVideoCodecH264Name
-+                                                  parameters:constrainedBaselineParams];
++                                                  parameters:constrainedBaselineParams
++                                                  scalabiltyModes: H264_SCALABILITY_MODES];
 +
 +  NSMutableArray<RTC_OBJC_TYPE(RTCVideoCodecInfo) *> *result = [@[
 +    constrainedHighInfo,
