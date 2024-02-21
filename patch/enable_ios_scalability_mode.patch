@@ -1,5 +1,5 @@
 diff --git a/src/sdk/BUILD.gn b/src/sdk/BUILD.gn
-index 4f5ceb5..58da884 100644
+index e28bdcc..716a516 100644
 --- a/src/sdk/BUILD.gn
 +++ b/src/sdk/BUILD.gn
 @@ -96,6 +96,8 @@ if (is_ios || is_mac) {
@@ -148,7 +148,7 @@ index 5575af9..e23d1d8 100644
  - (RTC_OBJC_TYPE(RTCAudioSource) *)audioSourceWithConstraints:
      (nullable RTC_OBJC_TYPE(RTCMediaConstraints) *)constraints;
 diff --git a/src/sdk/objc/api/peerconnection/RTCPeerConnectionFactory.mm b/src/sdk/objc/api/peerconnection/RTCPeerConnectionFactory.mm
-index 62b5554..e63104d 100644
+index 15f9eb9..b0a4323 100644
 --- a/src/sdk/objc/api/peerconnection/RTCPeerConnectionFactory.mm
 +++ b/src/sdk/objc/api/peerconnection/RTCPeerConnectionFactory.mm
 @@ -21,6 +21,9 @@
@@ -188,7 +188,7 @@ index 62b5554..e63104d 100644
      _networkThread = rtc::Thread::CreateWithSocketServer();
 diff --git a/src/sdk/objc/api/peerconnection/RTCRtpCapabilities+Private.h b/src/sdk/objc/api/peerconnection/RTCRtpCapabilities+Private.h
 new file mode 100644
-index 0000000..47f3b1a
+index 0000000..f49e52f
 --- /dev/null
 +++ b/src/sdk/objc/api/peerconnection/RTCRtpCapabilities+Private.h
 @@ -0,0 +1,27 @@
@@ -221,7 +221,7 @@ index 0000000..47f3b1a
 +NS_ASSUME_NONNULL_END
 diff --git a/src/sdk/objc/api/peerconnection/RTCRtpCapabilities.h b/src/sdk/objc/api/peerconnection/RTCRtpCapabilities.h
 new file mode 100644
-index 0000000..792d100
+index 0000000..80c50d1
 --- /dev/null
 +++ b/src/sdk/objc/api/peerconnection/RTCRtpCapabilities.h
 @@ -0,0 +1,33 @@
@@ -260,7 +260,7 @@ index 0000000..792d100
 +NS_ASSUME_NONNULL_END
 diff --git a/src/sdk/objc/api/peerconnection/RTCRtpCapabilities.mm b/src/sdk/objc/api/peerconnection/RTCRtpCapabilities.mm
 new file mode 100644
-index 0000000..19c1a4c
+index 0000000..8f2f1c9
 --- /dev/null
 +++ b/src/sdk/objc/api/peerconnection/RTCRtpCapabilities.mm
 @@ -0,0 +1,58 @@
@@ -324,7 +324,7 @@ index 0000000..19c1a4c
 +@end
 diff --git a/src/sdk/objc/api/peerconnection/RTCRtpCodecCapability+Private.h b/src/sdk/objc/api/peerconnection/RTCRtpCodecCapability+Private.h
 new file mode 100644
-index 0000000..a3be101
+index 0000000..a9953bb
 --- /dev/null
 +++ b/src/sdk/objc/api/peerconnection/RTCRtpCodecCapability+Private.h
 @@ -0,0 +1,28 @@
@@ -358,7 +358,7 @@ index 0000000..a3be101
 +NS_ASSUME_NONNULL_END
 diff --git a/src/sdk/objc/api/peerconnection/RTCRtpCodecCapability.h b/src/sdk/objc/api/peerconnection/RTCRtpCodecCapability.h
 new file mode 100644
-index 0000000..02011bc
+index 0000000..4e1d8a4
 --- /dev/null
 +++ b/src/sdk/objc/api/peerconnection/RTCRtpCodecCapability.h
 @@ -0,0 +1,53 @@
@@ -417,7 +417,7 @@ index 0000000..02011bc
 +NS_ASSUME_NONNULL_END
 diff --git a/src/sdk/objc/api/peerconnection/RTCRtpCodecCapability.mm b/src/sdk/objc/api/peerconnection/RTCRtpCodecCapability.mm
 new file mode 100644
-index 0000000..29fd45b
+index 0000000..0ca2398
 --- /dev/null
 +++ b/src/sdk/objc/api/peerconnection/RTCRtpCodecCapability.mm
 @@ -0,0 +1,133 @@
@@ -570,7 +570,7 @@ index 07f6b7a..d055115 100644
   * implementation default scaling factor will be used.
   */
 diff --git a/src/sdk/objc/api/peerconnection/RTCRtpEncodingParameters.mm b/src/sdk/objc/api/peerconnection/RTCRtpEncodingParameters.mm
-index d6087da..e2020bb 100644
+index d6087da..5fc7670 100644
 --- a/src/sdk/objc/api/peerconnection/RTCRtpEncodingParameters.mm
 +++ b/src/sdk/objc/api/peerconnection/RTCRtpEncodingParameters.mm
 @@ -20,6 +20,7 @@
@@ -605,7 +605,7 @@ index d6087da..e2020bb 100644
          absl::optional<double>(_scaleResolutionDownBy.doubleValue);
 diff --git a/src/sdk/objc/api/peerconnection/RTCRtpHeaderExtensionCapability+Private.h b/src/sdk/objc/api/peerconnection/RTCRtpHeaderExtensionCapability+Private.h
 new file mode 100644
-index 0000000..9503d3c
+index 0000000..44ddecf
 --- /dev/null
 +++ b/src/sdk/objc/api/peerconnection/RTCRtpHeaderExtensionCapability+Private.h
 @@ -0,0 +1,27 @@
@@ -638,7 +638,7 @@ index 0000000..9503d3c
 +NS_ASSUME_NONNULL_END
 diff --git a/src/sdk/objc/api/peerconnection/RTCRtpHeaderExtensionCapability.h b/src/sdk/objc/api/peerconnection/RTCRtpHeaderExtensionCapability.h
 new file mode 100644
-index 0000000..5c4e165
+index 0000000..31e3aa1
 --- /dev/null
 +++ b/src/sdk/objc/api/peerconnection/RTCRtpHeaderExtensionCapability.h
 @@ -0,0 +1,30 @@
@@ -674,7 +674,7 @@ index 0000000..5c4e165
 +NS_ASSUME_NONNULL_END
 diff --git a/src/sdk/objc/api/peerconnection/RTCRtpHeaderExtensionCapability.mm b/src/sdk/objc/api/peerconnection/RTCRtpHeaderExtensionCapability.mm
 new file mode 100644
-index 0000000..88911d9
+index 0000000..fb820a2
 --- /dev/null
 +++ b/src/sdk/objc/api/peerconnection/RTCRtpHeaderExtensionCapability.mm
 @@ -0,0 +1,49 @@
@@ -728,7 +728,7 @@ index 0000000..88911d9
 +
 +@end
 diff --git a/src/sdk/objc/api/peerconnection/RTCVideoCodecInfo+Private.mm b/src/sdk/objc/api/peerconnection/RTCVideoCodecInfo+Private.mm
-index 2eb8d36..b5f0b0f 100644
+index 2eb8d36..5cc28aa 100644
 --- a/src/sdk/objc/api/peerconnection/RTCVideoCodecInfo+Private.mm
 +++ b/src/sdk/objc/api/peerconnection/RTCVideoCodecInfo+Private.mm
 @@ -12,6 +12,9 @@
@@ -791,7 +791,7 @@ index 2eb8d36..b5f0b0f 100644
  @end
 diff --git a/src/sdk/objc/api/video_codec/RTCWrappedNativeVideoDecoderFactory.h b/src/sdk/objc/api/video_codec/RTCWrappedNativeVideoDecoderFactory.h
 new file mode 100644
-index 0000000..786012d
+index 0000000..b0a4e42
 --- /dev/null
 +++ b/src/sdk/objc/api/video_codec/RTCWrappedNativeVideoDecoderFactory.h
 @@ -0,0 +1,28 @@
@@ -825,10 +825,10 @@ index 0000000..786012d
 +NS_ASSUME_NONNULL_END
 diff --git a/src/sdk/objc/api/video_codec/RTCWrappedNativeVideoDecoderFactory.mm b/src/sdk/objc/api/video_codec/RTCWrappedNativeVideoDecoderFactory.mm
 new file mode 100644
-index 0000000..266ceff
+index 0000000..1a08f0f
 --- /dev/null
 +++ b/src/sdk/objc/api/video_codec/RTCWrappedNativeVideoDecoderFactory.mm
-@@ -0,0 +1,79 @@
+@@ -0,0 +1,101 @@
 +/*
 + *  Copyright (c) 2013 The WebRTC project authors. All Rights Reserved.
 + *
@@ -896,7 +896,29 @@ index 0000000..266ceff
 +
 +- (NSArray<RTC_OBJC_TYPE(RTCVideoCodecInfo) *>*)supportedCodecs {
 +  auto formats = _wrappedFactory->GetSupportedFormats();
-+  NSMutableArray<RTC_OBJC_TYPE(RTCVideoCodecInfo)*>* result = [@[] mutableCopy];
++  NSDictionary<NSString *, NSString *> *constrainedHighParams = @{
++    @"profile-level-id" : kRTCMaxSupportedH264ProfileLevelConstrainedHigh,
++    @"level-asymmetry-allowed" : @"1",
++    @"packetization-mode" : @"1",
++  };
++  RTC_OBJC_TYPE(RTCVideoCodecInfo) *constrainedHighInfo =
++      [[RTC_OBJC_TYPE(RTCVideoCodecInfo) alloc] initWithName:kRTCVideoCodecH264Name
++                                                  parameters:constrainedHighParams];
++
++  NSDictionary<NSString *, NSString *> *constrainedBaselineParams = @{
++    @"profile-level-id" : kRTCMaxSupportedH264ProfileLevelConstrainedBaseline,
++    @"level-asymmetry-allowed" : @"1",
++    @"packetization-mode" : @"1",
++  };
++  RTC_OBJC_TYPE(RTCVideoCodecInfo) *constrainedBaselineInfo =
++      [[RTC_OBJC_TYPE(RTCVideoCodecInfo) alloc] initWithName:kRTCVideoCodecH264Name
++                                                  parameters:constrainedBaselineParams];
++
++  NSMutableArray<RTC_OBJC_TYPE(RTCVideoCodecInfo)*>* result = [@[
++    constrainedHighInfo,
++    constrainedBaselineInfo,
++  ] mutableCopy];
++
 +
 +  for (size_t i = 0; i < formats.size(); ++i) {
 +    RTC_OBJC_TYPE(RTCVideoCodecInfo)* info = [[RTC_OBJC_TYPE(RTCVideoCodecInfo)
@@ -910,7 +932,7 @@ index 0000000..266ceff
 +@end
 diff --git a/src/sdk/objc/api/video_codec/RTCWrappedNativeVideoEncoderFactory.h b/src/sdk/objc/api/video_codec/RTCWrappedNativeVideoEncoderFactory.h
 new file mode 100644
-index 0000000..ebca7b9
+index 0000000..74c9b5b
 --- /dev/null
 +++ b/src/sdk/objc/api/video_codec/RTCWrappedNativeVideoEncoderFactory.h
 @@ -0,0 +1,29 @@
@@ -945,10 +967,10 @@ index 0000000..ebca7b9
 +NS_ASSUME_NONNULL_END
 diff --git a/src/sdk/objc/api/video_codec/RTCWrappedNativeVideoEncoderFactory.mm b/src/sdk/objc/api/video_codec/RTCWrappedNativeVideoEncoderFactory.mm
 new file mode 100644
-index 0000000..f5db63d
+index 0000000..0b7f68d
 --- /dev/null
 +++ b/src/sdk/objc/api/video_codec/RTCWrappedNativeVideoEncoderFactory.mm
-@@ -0,0 +1,139 @@
+@@ -0,0 +1,160 @@
 +/*
 + *  Copyright (c) 2017 The WebRTC project authors. All Rights Reserved.
 + *
@@ -1034,7 +1056,28 @@ index 0000000..f5db63d
 +
 +- (NSArray<RTC_OBJC_TYPE(RTCVideoCodecInfo) *>*)supportedCodecs {
 +  auto formats = _wrappedFactory->GetSupportedFormats();
-+  NSMutableArray<RTC_OBJC_TYPE(RTCVideoCodecInfo)*>* result = [@[] mutableCopy];
++  NSDictionary<NSString *, NSString *> *constrainedHighParams = @{
++    @"profile-level-id" : kRTCMaxSupportedH264ProfileLevelConstrainedHigh,
++    @"level-asymmetry-allowed" : @"1",
++    @"packetization-mode" : @"1",
++  };
++  RTC_OBJC_TYPE(RTCVideoCodecInfo) *constrainedHighInfo =
++      [[RTC_OBJC_TYPE(RTCVideoCodecInfo) alloc] initWithName:kRTCVideoCodecH264Name
++                                                  parameters:constrainedHighParams];
++
++  NSDictionary<NSString *, NSString *> *constrainedBaselineParams = @{
++    @"profile-level-id" : kRTCMaxSupportedH264ProfileLevelConstrainedBaseline,
++    @"level-asymmetry-allowed" : @"1",
++    @"packetization-mode" : @"1",
++  };
++  RTC_OBJC_TYPE(RTCVideoCodecInfo) *constrainedBaselineInfo =
++      [[RTC_OBJC_TYPE(RTCVideoCodecInfo) alloc] initWithName:kRTCVideoCodecH264Name
++                                                  parameters:constrainedBaselineParams];
++
++  NSMutableArray<RTC_OBJC_TYPE(RTCVideoCodecInfo) *> *result = [@[
++    constrainedHighInfo,
++    constrainedBaselineInfo,
++  ] mutableCopy];
 +
 +  for (size_t i = 0; i < formats.size(); ++i) {
 +    RTC_OBJC_TYPE(RTCVideoCodecInfo)* info = [[RTC_OBJC_TYPE(RTCVideoCodecInfo)
@@ -1162,7 +1205,7 @@ index fa28958..18b6d61 100644
  @end
  
 diff --git a/src/sdk/objc/base/RTCVideoCodecInfo.m b/src/sdk/objc/base/RTCVideoCodecInfo.m
-index ce26ae1..31315cf 100644
+index ce26ae1..27a2b35 100644
 --- a/src/sdk/objc/base/RTCVideoCodecInfo.m
 +++ b/src/sdk/objc/base/RTCVideoCodecInfo.m
 @@ -14,16 +14,21 @@
@@ -1207,7 +1250,7 @@ index ce26ae1..31315cf 100644
  
  @end
 diff --git a/src/sdk/objc/base/RTCVideoEncoderFactory.h b/src/sdk/objc/base/RTCVideoEncoderFactory.h
-index a73cd77..15d0909 100644
+index a73cd77..39c09f1 100644
 --- a/src/sdk/objc/base/RTCVideoEncoderFactory.h
 +++ b/src/sdk/objc/base/RTCVideoEncoderFactory.h
 @@ -13,6 +13,7 @@
@@ -1231,7 +1274,7 @@ index a73cd77..15d0909 100644
  - (nullable id<RTC_OBJC_TYPE(RTCVideoEncoderSelector)>)encoderSelector;
 diff --git a/src/sdk/objc/components/video_codec/MediaCodecUtils.h b/src/sdk/objc/components/video_codec/MediaCodecUtils.h
 new file mode 100644
-index 0000000..3f21e09
+index 0000000..76aee1a
 --- /dev/null
 +++ b/src/sdk/objc/components/video_codec/MediaCodecUtils.h
 @@ -0,0 +1,59 @@
@@ -1315,7 +1358,7 @@ index de5a9c4..54d1f69 100644
  
  NS_ASSUME_NONNULL_END
 diff --git a/src/sdk/objc/components/video_codec/RTCDefaultVideoDecoderFactory.m b/src/sdk/objc/components/video_codec/RTCDefaultVideoDecoderFactory.m
-index 6e3baa8..d44b528 100644
+index 6e3baa8..5f30842 100644
 --- a/src/sdk/objc/components/video_codec/RTCDefaultVideoDecoderFactory.m
 +++ b/src/sdk/objc/components/video_codec/RTCDefaultVideoDecoderFactory.m
 @@ -10,76 +10,24 @@
@@ -1429,7 +1472,7 @@ index 92ab40c..e0344d0 100644
  @end
  
 diff --git a/src/sdk/objc/components/video_codec/RTCDefaultVideoEncoderFactory.m b/src/sdk/objc/components/video_codec/RTCDefaultVideoEncoderFactory.m
-index 8de55bd..120790e 100644
+index 8de55bd..0cd6379 100644
 --- a/src/sdk/objc/components/video_codec/RTCDefaultVideoEncoderFactory.m
 +++ b/src/sdk/objc/components/video_codec/RTCDefaultVideoEncoderFactory.m
 @@ -10,93 +10,31 @@
@@ -1573,7 +1616,7 @@ index bdae19d..f38e962 100644
  
    return [codecs copy];
 diff --git a/src/sdk/objc/components/video_codec/RTCVideoEncoderFactoryH264.m b/src/sdk/objc/components/video_codec/RTCVideoEncoderFactoryH264.m
-index 9843849..2216432 100644
+index 9843849..33229d4 100644
 --- a/src/sdk/objc/components/video_codec/RTCVideoEncoderFactoryH264.m
 +++ b/src/sdk/objc/components/video_codec/RTCVideoEncoderFactoryH264.m
 @@ -12,6 +12,7 @@
@@ -1621,7 +1664,7 @@ index 9843849..2216432 100644
 +
  @end
 diff --git a/src/sdk/objc/native/src/objc_video_encoder_factory.h b/src/sdk/objc/native/src/objc_video_encoder_factory.h
-index 85a1e53..3a3b95f 100644
+index 85a1e53..3d8c0ae 100644
 --- a/src/sdk/objc/native/src/objc_video_encoder_factory.h
 +++ b/src/sdk/objc/native/src/objc_video_encoder_factory.h
 @@ -33,6 +33,9 @@ class ObjCVideoEncoderFactory : public VideoEncoderFactory {
@@ -1635,7 +1678,7 @@ index 85a1e53..3a3b95f 100644
   private:
    id<RTC_OBJC_TYPE(RTCVideoEncoderFactory)> encoder_factory_;
 diff --git a/src/sdk/objc/native/src/objc_video_encoder_factory.mm b/src/sdk/objc/native/src/objc_video_encoder_factory.mm
-index d4ea79c..b18c644 100644
+index d4ea79c..b4cd12e 100644
 --- a/src/sdk/objc/native/src/objc_video_encoder_factory.mm
 +++ b/src/sdk/objc/native/src/objc_video_encoder_factory.mm
 @@ -206,4 +206,23 @@ std::unique_ptr<VideoEncoderFactory::EncoderSelectorInterface>
@@ -1663,7 +1706,7 @@ index d4ea79c..b18c644 100644
 +
  }  // namespace webrtc
 diff --git a/src/sdk/objc/unittests/objc_video_decoder_factory_tests.mm b/src/sdk/objc/unittests/objc_video_decoder_factory_tests.mm
-index f44d831..cf0dd5c 100644
+index f44d831..196caa1 100644
 --- a/src/sdk/objc/unittests/objc_video_decoder_factory_tests.mm
 +++ b/src/sdk/objc/unittests/objc_video_decoder_factory_tests.mm
 @@ -34,7 +34,9 @@ id<RTC_OBJC_TYPE(RTCVideoDecoderFactory)> CreateDecoderFactoryReturning(int retu
@@ -1678,7 +1721,7 @@ index f44d831..cf0dd5c 100644
    OCMStub([decoderFactoryMock createDecoder:[OCMArg any]]).andReturn(decoderMock);
    return decoderFactoryMock;
 diff --git a/src/sdk/objc/unittests/objc_video_encoder_factory_tests.mm b/src/sdk/objc/unittests/objc_video_encoder_factory_tests.mm
-index 9a4fee2..ba8db45 100644
+index 9a4fee2..8faaa36 100644
 --- a/src/sdk/objc/unittests/objc_video_encoder_factory_tests.mm
 +++ b/src/sdk/objc/unittests/objc_video_encoder_factory_tests.mm
 @@ -36,7 +36,9 @@ id<RTC_OBJC_TYPE(RTCVideoEncoderFactory)> CreateEncoderFactoryReturning(int retu
