@@ -791,10 +791,10 @@ index 2eb8d36..5cc28aa 100644
  @end
 diff --git a/src/sdk/objc/api/video_codec/RTCWrappedNativeVideoDecoderFactory.h b/src/sdk/objc/api/video_codec/RTCWrappedNativeVideoDecoderFactory.h
 new file mode 100644
-index 0000000..b0a4e42
+index 0000000..ed4745a
 --- /dev/null
 +++ b/src/sdk/objc/api/video_codec/RTCWrappedNativeVideoDecoderFactory.h
-@@ -0,0 +1,28 @@
+@@ -0,0 +1,30 @@
 +/*
 + *  Copyright 2023 The WebRTC project authors. All Rights Reserved.
 + *
@@ -809,6 +809,7 @@ index 0000000..b0a4e42
 +
 +#import "RTCMacros.h"
 +#import "RTCVideoDecoderFactory.h"
++#import "components/video_codec/RTCVideoDecoderFactoryH264.h"
 +
 +NS_ASSUME_NONNULL_BEGIN
 +
@@ -817,6 +818,7 @@ index 0000000..b0a4e42
 + */
 +RTC_OBJC_EXPORT
 +@interface RTC_OBJC_TYPE (RTCWrapperNativeVideoDecoderFactory) : NSObject <RTC_OBJC_TYPE(RTCVideoDecoderFactory)>
++@property(nonatomic, strong) RTC_OBJC_TYPE(RTCVideoDecoderFactoryH264) *HWVideoDecoderFactory;
 +
 +- (instancetype)initWithTemplateFactory;
 +
@@ -825,10 +827,10 @@ index 0000000..b0a4e42
 +NS_ASSUME_NONNULL_END
 diff --git a/src/sdk/objc/api/video_codec/RTCWrappedNativeVideoDecoderFactory.mm b/src/sdk/objc/api/video_codec/RTCWrappedNativeVideoDecoderFactory.mm
 new file mode 100644
-index 0000000..f438774
+index 0000000..631794d
 --- /dev/null
 +++ b/src/sdk/objc/api/video_codec/RTCWrappedNativeVideoDecoderFactory.mm
-@@ -0,0 +1,87 @@
+@@ -0,0 +1,88 @@
 +/*
 + *  Copyright (c) 2013 The WebRTC project authors. All Rights Reserved.
 + *
@@ -858,8 +860,9 @@ index 0000000..f438774
 +
 +@implementation RTC_OBJC_TYPE (RTCWrapperNativeVideoDecoderFactory) {
 +  std::unique_ptr<webrtc::VideoDecoderFactory> _wrappedFactory;
-+  RTCVideoDecoderFactoryH264 _HWVideoDecoderFactory;
 +}
++
++@synthesize HWVideoDecoderFactory = _HWVideoDecoderFactory;
 +
 +- (instancetype)initWithTemplateFactory {
 +  if (self = [super init]) {
@@ -896,12 +899,12 @@ index 0000000..f438774
 +}
 +
 +- (NSArray<RTC_OBJC_TYPE(RTCVideoCodecInfo) *>*)supportedCodecs {
-+  auto formats = _wrappedFactory->GetSupportedFormats()
++  auto formats = _wrappedFactory->GetSupportedFormats();
 +  auto HWSupportedCodecs = [_HWVideoDecoderFactory supportedCodecs];
 +
 +  NSMutableArray<RTC_OBJC_TYPE(RTCVideoCodecInfo)*>* result = [@[] mutableCopy];
 +
-+  int i;
++  NSUInteger i;
 +  for (i = 0; i < [HWSupportedCodecs count]; i++) {
 +    [result addObject:[HWSupportedCodecs objectAtIndex:i]];
 +  }
@@ -918,10 +921,10 @@ index 0000000..f438774
 +@end
 diff --git a/src/sdk/objc/api/video_codec/RTCWrappedNativeVideoEncoderFactory.h b/src/sdk/objc/api/video_codec/RTCWrappedNativeVideoEncoderFactory.h
 new file mode 100644
-index 0000000..182f725
+index 0000000..ae4b2f5
 --- /dev/null
 +++ b/src/sdk/objc/api/video_codec/RTCWrappedNativeVideoEncoderFactory.h
-@@ -0,0 +1,28 @@
+@@ -0,0 +1,30 @@
 +/*
 + *  Copyright 2013 The WebRTC project authors. All Rights Reserved.
 + *
@@ -936,6 +939,7 @@ index 0000000..182f725
 +
 +#import "RTCMacros.h"
 +#import "RTCVideoEncoderFactory.h"
++#import "components/video_codec/RTCVideoEncoderFactoryH264.h"
 +
 +NS_ASSUME_NONNULL_BEGIN
 +
@@ -944,6 +948,7 @@ index 0000000..182f725
 + */
 +RTC_OBJC_EXPORT
 +@interface RTC_OBJC_TYPE (RTCWrapperNativeVideoEncoderFactory) : NSObject <RTC_OBJC_TYPE(RTCVideoEncoderFactory)>
++@property(nonatomic, strong) RTC_OBJC_TYPE(RTCVideoEncoderFactoryH264) *HWVideoEncoderFactory;
 +
 +- (instancetype)initWithTemplateFactory;
 +
@@ -952,7 +957,7 @@ index 0000000..182f725
 +NS_ASSUME_NONNULL_END
 diff --git a/src/sdk/objc/api/video_codec/RTCWrappedNativeVideoEncoderFactory.mm b/src/sdk/objc/api/video_codec/RTCWrappedNativeVideoEncoderFactory.mm
 new file mode 100644
-index 0000000..61952e2
+index 0000000..3a6e2a4
 --- /dev/null
 +++ b/src/sdk/objc/api/video_codec/RTCWrappedNativeVideoEncoderFactory.mm
 @@ -0,0 +1,153 @@
@@ -984,12 +989,12 @@ index 0000000..61952e2
 +#import "base/RTCMacros.h"
 +#import "base/RTCVideoCodecInfo.h"
 +#import "helpers/NSString+StdString.h"
-+#import "components/video_codec/RTCVideoEncoderFactoryH264.h"
++#import "components/video_codec/RTCH264ProfileLevelId.h"
 +
 +@implementation RTC_OBJC_TYPE (RTCWrapperNativeVideoEncoderFactory) {
 +  std::unique_ptr<webrtc::VideoEncoderFactory> _wrappedFactory;
-+  RTCVideoEncoderFactoryH264 _HWVideoEncoderFactory;
 +}
++@synthesize HWVideoDecoderFactory = _HWVideoDecoderFactory;
 +
 +- (instancetype)initWithTemplateFactory {
 +  if (self = [super init]) {
@@ -1046,7 +1051,7 @@ index 0000000..61952e2
 +  NSMutableArray<RTC_OBJC_TYPE(RTCVideoCodecInfo) *> *result = [@[] mutableCopy];
 +  auto HWSupportedCodecs = [_HWVideoEncoderFactory supportedCodecs];
 +
-+  int i;
++  NSUInteger i;
 +  for (i = 0; i < [HWSupportedCodecs count]; i++) {
 +    [result addObject:[HWSupportedCodecs objectAtIndex:i]];
 +  }
