@@ -827,10 +827,10 @@ index 0000000..ed4745a
 +NS_ASSUME_NONNULL_END
 diff --git a/src/sdk/objc/api/video_codec/RTCWrappedNativeVideoDecoderFactory.mm b/src/sdk/objc/api/video_codec/RTCWrappedNativeVideoDecoderFactory.mm
 new file mode 100644
-index 0000000..631794d
+index 0000000..16c6014
 --- /dev/null
 +++ b/src/sdk/objc/api/video_codec/RTCWrappedNativeVideoDecoderFactory.mm
-@@ -0,0 +1,88 @@
+@@ -0,0 +1,89 @@
 +/*
 + *  Copyright (c) 2013 The WebRTC project authors. All Rights Reserved.
 + *
@@ -857,6 +857,7 @@ index 0000000..631794d
 +#import "base/RTCVideoCodecInfo.h"
 +#import "components/video_codec/RTCVideoDecoderFactoryH264.h"
 +#import "helpers/NSString+StdString.h"
++#import "components/video_codec/RTCH264ProfileLevelId.h"
 +
 +@implementation RTC_OBJC_TYPE (RTCWrapperNativeVideoDecoderFactory) {
 +  std::unique_ptr<webrtc::VideoDecoderFactory> _wrappedFactory;
@@ -957,7 +958,7 @@ index 0000000..ae4b2f5
 +NS_ASSUME_NONNULL_END
 diff --git a/src/sdk/objc/api/video_codec/RTCWrappedNativeVideoEncoderFactory.mm b/src/sdk/objc/api/video_codec/RTCWrappedNativeVideoEncoderFactory.mm
 new file mode 100644
-index 0000000..3a6e2a4
+index 0000000..6d93ef8
 --- /dev/null
 +++ b/src/sdk/objc/api/video_codec/RTCWrappedNativeVideoEncoderFactory.mm
 @@ -0,0 +1,153 @@
@@ -994,7 +995,7 @@ index 0000000..3a6e2a4
 +@implementation RTC_OBJC_TYPE (RTCWrapperNativeVideoEncoderFactory) {
 +  std::unique_ptr<webrtc::VideoEncoderFactory> _wrappedFactory;
 +}
-+@synthesize HWVideoDecoderFactory = _HWVideoDecoderFactory;
++@synthesize HWVideoEncoderFactory = _HWVideoEncoderFactory;
 +
 +- (instancetype)initWithTemplateFactory {
 +  if (self = [super init]) {
