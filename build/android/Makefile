@@ -15,6 +15,7 @@ EXTRA_GN_ARGS := \
 	rtc_build_tools=false \
 	rtc_build_examples=false \
 	rtc_include_tests=false \
+	rtc_use_h264=false \
 	is_clang=true \
 	is_component_build=false \
 	rtc_enable_protobuf=false \
