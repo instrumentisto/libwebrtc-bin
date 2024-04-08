@@ -84,45 +84,6 @@ index e28bdcc..716a516 100644
        ]
      }
  
-diff --git a/src/sdk/objc/api/peerconnection/RTCPeerConnectionFactory.mm b/src/sdk/objc/api/peerconnection/RTCPeerConnectionFactory.mm
-index 15f9eb9..b0a4323 100644
---- a/src/sdk/objc/api/peerconnection/RTCPeerConnectionFactory.mm
-+++ b/src/sdk/objc/api/peerconnection/RTCPeerConnectionFactory.mm
-@@ -21,6 +21,9 @@
- #import "RTCPeerConnection+Private.h"
- #import "RTCVideoSource+Private.h"
- #import "RTCVideoTrack+Private.h"
-+#import "RTCRtpReceiver+Private.h"
-+#import "RTCRtpCapabilities+Private.h"
-+#import "RTCRtpCodecCapability+Private.h"
- #import "base/RTCLogging.h"
- #import "base/RTCVideoDecoderFactory.h"
- #import "base/RTCVideoEncoderFactory.h"
-@@ -116,6 +119,24 @@
- #endif
- }
- 
-+- (RTC_OBJC_TYPE(RTCRtpCapabilities) *)rtpSenderCapabilitiesFor:
-+    (RTCRtpMediaType)mediaType {
-+  webrtc::RtpCapabilities capabilities =
-+      _nativeFactory->GetRtpSenderCapabilities(
-+          [RTCRtpReceiver nativeMediaTypeForMediaType:mediaType]);
-+
-+  return [[RTCRtpCapabilities alloc] initWithNativeCapabilities:capabilities];
-+}
-+
-+- (RTC_OBJC_TYPE(RTCRtpCapabilities) *)rtpReceiverCapabilitiesFor:
-+    (RTCRtpMediaType)mediaType {
-+  webrtc::RtpCapabilities capabilities =
-+      _nativeFactory->GetRtpReceiverCapabilities(
-+          [RTCRtpReceiver nativeMediaTypeForMediaType:mediaType]);
-+
-+  return [[RTCRtpCapabilities alloc] initWithNativeCapabilities:capabilities];
-+}
-+
- - (instancetype)initNative {
-   if (self = [super init]) {
-     _networkThread = rtc::Thread::CreateWithSocketServer();
 diff --git a/src/sdk/objc/api/peerconnection/RTCRtpEncodingParameters.h b/src/sdk/objc/api/peerconnection/RTCRtpEncodingParameters.h
 index 07f6b7a..d055115 100644
 --- a/src/sdk/objc/api/peerconnection/RTCRtpEncodingParameters.h
