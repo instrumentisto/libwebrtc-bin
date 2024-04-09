@@ -1,0 +1,46 @@
+diff --git a/src/sdk/objc/api/peerconnection/RTCRtpCodecCapability.h b/src/sdk/objc/api/peerconnection/RTCRtpCodecCapability.h
+index 5604148..204600e 100644
+--- a/src/sdk/objc/api/peerconnection/RTCRtpCodecCapability.h
++++ b/src/sdk/objc/api/peerconnection/RTCRtpCodecCapability.h
+@@ -18,7 +18,7 @@ RTC_OBJC_EXPORT
+ @interface RTC_OBJC_TYPE (RTCRtpCodecCapability) : NSObject
+ 
+ /** The preferred RTP payload type. */
+-@property(nonatomic, readonly, nullable) NSNumber *preferredPayloadType;
++@property(nonatomic, copy, nullable) NSNumber *preferredPayloadType;
+ 
+ /**
+  * The codec MIME subtype. Valid types are listed in:
+@@ -26,7 +26,7 @@ RTC_OBJC_EXPORT
+  *
+  * Several supported types are represented by the constants above.
+  */
+-@property(nonatomic, readonly) NSString *name;
++@property(nonatomic, copy) NSString *name;
+ 
+ /**
+  * The media type of this codec. Equivalent to MIME top-level type.
+@@ -34,19 +34,19 @@ RTC_OBJC_EXPORT
+  * Valid values are kRTCMediaStreamTrackKindAudio and
+  * kRTCMediaStreamTrackKindVideo.
+  */
+-@property(nonatomic, readonly) NSString *kind;
++@property(nonatomic, copy) NSString *kind;
+ 
+ /** The codec clock rate expressed in Hertz. */
+-@property(nonatomic, readonly, nullable) NSNumber *clockRate;
++@property(nonatomic, copy, nullable) NSNumber *clockRate;
+ 
+ /**
+  * The number of audio channels (mono=1, stereo=2).
+  * Set to null for video codecs.
+  **/
+-@property(nonatomic, readonly, nullable) NSNumber *numChannels;
++@property(nonatomic, copy, nullable) NSNumber *numChannels;
+ 
+ /** The "format specific parameters" field from the "a=fmtp" line in the SDP */
+-@property(nonatomic, readonly) NSDictionary<NSString *, NSString *> *parameters;
++@property(nonatomic, copy) NSDictionary<NSString *, NSString *> *parameters;
+ 
+ /** The MIME type of the codec. */
+ @property(nonatomic, readonly) NSString *mimeType;

@@ -29,7 +29,9 @@ package:
 .PHONY: patch
 patch: common-patch
 	cd $(SRC_DIR) && \
-	patch -p2 < $(PATCH_DIR)/enable_ios_scalability_mode.patch
+	patch -p2 < $(PATCH_DIR)/enable_ios_scalability_mode.patch && \
+	patch -p2 < $(PATCH_DIR)/fix_ios_capability.patch && \
+	patch -p2 < $(PATCH_DIR)/set_codec_preferences_ios.patch
 
 .PHONY: build
 build: patch
