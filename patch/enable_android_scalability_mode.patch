@@ -528,15 +528,16 @@ index 4bd9ee0..1f5957b 100644
        Java_Encoding_getScaleResolutionDownBy(jni, j_encoding_parameters);
    encoding.scale_resolution_down_by =
 diff --git a/src/sdk/android/src/jni/software_video_decoder_factory.cc b/src/sdk/android/src/jni/software_video_decoder_factory.cc
-index 151bf5f..fe9373d 100644
+index 6e711e8..d7d885f 100644
 --- a/src/sdk/android/src/jni/software_video_decoder_factory.cc
 +++ b/src/sdk/android/src/jni/software_video_decoder_factory.cc
-@@ -8,19 +8,29 @@
-  *  be found in the AUTHORS file in the root of the source tree.
-  */
+@@ -11,21 +11,31 @@
+ #include <memory>
  
+ #include "api/environment/environment.h"
 -#include "api/video_codecs/builtin_video_decoder_factory.h"
  #include "api/video_codecs/video_decoder.h"
+ #include "api/video_codecs/video_decoder_factory.h"
  #include "sdk/android/generated_swcodecs_jni/SoftwareVideoDecoderFactory_jni.h"
  #include "sdk/android/native_api/jni/java_types.h"
  #include "sdk/android/src/jni/jni_helpers.h"
@@ -550,19 +551,24 @@ index 151bf5f..fe9373d 100644
  namespace webrtc {
  namespace jni {
  
- static jlong JNI_SoftwareVideoDecoderFactory_CreateFactory(JNIEnv* env) {
+-static jlong JNI_SoftwareVideoDecoderFactory_CreateFactory(JNIEnv* env) {
+-  return webrtc::NativeToJavaPointer(
+-      CreateBuiltinVideoDecoderFactory().release());
+-}
++ static jlong JNI_SoftwareVideoDecoderFactory_CreateFactory(JNIEnv* env) {
 +  std::unique_ptr<webrtc::VideoDecoderFactory> video_decoder_factory =
 +      std::make_unique<webrtc::VideoDecoderFactoryTemplate<
 +          webrtc::LibvpxVp8DecoderTemplateAdapter,
 +          webrtc::LibvpxVp9DecoderTemplateAdapter,
 +          webrtc::OpenH264DecoderTemplateAdapter,
 +          webrtc::Dav1dDecoderTemplateAdapter>>();
-   return webrtc::NativeToJavaPointer(
--      CreateBuiltinVideoDecoderFactory().release());
++   return webrtc::NativeToJavaPointer(
 +      video_decoder_factory.release());
- }
++ }
  
- static jlong JNI_SoftwareVideoDecoderFactory_CreateDecoder(
+ jboolean JNI_SoftwareVideoDecoderFactory_IsSupported(
+     JNIEnv* env,
+
 diff --git a/src/sdk/android/src/jni/software_video_encoder_factory.cc b/src/sdk/android/src/jni/software_video_encoder_factory.cc
 index 4b86960..10fa403 100644
 --- a/src/sdk/android/src/jni/software_video_encoder_factory.cc
