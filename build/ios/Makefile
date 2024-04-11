@@ -26,10 +26,11 @@ package:
 	cd $(BUILD_DIR) && \
 	zip -9 -r $(PACKAGE_DIR)/$(subst $(space),,$(PACKAGE_NAME)).zip WebRTC.xcframework/*
 
-# TODO(rogurotus): fix_ios_capability.patch needed to create `RtpCodecCapability` from raw values. 
-# Remove when deleting readonly attributes from `objc/api/peerconnection/RTCRtpCodecCapability.h`
-
 .PHONY: patch
+# TODO(rogurotus): `fix_ios_capability.patch` needed to create
+#                  `RtpCodecCapability` from raw values.
+#                  Remove when deleting readonly attributes from
+#                  `objc/api/peerconnection/RTCRtpCodecCapability.h`.
 patch: common-patch
 	cd $(SRC_DIR) && \
 	patch -p2 < $(PATCH_DIR)/enable_ios_scalability_mode.patch && \
