@@ -1,8 +1,8 @@
 diff --git a/src/sdk/android/BUILD.gn b/src/sdk/android/BUILD.gn
-index 593ed36..eab1b0e 100644
+index 9aae8b9..496f791 100644
 --- a/src/sdk/android/BUILD.gn
 +++ b/src/sdk/android/BUILD.gn
-@@ -192,6 +192,8 @@ if (is_android) {
+@@ -191,6 +191,8 @@ if (is_android) {
        "api/org/webrtc/CapturerObserver.java",
        "api/org/webrtc/EncodedImage.java",
        "api/org/webrtc/VideoCodecInfo.java",
@@ -11,7 +11,7 @@ index 593ed36..eab1b0e 100644
        "api/org/webrtc/VideoCodecStatus.java",
        "api/org/webrtc/VideoDecoder.java",
        "api/org/webrtc/VideoDecoderFactory.java",
-@@ -1319,6 +1321,8 @@ if (current_os == "linux" || is_android) {
+@@ -1305,6 +1307,8 @@ if (current_os == "linux" || is_android) {
        "api/org/webrtc/JavaI420Buffer.java",
        "api/org/webrtc/TimestampAligner.java",
        "api/org/webrtc/VideoCodecInfo.java",
@@ -20,6 +20,43 @@ index 593ed36..eab1b0e 100644
        "api/org/webrtc/VideoCodecStatus.java",
        "api/org/webrtc/VideoDecoder.java",
        "api/org/webrtc/VideoDecoderFactory.java",
+diff --git a/src/sdk/android/api/org/webrtc/CodecSupport.java b/src/sdk/android/api/org/webrtc/CodecSupport.java
+new file mode 100644
+index 0000000..18c0616
+--- /dev/null
++++ b/src/sdk/android/api/org/webrtc/CodecSupport.java
+@@ -0,0 +1,12 @@
++package org.webrtc;
++
++public class CodecSupport {
++  public boolean is_supported;
++  public boolean is_power_efficient;
++
++  @CalledByNative
++  public CodecSupport(boolean is_supported, boolean is_power_efficient) {
++    this.is_supported = is_supported;
++    this.is_power_efficient = is_power_efficient;
++  }
++}
+diff --git a/src/sdk/android/api/org/webrtc/CodecSupportUtils.java b/src/sdk/android/api/org/webrtc/CodecSupportUtils.java
+new file mode 100644
+index 0000000..5aa4e6d
+--- /dev/null
++++ b/src/sdk/android/api/org/webrtc/CodecSupportUtils.java
+@@ -0,0 +1,13 @@
++package org.webrtc;
++
++public class CodecSupportUtils {
++  @CalledByNative
++  public static boolean getIsSupported(CodecSupport codec) {
++    return codec.is_supported;
++  }
++
++  @CalledByNative
++  public static boolean getIsPowerEfficient(CodecSupport codec) {
++    return codec.is_power_efficient;
++  }
++}
 diff --git a/src/sdk/android/api/org/webrtc/DefaultVideoEncoderFactory.java b/src/sdk/android/api/org/webrtc/DefaultVideoEncoderFactory.java
 index 76896b6..9be1c7e 100644
 --- a/src/sdk/android/api/org/webrtc/DefaultVideoEncoderFactory.java
@@ -125,27 +162,26 @@ index 9ca8311..1fcffe7 100644
      @CalledByNative("Encoding")
      Double getScaleResolutionDownBy() {
 diff --git a/src/sdk/android/api/org/webrtc/SoftwareVideoEncoderFactory.java b/src/sdk/android/api/org/webrtc/SoftwareVideoEncoderFactory.java
-index ad19b4c..ad754ed 100644
+index 7f4c457..98ac43a 100644
 --- a/src/sdk/android/api/org/webrtc/SoftwareVideoEncoderFactory.java
 +++ b/src/sdk/android/api/org/webrtc/SoftwareVideoEncoderFactory.java
-@@ -49,6 +49,11 @@ public class SoftwareVideoEncoderFactory implements VideoEncoderFactory {
+@@ -50,9 +50,17 @@ public class SoftwareVideoEncoderFactory implements VideoEncoderFactory {
      return nativeGetSupportedCodecs(nativeFactory).toArray(new VideoCodecInfo[0]);
    }
  
-+  @Override
++@Override
 +  public CodecSupport queryCodecSupport(VideoCodecInfo format, String scalability_mode) {
 +    return nativeQueryCodecSupport(nativeFactory, format, scalability_mode);
 +  }
 +
    private static native long nativeCreateFactory();
  
-   private static native boolean nativeIsSupported(long factory, VideoCodecInfo info);
-@@ -56,4 +61,6 @@ public class SoftwareVideoEncoderFactory implements VideoEncoderFactory {
-   private static native long nativeCreate(long factory, long webrtcEnvRef, VideoCodecInfo info);
+   private static native long nativeCreateEncoder(long factory, VideoCodecInfo videoCodecInfo);
  
    private static native List<VideoCodecInfo> nativeGetSupportedCodecs(long factory);
 +
 +  private static native CodecSupport nativeQueryCodecSupport(long factory, VideoCodecInfo format, String scalability_mode);
++  
  }
 diff --git a/src/sdk/android/api/org/webrtc/VideoCodecInfo.java b/src/sdk/android/api/org/webrtc/VideoCodecInfo.java
 index 4f97cf7..715ec6c 100644
@@ -227,7 +263,7 @@ index 6f44812..e85b275 100644
      this.useEglContext = useEglContext;
    }
 diff --git a/src/sdk/android/instrumentationtests/src/org/webrtc/DefaultVideoEncoderFactoryTest.java b/src/sdk/android/instrumentationtests/src/org/webrtc/DefaultVideoEncoderFactoryTest.java
-index fe608c7..7c9b419 100644
+index fe608c7..313ca8c 100644
 --- a/src/sdk/android/instrumentationtests/src/org/webrtc/DefaultVideoEncoderFactoryTest.java
 +++ b/src/sdk/android/instrumentationtests/src/org/webrtc/DefaultVideoEncoderFactoryTest.java
 @@ -47,7 +47,7 @@ public class DefaultVideoEncoderFactoryTest {
@@ -253,13 +289,13 @@ index fe608c7..7c9b419 100644
      assertEquals("value", supportedCodecs[3].params.get("param"));
    }
 +
-+  @Override
++  @Override 
 +  public CodecSupport queryCodecSupport(VideoCodecInfo format, String scalability_mode) {
 +    return new CodecSupport(false, false);
 +  }
  }
 diff --git a/src/sdk/android/instrumentationtests/src/org/webrtc/RtpCapabilitiesTest.java b/src/sdk/android/instrumentationtests/src/org/webrtc/RtpCapabilitiesTest.java
-index 961ecd5..484738d 100644
+index 961ecd5..888723e 100644
 --- a/src/sdk/android/instrumentationtests/src/org/webrtc/RtpCapabilitiesTest.java
 +++ b/src/sdk/android/instrumentationtests/src/org/webrtc/RtpCapabilitiesTest.java
 @@ -82,8 +82,8 @@ public class RtpCapabilitiesTest {
@@ -278,7 +314,7 @@ index 961ecd5..484738d 100644
      return rtpMaps;
    }
 +
-+  @Override
++  @Override 
 +  public CodecSupport queryCodecSupport(VideoCodecInfo format, String scalability_mode) {
 +    return new CodecSupport(false, false);
 +  }
@@ -350,7 +386,7 @@ index abb79c6..a5bd34a 100644
    public static boolean isSameH264Profile(
        Map<String, String> params1, Map<String, String> params2) {
 diff --git a/src/sdk/android/src/java/org/webrtc/MediaCodecUtils.java b/src/sdk/android/src/java/org/webrtc/MediaCodecUtils.java
-index 5417fec..4c3b90e 100644
+index 5417fec..39ed078 100644
 --- a/src/sdk/android/src/java/org/webrtc/MediaCodecUtils.java
 +++ b/src/sdk/android/src/java/org/webrtc/MediaCodecUtils.java
 @@ -15,7 +15,9 @@ import android.media.MediaCodecInfo;
@@ -363,10 +399,11 @@ index 5417fec..4c3b90e 100644
  import java.util.Map;
  
  /** Container class for static constants and helpers used with MediaCodec. */
-@@ -55,6 +57,55 @@ class MediaCodecUtils {
+@@ -54,6 +56,55 @@ class MediaCodecUtils {
+       MediaCodecInfo.CodecCapabilities.COLOR_FormatYUV420SemiPlanar,
        MediaCodecInfo.CodecCapabilities.COLOR_QCOM_FormatYUV420SemiPlanar,
        MediaCodecUtils.COLOR_QCOM_FORMATYUV420PackedSemiPlanar32m};
- 
++  
 +  // All possible scalability Modes.
 +  static final List<String> kAllScalabilityModes = Arrays.asList(
 +      "L1T1",
@@ -415,10 +452,9 @@ index 5417fec..4c3b90e 100644
 +      "L1T1",
 +      "L1T2",
 +      "L1T3");
-+
+ 
    // Color formats supported by texture mode encoding - in order of preference.
    static final int[] TEXTURE_COLOR_FORMATS =
-       new int[] {MediaCodecInfo.CodecCapabilities.COLOR_FormatSurface};
 @@ -94,6 +145,21 @@ class MediaCodecUtils {
      }
    }
@@ -532,14 +568,15 @@ index 6e711e8..d7d885f 100644
  
  jboolean JNI_SoftwareVideoDecoderFactory_IsSupported(
      JNIEnv* env,
+
 diff --git a/src/sdk/android/src/jni/software_video_encoder_factory.cc b/src/sdk/android/src/jni/software_video_encoder_factory.cc
-index bcd4c1d..7ba74c0 100644
+index 4b86960..10fa403 100644
 --- a/src/sdk/android/src/jni/software_video_encoder_factory.cc
 +++ b/src/sdk/android/src/jni/software_video_encoder_factory.cc
-@@ -9,19 +9,30 @@
+@@ -8,19 +8,30 @@
+  *  be found in the AUTHORS file in the root of the source tree.
   */
  
- #include "api/environment/environment.h"
 -#include "api/video_codecs/builtin_video_encoder_factory.h"
  #include "api/video_codecs/video_encoder.h"
  #include "sdk/android/generated_swcodecs_jni/SoftwareVideoEncoderFactory_jni.h"
@@ -568,8 +605,8 @@ index bcd4c1d..7ba74c0 100644
 +      video_encoder_factory.release());
  }
  
- jboolean JNI_SoftwareVideoEncoderFactory_IsSupported(
-@@ -55,5 +66,29 @@ JNI_SoftwareVideoEncoderFactory_GetSupportedCodecs(JNIEnv* env,
+ static jlong JNI_SoftwareVideoEncoderFactory_CreateEncoder(
+@@ -49,5 +60,29 @@ JNI_SoftwareVideoEncoderFactory_GetSupportedCodecs(JNIEnv* env,
                                    &webrtc::jni::SdpVideoFormatToVideoCodecInfo);
  }
  
@@ -600,7 +637,7 @@ index bcd4c1d..7ba74c0 100644
  }  // namespace jni
  }  // namespace webrtc
 diff --git a/src/sdk/android/src/jni/video_codec_info.cc b/src/sdk/android/src/jni/video_codec_info.cc
-index a218a1d..c5d4cf3 100644
+index a218a1d..f64f753 100644
 --- a/src/sdk/android/src/jni/video_codec_info.cc
 +++ b/src/sdk/android/src/jni/video_codec_info.cc
 @@ -13,15 +13,36 @@
@@ -654,7 +691,7 @@ index a218a1d..c5d4cf3 100644
  
  }  // namespace jni
 diff --git a/src/sdk/android/src/jni/video_encoder_factory_wrapper.cc b/src/sdk/android/src/jni/video_encoder_factory_wrapper.cc
-index 78aa145..42b63f5 100644
+index 7df129b..91d9d9d 100644
 --- a/src/sdk/android/src/jni/video_encoder_factory_wrapper.cc
 +++ b/src/sdk/android/src/jni/video_encoder_factory_wrapper.cc
 @@ -14,6 +14,7 @@
@@ -665,7 +702,7 @@ index 78aa145..42b63f5 100644
  #include "sdk/android/native_api/jni/class_loader.h"
  #include "sdk/android/native_api/jni/java_types.h"
  #include "sdk/android/src/jni/video_codec_info.h"
-@@ -127,5 +128,27 @@ VideoEncoderFactoryWrapper::GetEncoderSelector() const {
+@@ -126,5 +127,27 @@ VideoEncoderFactoryWrapper::GetEncoderSelector() const {
    return std::make_unique<VideoEncoderSelectorWrapper>(jni, selector);
  }
  
@@ -694,10 +731,10 @@ index 78aa145..42b63f5 100644
  }  // namespace jni
  }  // namespace webrtc
 diff --git a/src/sdk/android/src/jni/video_encoder_factory_wrapper.h b/src/sdk/android/src/jni/video_encoder_factory_wrapper.h
-index 9b383a8..4aeb0db 100644
+index bf6d1e3..d0845c7 100644
 --- a/src/sdk/android/src/jni/video_encoder_factory_wrapper.h
 +++ b/src/sdk/android/src/jni/video_encoder_factory_wrapper.h
-@@ -41,6 +41,9 @@ class VideoEncoderFactoryWrapper : public VideoEncoderFactory {
+@@ -40,6 +40,9 @@ class VideoEncoderFactoryWrapper : public VideoEncoderFactory {
  
    std::unique_ptr<EncoderSelectorInterface> GetEncoderSelector() const override;
  
