@@ -1157,14 +1157,24 @@ index 9843849..33229d4 100644
 +
  @end
 diff --git a/src/sdk/objc/native/src/objc_video_decoder_factory.mm b/src/sdk/objc/native/src/objc_video_decoder_factory.mm
-index f9ad401..0d6e87c 100644
+index f9ad401..42f0023 100644
 --- a/src/sdk/objc/native/src/objc_video_decoder_factory.mm
 +++ b/src/sdk/objc/native/src/objc_video_decoder_factory.mm
-@@ -95,7 +95,7 @@ std::unique_ptr<VideoDecoder> ObjCVideoDecoderFactory::Create(const Environment
+@@ -19,6 +19,7 @@
+ #import "sdk/objc/api/peerconnection/RTCEncodedImage+Private.h"
+ #import "sdk/objc/api/peerconnection/RTCVideoCodecInfo+Private.h"
+ #import "sdk/objc/api/video_codec/RTCNativeVideoDecoderBuilder+Native.h"
++#import "sdk/objc/api/video_codec/RTCWrappedNativeVideoDecoder.h"
+ #import "sdk/objc/helpers/NSString+StdString.h"
+ 
+ #include "api/video_codecs/sdp_video_format.h"
+@@ -94,8 +95,8 @@ std::unique_ptr<VideoDecoder> ObjCVideoDecoderFactory::Create(const Environment
+     if ([codecName isEqualToString:codecInfo.name]) {
        id<RTC_OBJC_TYPE(RTCVideoDecoder)> decoder = [decoder_factory_ createDecoder:codecInfo];
  
-       if ([decoder conformsToProtocol:@protocol(RTC_OBJC_TYPE(RTCNativeVideoDecoderBuilder))]) {
+-      if ([decoder conformsToProtocol:@protocol(RTC_OBJC_TYPE(RTCNativeVideoDecoderBuilder))]) {
 -        return [((id<RTC_OBJC_TYPE(RTCNativeVideoDecoderBuilder)>)decoder) build:env];
++      if ([decoder isKindOfClass:[RTC_OBJC_TYPE(RTCWrappedNativeVideoDecoder) class]]) {
 +        return [(RTC_OBJC_TYPE(RTCWrappedNativeVideoDecoder) *)decoder releaseWrappedDecoder];
        } else {
          return std::unique_ptr<ObjCVideoDecoder>(new ObjCVideoDecoder(decoder));
