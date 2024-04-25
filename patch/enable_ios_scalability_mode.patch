@@ -336,7 +336,7 @@ index 0000000..ed4745a
 +NS_ASSUME_NONNULL_END
 diff --git a/src/sdk/objc/api/video_codec/RTCWrappedNativeVideoDecoderFactory.mm b/src/sdk/objc/api/video_codec/RTCWrappedNativeVideoDecoderFactory.mm
 new file mode 100644
-index 0000000..5f0f5ef
+index 0000000..01b3b46
 --- /dev/null
 +++ b/src/sdk/objc/api/video_codec/RTCWrappedNativeVideoDecoderFactory.mm
 @@ -0,0 +1,91 @@
@@ -370,7 +370,7 @@ index 0000000..5f0f5ef
 +
 +@implementation RTC_OBJC_TYPE (RTCWrapperNativeVideoDecoderFactory) {
 +  std::unique_ptr<webrtc::VideoDecoderFactory> _wrappedFactory;
-+  Environment _env;
++  std::unique_ptr<webrtc::Environment> _env;
 +}
 +
 +@synthesize HWVideoDecoderFactory = _HWVideoDecoderFactory;
@@ -382,7 +382,7 @@ index 0000000..5f0f5ef
 +        webrtc::LibvpxVp9DecoderTemplateAdapter,
 +        webrtc::OpenH264DecoderTemplateAdapter,
 +        webrtc::Dav1dDecoderTemplateAdapter>>();
-+    _env = CreateEnvironment();
++    _env = std::make_unique<webrtc::Environment>(webrtc::CreateEnvironment());
 +  }
 +  _HWVideoDecoderFactory = [[RTC_OBJC_TYPE(RTCVideoDecoderFactoryH264) alloc] init];
 +  return self;
@@ -407,7 +407,7 @@ index 0000000..5f0f5ef
 +                                       parameters);
 +
 +  return [[RTC_OBJC_TYPE(RTCWrappedNativeVideoDecoder) alloc]
-+      initWithNativeDecoder:_wrappedFactory->Create(_env, format)];
++      initWithNativeDecoder:_wrappedFactory->Create(*_env, format)];
 +}
 +
 +- (NSArray<RTC_OBJC_TYPE(RTCVideoCodecInfo) *>*)supportedCodecs {
