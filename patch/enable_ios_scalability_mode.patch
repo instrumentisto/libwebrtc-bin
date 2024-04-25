@@ -336,10 +336,10 @@ index 0000000..ed4745a
 +NS_ASSUME_NONNULL_END
 diff --git a/src/sdk/objc/api/video_codec/RTCWrappedNativeVideoDecoderFactory.mm b/src/sdk/objc/api/video_codec/RTCWrappedNativeVideoDecoderFactory.mm
 new file mode 100644
-index 0000000..01b3b46
+index 0000000..591ef4d
 --- /dev/null
 +++ b/src/sdk/objc/api/video_codec/RTCWrappedNativeVideoDecoderFactory.mm
-@@ -0,0 +1,91 @@
+@@ -0,0 +1,92 @@
 +/*
 + *  Copyright (c) 2013 The WebRTC project authors. All Rights Reserved.
 + *
@@ -362,6 +362,7 @@ index 0000000..01b3b46
 +#include "api/video_codecs/video_decoder_factory_template_libvpx_vp8_adapter.h"
 +#include "api/video_codecs/video_decoder_factory_template_libvpx_vp9_adapter.h"
 +#include "api/video_codecs/video_decoder_factory_template_open_h264_adapter.h"
++#include "api/environment/environment_factory.h"
 +#import "base/RTCMacros.h"
 +#import "base/RTCVideoCodecInfo.h"
 +#import "components/video_codec/RTCVideoDecoderFactoryH264.h"
