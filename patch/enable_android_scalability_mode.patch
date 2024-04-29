@@ -1,8 +1,8 @@
 diff --git a/src/sdk/android/BUILD.gn b/src/sdk/android/BUILD.gn
-index 9aae8b9..496f791 100644
+index 593ed36..eab1b0e 100644
 --- a/src/sdk/android/BUILD.gn
 +++ b/src/sdk/android/BUILD.gn
-@@ -191,6 +191,8 @@ if (is_android) {
+@@ -192,6 +192,8 @@ if (is_android) {
        "api/org/webrtc/CapturerObserver.java",
        "api/org/webrtc/EncodedImage.java",
        "api/org/webrtc/VideoCodecInfo.java",
@@ -11,7 +11,7 @@ index 9aae8b9..496f791 100644
        "api/org/webrtc/VideoCodecStatus.java",
        "api/org/webrtc/VideoDecoder.java",
        "api/org/webrtc/VideoDecoderFactory.java",
-@@ -1305,6 +1307,8 @@ if (current_os == "linux" || is_android) {
+@@ -1319,6 +1321,8 @@ if (current_os == "linux" || is_android) {
        "api/org/webrtc/JavaI420Buffer.java",
        "api/org/webrtc/TimestampAligner.java",
        "api/org/webrtc/VideoCodecInfo.java",
@@ -22,7 +22,7 @@ index 9aae8b9..496f791 100644
        "api/org/webrtc/VideoDecoderFactory.java",
 diff --git a/src/sdk/android/api/org/webrtc/CodecSupport.java b/src/sdk/android/api/org/webrtc/CodecSupport.java
 new file mode 100644
-index 0000000..18c0616
+index 0000000..6100236
 --- /dev/null
 +++ b/src/sdk/android/api/org/webrtc/CodecSupport.java
 @@ -0,0 +1,12 @@
@@ -40,7 +40,7 @@ index 0000000..18c0616
 +}
 diff --git a/src/sdk/android/api/org/webrtc/CodecSupportUtils.java b/src/sdk/android/api/org/webrtc/CodecSupportUtils.java
 new file mode 100644
-index 0000000..5aa4e6d
+index 0000000..41545de
 --- /dev/null
 +++ b/src/sdk/android/api/org/webrtc/CodecSupportUtils.java
 @@ -0,0 +1,13 @@
@@ -162,26 +162,27 @@ index 9ca8311..1fcffe7 100644
      @CalledByNative("Encoding")
      Double getScaleResolutionDownBy() {
 diff --git a/src/sdk/android/api/org/webrtc/SoftwareVideoEncoderFactory.java b/src/sdk/android/api/org/webrtc/SoftwareVideoEncoderFactory.java
-index 7f4c457..98ac43a 100644
+index ad19b4c..ad754ed 100644
 --- a/src/sdk/android/api/org/webrtc/SoftwareVideoEncoderFactory.java
 +++ b/src/sdk/android/api/org/webrtc/SoftwareVideoEncoderFactory.java
-@@ -50,9 +50,17 @@ public class SoftwareVideoEncoderFactory implements VideoEncoderFactory {
+@@ -49,6 +49,11 @@ public class SoftwareVideoEncoderFactory implements VideoEncoderFactory {
      return nativeGetSupportedCodecs(nativeFactory).toArray(new VideoCodecInfo[0]);
    }
  
-+@Override
++  @Override
 +  public CodecSupport queryCodecSupport(VideoCodecInfo format, String scalability_mode) {
 +    return nativeQueryCodecSupport(nativeFactory, format, scalability_mode);
 +  }
 +
    private static native long nativeCreateFactory();
  
-   private static native long nativeCreateEncoder(long factory, VideoCodecInfo videoCodecInfo);
+   private static native boolean nativeIsSupported(long factory, VideoCodecInfo info);
+@@ -56,4 +61,6 @@ public class SoftwareVideoEncoderFactory implements VideoEncoderFactory {
+   private static native long nativeCreate(long factory, long webrtcEnvRef, VideoCodecInfo info);
  
    private static native List<VideoCodecInfo> nativeGetSupportedCodecs(long factory);
 +
 +  private static native CodecSupport nativeQueryCodecSupport(long factory, VideoCodecInfo format, String scalability_mode);
-+  
  }
 diff --git a/src/sdk/android/api/org/webrtc/VideoCodecInfo.java b/src/sdk/android/api/org/webrtc/VideoCodecInfo.java
 index 4f97cf7..715ec6c 100644
@@ -568,15 +569,14 @@ index 6e711e8..d7d885f 100644
  
  jboolean JNI_SoftwareVideoDecoderFactory_IsSupported(
      JNIEnv* env,
-
 diff --git a/src/sdk/android/src/jni/software_video_encoder_factory.cc b/src/sdk/android/src/jni/software_video_encoder_factory.cc
-index 4b86960..10fa403 100644
+index bcd4c1d..7ba74c0 100644
 --- a/src/sdk/android/src/jni/software_video_encoder_factory.cc
 +++ b/src/sdk/android/src/jni/software_video_encoder_factory.cc
-@@ -8,19 +8,30 @@
-  *  be found in the AUTHORS file in the root of the source tree.
+@@ -9,19 +9,30 @@
   */
  
+ #include "api/environment/environment.h"
 -#include "api/video_codecs/builtin_video_encoder_factory.h"
  #include "api/video_codecs/video_encoder.h"
  #include "sdk/android/generated_swcodecs_jni/SoftwareVideoEncoderFactory_jni.h"
@@ -605,8 +605,8 @@ index 4b86960..10fa403 100644
 +      video_encoder_factory.release());
  }
  
- static jlong JNI_SoftwareVideoEncoderFactory_CreateEncoder(
-@@ -49,5 +60,29 @@ JNI_SoftwareVideoEncoderFactory_GetSupportedCodecs(JNIEnv* env,
+ jboolean JNI_SoftwareVideoEncoderFactory_IsSupported(
+@@ -55,5 +66,29 @@ JNI_SoftwareVideoEncoderFactory_GetSupportedCodecs(JNIEnv* env,
                                    &webrtc::jni::SdpVideoFormatToVideoCodecInfo);
  }
  
@@ -637,7 +637,7 @@ index 4b86960..10fa403 100644
  }  // namespace jni
  }  // namespace webrtc
 diff --git a/src/sdk/android/src/jni/video_codec_info.cc b/src/sdk/android/src/jni/video_codec_info.cc
-index a218a1d..f64f753 100644
+index a218a1d..c5d4cf3 100644
 --- a/src/sdk/android/src/jni/video_codec_info.cc
 +++ b/src/sdk/android/src/jni/video_codec_info.cc
 @@ -13,15 +13,36 @@
@@ -691,7 +691,7 @@ index a218a1d..f64f753 100644
  
  }  // namespace jni
 diff --git a/src/sdk/android/src/jni/video_encoder_factory_wrapper.cc b/src/sdk/android/src/jni/video_encoder_factory_wrapper.cc
-index 7df129b..91d9d9d 100644
+index 78aa145..42b63f5 100644
 --- a/src/sdk/android/src/jni/video_encoder_factory_wrapper.cc
 +++ b/src/sdk/android/src/jni/video_encoder_factory_wrapper.cc
 @@ -14,6 +14,7 @@
@@ -702,7 +702,7 @@ index 7df129b..91d9d9d 100644
  #include "sdk/android/native_api/jni/class_loader.h"
  #include "sdk/android/native_api/jni/java_types.h"
  #include "sdk/android/src/jni/video_codec_info.h"
-@@ -126,5 +127,27 @@ VideoEncoderFactoryWrapper::GetEncoderSelector() const {
+@@ -127,5 +128,27 @@ VideoEncoderFactoryWrapper::GetEncoderSelector() const {
    return std::make_unique<VideoEncoderSelectorWrapper>(jni, selector);
  }
  
@@ -731,10 +731,10 @@ index 7df129b..91d9d9d 100644
  }  // namespace jni
  }  // namespace webrtc
 diff --git a/src/sdk/android/src/jni/video_encoder_factory_wrapper.h b/src/sdk/android/src/jni/video_encoder_factory_wrapper.h
-index bf6d1e3..d0845c7 100644
+index 9b383a8..4aeb0db 100644
 --- a/src/sdk/android/src/jni/video_encoder_factory_wrapper.h
 +++ b/src/sdk/android/src/jni/video_encoder_factory_wrapper.h
-@@ -40,6 +40,9 @@ class VideoEncoderFactoryWrapper : public VideoEncoderFactory {
+@@ -41,6 +41,9 @@ class VideoEncoderFactoryWrapper : public VideoEncoderFactory {
  
    std::unique_ptr<EncoderSelectorInterface> GetEncoderSelector() const override;
  
