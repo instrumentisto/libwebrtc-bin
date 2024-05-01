@@ -56,6 +56,8 @@ jobs:
       - run: powershell .\disk_cleanup.bat
         if: ${{ contains('windows', matrix.os) }}
 
+      - run: sudo scripts/apt_install.sh
+        if: ${{ contains('android linux', matrix.os) }}
       - run: pip install setuptools
         if: ${{ contains('ios macos', matrix.os) }}
 
