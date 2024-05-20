@@ -1,5 +1,5 @@
 diff --git a/src/sdk/BUILD.gn b/src/sdk/BUILD.gn
-index d31673e..cf840c6 100644
+index d31673e..d9126ff 100644
 --- a/src/sdk/BUILD.gn
 +++ b/src/sdk/BUILD.gn
 @@ -96,6 +96,8 @@ if (is_ios || is_mac) {
@@ -19,7 +19,31 @@ index d31673e..cf840c6 100644
        ]
  
        defines = []
-@@ -1269,6 +1272,7 @@ if (is_ios || is_mac) {
+@@ -769,6 +772,7 @@ if (is_ios || is_mac) {
+       deps = [
+         ":base_objc",
+         ":wrapped_native_codec_objc",
++        "../media:rtc_media_base",
+         "../modules/video_coding:webrtc_vp8",
+       ]
+     }
+@@ -786,6 +790,7 @@ if (is_ios || is_mac) {
+       deps = [
+         ":base_objc",
+         ":wrapped_native_codec_objc",
++        "../media:rtc_media_base",
+         "../modules/video_coding:webrtc_vp9",
+       ]
+     }
+@@ -817,6 +822,7 @@ if (is_ios || is_mac) {
+       deps = [
+         ":base_objc",
+         ":wrapped_native_codec_objc",
++        "../media:rtc_media_base",
+         "../modules/video_coding/codecs/av1:libaom_av1_encoder",
+       ]
+     }
+@@ -1269,6 +1275,7 @@ if (is_ios || is_mac) {
            "objc/base/RTCVideoDecoder.h",
            "objc/base/RTCVideoDecoderFactory.h",
            "objc/base/RTCVideoEncoder.h",
@@ -27,7 +51,7 @@ index d31673e..cf840c6 100644
            "objc/base/RTCVideoEncoderFactory.h",
            "objc/base/RTCVideoEncoderQpThresholds.h",
            "objc/base/RTCVideoEncoderSettings.h",
-@@ -1345,6 +1349,8 @@ if (is_ios || is_mac) {
+@@ -1345,6 +1352,8 @@ if (is_ios || is_mac) {
            "objc/api/video_codec/RTCVideoEncoderAV1.h",
            "objc/api/video_frame_buffer/RTCNativeI420Buffer.h",
            "objc/api/video_frame_buffer/RTCNativeMutableI420Buffer.h",
@@ -36,7 +60,7 @@ index d31673e..cf840c6 100644
          ]
  
          if (!build_with_chromium) {
-@@ -1371,6 +1377,7 @@ if (is_ios || is_mac) {
+@@ -1371,6 +1380,7 @@ if (is_ios || is_mac) {
            ":native_api",
            ":native_video",
            ":peerconnectionfactory_base_objc",
@@ -44,7 +68,7 @@ index d31673e..cf840c6 100644
            ":videocapture_objc",
            ":videocodec_objc",
            ":videotoolbox_objc",
-@@ -1471,6 +1478,7 @@ if (is_ios || is_mac) {
+@@ -1471,6 +1481,7 @@ if (is_ios || is_mac) {
            "objc/base/RTCVideoDecoder.h",
            "objc/base/RTCVideoDecoderFactory.h",
            "objc/base/RTCVideoEncoder.h",
@@ -52,7 +76,7 @@ index d31673e..cf840c6 100644
            "objc/base/RTCVideoEncoderFactory.h",
            "objc/base/RTCVideoEncoderQpThresholds.h",
            "objc/base/RTCVideoEncoderSettings.h",
-@@ -1506,6 +1514,7 @@ if (is_ios || is_mac) {
+@@ -1506,6 +1517,7 @@ if (is_ios || is_mac) {
            ":native_api",
            ":native_video",
            ":peerconnectionfactory_base_objc",
@@ -60,12 +84,14 @@ index d31673e..cf840c6 100644
            ":videocapture_objc",
            ":videocodec_objc",
            ":videotoolbox_objc",
-@@ -1544,6 +1553,12 @@ if (is_ios || is_mac) {
+@@ -1544,6 +1556,14 @@ if (is_ios || is_mac) {
          "objc/api/video_codec/RTCNativeVideoEncoder.h",
          "objc/api/video_codec/RTCNativeVideoEncoder.mm",
          "objc/api/video_codec/RTCNativeVideoEncoderBuilder+Native.h",
 +        "objc/api/video_codec/RTCWrappedNativeVideoDecoder.h",
 +        "objc/api/video_codec/RTCWrappedNativeVideoDecoder.mm",
++        "objc/api/video_codec/RTCWrappedNativeVideoEncoder.h",
++-       "objc/api/video_codec/RTCWrappedNativeVideoEncoder.mm",
 +        "objc/api/video_codec/RTCWrappedNativeVideoDecoderFactory.h",
 +        "objc/api/video_codec/RTCWrappedNativeVideoDecoderFactory.mm",
 +        "objc/api/video_codec/RTCWrappedNativeVideoEncoderFactory.h",
@@ -73,7 +99,7 @@ index d31673e..cf840c6 100644
        ]
  
        configs += [ "..:common_objc" ]
-@@ -1554,8 +1569,12 @@ if (is_ios || is_mac) {
+@@ -1554,8 +1574,12 @@ if (is_ios || is_mac) {
          ":helpers_objc",
          "../api/environment",
          "../api/video_codecs:video_codecs_api",
@@ -432,6 +458,67 @@ index 0000000..591ef4d
 +}
 +
 +@end
+diff --git a/src/sdk/objc/api/video_codec/RTCWrappedNativeVideoEncoder.h b/src/sdk/objc/api/video_codec/RTCWrappedNativeVideoEncoder.h
+new file mode 100644
+index 0000000..72b473c
+--- /dev/null
++++ b/src/sdk/objc/api/video_codec/RTCWrappedNativeVideoEncoder.h
+@@ -0,0 +1,22 @@
++/*
++ *  Copyright (c) 2017 The WebRTC project authors. All Rights Reserved.
++ *
++ *  Use of this source code is governed by a BSD-style license
++ *  that can be found in the LICENSE file in the root of the source
++ *  tree. An additional intellectual property rights grant can be found
++ *  in the file PATENTS.  All contributing project authors may
++ *  be found in the AUTHORS file in the root of the source tree.
++ */
++#import <Foundation/Foundation.h>
++#import "RTCNativeVideoEncoder.h"
++#import "base/RTCMacros.h"
++#import "base/RTCVideoEncoder.h"
++#include "api/video_codecs/sdp_video_format.h"
++#include "api/video_codecs/video_encoder.h"
++#include "media/base/codec.h"
++// TODO: bugs.webrtc.org/15860 - Remove in favor of the RTCNativeVideoEncoderBuilder
++@interface RTC_OBJC_TYPE (RTCWrappedNativeVideoEncoder) : RTC_OBJC_TYPE (RTCNativeVideoEncoder)
++- (instancetype)initWithNativeEncoder:(std::unique_ptr<webrtc::VideoEncoder>)encoder;
++/* This moves the ownership of the wrapped encoder to the caller. */
++- (std::unique_ptr<webrtc::VideoEncoder>)releaseWrappedEncoder;
++@end
+\ No newline at end of file
+diff --git a/src/sdk/objc/api/video_codec/RTCWrappedNativeVideoEncoder.mm b/src/sdk/objc/api/video_codec/RTCWrappedNativeVideoEncoder.mm
+new file mode 100644
+index 0000000..69b0961
+--- /dev/null
++++ b/src/sdk/objc/api/video_codec/RTCWrappedNativeVideoEncoder.mm
+@@ -0,0 +1,25 @@
++/*
++ *  Copyright (c) 2017 The WebRTC project authors. All Rights Reserved.
++ *
++ *  Use of this source code is governed by a BSD-style license
++ *  that can be found in the LICENSE file in the root of the source
++ *  tree. An additional intellectual property rights grant can be found
++ *  in the file PATENTS.  All contributing project authors may
++ *  be found in the AUTHORS file in the root of the source tree.
++ */
++#import <Foundation/Foundation.h>
++#import "RTCWrappedNativeVideoEncoder.h"
++#import "base/RTCMacros.h"
++@implementation RTC_OBJC_TYPE (RTCWrappedNativeVideoEncoder) {
++  std::unique_ptr<webrtc::VideoEncoder> _wrappedEncoder;
++}
++- (instancetype)initWithNativeEncoder:(std::unique_ptr<webrtc::VideoEncoder>)encoder {
++  if (self = [super init]) {
++    _wrappedEncoder = std::move(encoder);
++  }
++  return self;
++}
++- (std::unique_ptr<webrtc::VideoEncoder>)releaseWrappedEncoder {
++  return std::move(_wrappedEncoder);
++}
++@end
+\ No newline at end of file
 diff --git a/src/sdk/objc/api/video_codec/RTCWrappedNativeVideoEncoderFactory.h b/src/sdk/objc/api/video_codec/RTCWrappedNativeVideoEncoderFactory.h
 new file mode 100644
 index 0000000..ae4b2f5
