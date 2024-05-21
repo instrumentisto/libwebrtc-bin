@@ -1270,14 +1270,17 @@ index f9ad401..42f0023 100644
          return std::unique_ptr<ObjCVideoDecoder>(new ObjCVideoDecoder(decoder));
        }
 diff --git a/src/sdk/objc/native/src/objc_video_encoder_factory.h b/src/sdk/objc/native/src/objc_video_encoder_factory.h
-index d74e493..dd88e4f 100644
+index d74e493..f82c64b 100644
 --- a/src/sdk/objc/native/src/objc_video_encoder_factory.h
 +++ b/src/sdk/objc/native/src/objc_video_encoder_factory.h
-@@ -32,9 +32,13 @@ class ObjCVideoEncoderFactory : public VideoEncoderFactory {
+@@ -29,12 +29,16 @@ class ObjCVideoEncoderFactory : public VideoEncoderFactory {
+   ~ObjCVideoEncoderFactory() override;
+ 
+   id<RTC_OBJC_TYPE(RTCVideoEncoderFactory)> wrapped_encoder_factory() const;
++  std::unique_ptr<VideoEncoder> CreateVideoEncoder(const SdpVideoFormat& format);
  
    std::vector<SdpVideoFormat> GetSupportedFormats() const override;
    std::vector<SdpVideoFormat> GetImplementations() const override;
-+  std::unique_ptr<VideoEncoder> CreateVideoEncoder(const SdpVideoFormat& format) override;
    std::unique_ptr<VideoEncoder> Create(const Environment& env,
                                         const SdpVideoFormat& format) override;
    std::unique_ptr<EncoderSelectorInterface> GetEncoderSelector() const override;
