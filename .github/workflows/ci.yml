@@ -45,7 +45,8 @@ jobs:
             arch: x64
           - os: windows
             arch: x64
-    # Opt for `macos-12` in iOS/MacOS builds to improve backward compatibility with older MacOS versions
+    # NOTE: Using `macos-12` instead of `macos-latest` is for improving backward
+    #       compatibility with older iOS/macOS versions.
     runs-on: ${{ (contains('ios macos', matrix.os) && 'macos-12')
               || (contains('windows', matrix.os)   && 'windows-2019')
               ||                                      'ubuntu-latest' }}
