@@ -47,8 +47,6 @@ copy: common-copy
 
 .PHONY: patch
 patch: common-patch
-	cd $(SRC_DIR) && \
-	patch -p2 < $(PATCH_DIR)/add_yuv_helper_ios_mac.patch
 
 .PHONY: build
 build: patch
