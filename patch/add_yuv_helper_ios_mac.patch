@@ -1,336 +1,345 @@
-sdk/BUILD.gn --- 1/3 --- Text
-143 143       "objc/helpers/RTCDispatcher+Private.h",
-144 144       "objc/helpers/RTCDispatcher.h",
-145 145       "objc/helpers/RTCDispatcher.m",
-... 146       "objc/helpers/RTCYUVHelper.h",
-... 147       "objc/helpers/RTCYUVHelper.mm",
-146 148       "objc/helpers/scoped_cftyperef.h",
-147 149     ]
-148 150 
-149 151     deps = [
-150 152       ":base_objc",
-151 153       "../rtc_base:checks",
-... 154       "//third_party/libyuv",
-152 155       "//third_party/abseil-cpp/absl/strings:string_view",
-153 156     ]
-154 157 
-
-sdk/BUILD.gn --- 2/3 --- Text
-1300 1303           "objc/components/video_frame_buffer/RTCCVPixelBuffer.h",
-1301 1304           "objc/helpers/RTCCameraPreviewView.h",
-1302 1305           "objc/helpers/RTCDispatcher.h",
-.... 1306           "objc/helpers/RTCYUVHelper.h",
-1303 1307           "objc/helpers/UIDevice+RTCDevice.h",
-1304 1308           "objc/api/peerconnection/RTCAudioSource.h",
-1305 1309           "objc/api/peerconnection/RTCAudioTrack.h",
-
-sdk/BUILD.gn --- 3/3 --- Text
-1498 1502           "objc/components/video_codec/RTCVideoEncoderH264.h",
-1499 1503           "objc/components/video_frame_buffer/RTCCVPixelBuffer.h",
-1500 1504           "objc/helpers/RTCDispatcher.h",
-.... 1505           "objc/helpers/RTCYUVHelper.h",
-1501 1506         ]
-1502 1507         if (!build_with_chromium) {
-1503 1508           sources += [
-
-sdk/objc/helpers/RTCYUVHelper.h --- Text (17 Objective-C parse errors, exceeded DFT_PARSE_ERROR_LIMIT)
-  1 /*
-  2  *  Copyright 2016 The WebRTC project authors. All Rights Reserved.
-  3  *
-  4  *  Use of this source code is governed by a BSD-style license
-  5  *  that can be found in the LICENSE file in the root of the source
-  6  *  tree. An additional intellectual property rights grant can be found
-  7  *  in the file PATENTS.  All contributing project authors may
-  8  *  be found in the AUTHORS file in the root of the source tree.
-  9  */
- 10 
- 11 #import <Foundation/Foundation.h>
- 12 
- 13 #import "RTCMacros.h"
- 14 #import "RTCVideoFrame.h"
- 15 
- 16 RTC_OBJC_EXPORT
- 17 @interface RTC_OBJC_TYPE (RTCYUVHelper) : NSObject
- 18 
- 19 - (instancetype)init NS_UNAVAILABLE;
- 20 
- 21 + (void)I420Rotate:(const uint8_t*)srcY
- 22         srcStrideY:(int)srcStrideY
- 23               srcU:(const uint8_t*)srcU
- 24         srcStrideU:(int)srcStrideU
- 25               srcV:(const uint8_t*)srcV
- 26         srcStrideV:(int)srcStrideV
- 27               dstY:(uint8_t*)dstY
- 28         dstStrideY:(int)dstStrideY
- 29               dstU:(uint8_t*)dstU
- 30         dstStrideU:(int)dstStrideU
- 31               dstV:(uint8_t*)dstV
- 32         dstStrideV:(int)dstStrideV
- 33              width:(int)width
- 34              width:(int)height
- 35               mode:(RTCVideoRotation)mode;
- 36 
- 37 + (int)I420ToNV12:(const uint8_t*)srcY
- 38        srcStrideY:(int)srcStrideY
- 39              srcU:(const uint8_t*)srcU
- 40        srcStrideU:(int)srcStrideU
- 41              srcV:(const uint8_t*)srcV
- 42        srcStrideV:(int)srcStrideV
- 43              dstY:(uint8_t*)dstY
- 44        dstStrideY:(int)dstStrideY
- 45             dstUV:(uint8_t*)dstUV
- 46       dstStrideUV:(int)dstStrideUV
- 47             width:(int)width
- 48             width:(int)height;
- 49 
- 50 + (int)I420ToNV21:(const uint8_t*)srcY
- 51        srcStrideY:(int)srcStrideY
- 52              srcU:(const uint8_t*)srcU
- 53        srcStrideU:(int)srcStrideU
- 54              srcV:(const uint8_t*)srcV
- 55        srcStrideV:(int)srcStrideV
- 56              dstY:(uint8_t*)dstY
- 57        dstStrideY:(int)dstStrideY
- 58             dstUV:(uint8_t*)dstUV
- 59       dstStrideUV:(int)dstStrideUV
- 60             width:(int)width
- 61             width:(int)height;
- 62 
- 63 + (int)I420ToARGB:(const uint8_t*)srcY
- 64        srcStrideY:(int)srcStrideY
- 65              srcU:(const uint8_t*)srcU
- 66        srcStrideU:(int)srcStrideU
- 67              srcV:(const uint8_t*)srcV
- 68        srcStrideV:(int)srcStrideV
- 69           dstARGB:(uint8_t*)dstARGB
- 70     dstStrideARGB:(int)dstStrideARGB
- 71             width:(int)width
- 72            height:(int)height;
- 73 
- 74 + (int)I420ToBGRA:(const uint8_t*)srcY
- 75        srcStrideY:(int)srcStrideY
- 76              srcU:(const uint8_t*)srcU
- 77        srcStrideU:(int)srcStrideU
- 78              srcV:(const uint8_t*)srcV
- 79        srcStrideV:(int)srcStrideV
- 80           dstBGRA:(uint8_t*)dstBGRA
- 81     dstStrideBGRA:(int)dstStrideBGRA
- 82             width:(int)width
- 83            height:(int)height;
- 84 
- 85 + (int)I420ToABGR:(const uint8_t*)srcY
- 86        srcStrideY:(int)srcStrideY
- 87              srcU:(const uint8_t*)srcU
- 88        srcStrideU:(int)srcStrideU
- 89              srcV:(const uint8_t*)srcV
- 90        srcStrideV:(int)srcStrideV
- 91           dstABGR:(uint8_t*)dstABGR
- 92     dstStrideABGR:(int)dstStrideABGR
- 93             width:(int)width
- 94            height:(int)height;
- 95 
- 96 + (int)I420ToRGBA:(const uint8_t*)srcY
- 97        srcStrideY:(int)srcStrideY
- 98              srcU:(const uint8_t*)srcU
- 99        srcStrideU:(int)srcStrideU
-100              srcV:(const uint8_t*)srcV
-101        srcStrideV:(int)srcStrideV
-102           dstRGBA:(uint8_t*)dstRGBA
-103     dstStrideRGBA:(int)dstStrideRGBA
-104             width:(int)width
-105            height:(int)height;
-106 
-107 + (int)I420ToRGB24:(const uint8_t*)srcY
-108         srcStrideY:(int)srcStrideY
-109               srcU:(const uint8_t*)srcU
-110         srcStrideU:(int)srcStrideU
-111               srcV:(const uint8_t*)srcV
-112         srcStrideV:(int)srcStrideV
-113           dstRGB24:(uint8_t*)dstRGB24
-114     dstStrideRGB24:(int)dstStrideRGB24
-115              width:(int)width
-116             height:(int)height;
-117 
-118 @end
-
-sdk/objc/helpers/RTCYUVHelper.mm --- Text
-  1 /*
-  2  *  Copyright 2016 The WebRTC project authors. All Rights Reserved.
-  3  *
-  4  *  Use of this source code is governed by a BSD-style license
-  5  *  that can be found in the LICENSE file in the root of the source
-  6  *  tree. An additional intellectual property rights grant can be found
-  7  *  in the file PATENTS.  All contributing project authors may
-  8  *  be found in the AUTHORS file in the root of the source tree.
-  9  */
- 10 
- 11 #import "RTCYUVHelper.h"
- 12 
- 13 #include "third_party/libyuv/include/libyuv.h"
- 14 
- 15 @implementation RTC_OBJC_TYPE (RTCYUVHelper)
- 16 
- 17 + (void)I420Rotate:(const uint8_t*)srcY
- 18         srcStrideY:(int)srcStrideY
- 19               srcU:(const uint8_t*)srcU
- 20         srcStrideU:(int)srcStrideU
- 21               srcV:(const uint8_t*)srcV
- 22         srcStrideV:(int)srcStrideV
- 23               dstY:(uint8_t*)dstY
- 24         dstStrideY:(int)dstStrideY
- 25               dstU:(uint8_t*)dstU
- 26         dstStrideU:(int)dstStrideU
- 27               dstV:(uint8_t*)dstV
- 28         dstStrideV:(int)dstStrideV
- 29              width:(int)width
- 30              width:(int)height
- 31               mode:(RTCVideoRotation)mode {
- 32   libyuv::I420Rotate(srcY,
- 33                      srcStrideY,
- 34                      srcU,
- 35                      srcStrideU,
- 36                      srcV,
- 37                      srcStrideV,
- 38                      dstY,
- 39                      dstStrideY,
- 40                      dstU,
- 41                      dstStrideU,
- 42                      dstV,
- 43                      dstStrideV,
- 44                      width,
- 45                      height,
- 46                      (libyuv::RotationMode)mode);
- 47 }
- 48 
- 49 + (int)I420ToNV12:(const uint8_t*)srcY
- 50        srcStrideY:(int)srcStrideY
- 51              srcU:(const uint8_t*)srcU
- 52        srcStrideU:(int)srcStrideU
- 53              srcV:(const uint8_t*)srcV
- 54        srcStrideV:(int)srcStrideV
- 55              dstY:(uint8_t*)dstY
- 56        dstStrideY:(int)dstStrideY
- 57             dstUV:(uint8_t*)dstUV
- 58       dstStrideUV:(int)dstStrideUV
- 59             width:(int)width
- 60             width:(int)height {
- 61   return libyuv::I420ToNV12(srcY,
- 62                             srcStrideY,
- 63                             srcU,
- 64                             srcStrideU,
- 65                             srcV,
- 66                             srcStrideV,
- 67                             dstY,
- 68                             dstStrideY,
- 69                             dstUV,
- 70                             dstStrideUV,
- 71                             width,
- 72                             height);
- 73 }
- 74 
- 75 + (int)I420ToNV21:(const uint8_t*)srcY
- 76        srcStrideY:(int)srcStrideY
- 77              srcU:(const uint8_t*)srcU
- 78        srcStrideU:(int)srcStrideU
- 79              srcV:(const uint8_t*)srcV
- 80        srcStrideV:(int)srcStrideV
- 81              dstY:(uint8_t*)dstY
- 82        dstStrideY:(int)dstStrideY
- 83             dstUV:(uint8_t*)dstUV
- 84       dstStrideUV:(int)dstStrideUV
- 85             width:(int)width
- 86             width:(int)height {
- 87   return libyuv::I420ToNV21(srcY,
- 88                             srcStrideY,
- 89                             srcU,
- 90                             srcStrideU,
- 91                             srcV,
- 92                             srcStrideV,
- 93                             dstY,
- 94                             dstStrideY,
- 95                             dstUV,
- 96                             dstStrideUV,
- 97                             width,
- 98                             height);
- 99 }
-100 
-101 + (int)I420ToARGB:(const uint8_t*)srcY
-102        srcStrideY:(int)srcStrideY
-103              srcU:(const uint8_t*)srcU
-104        srcStrideU:(int)srcStrideU
-105              srcV:(const uint8_t*)srcV
-106        srcStrideV:(int)srcStrideV
-107           dstARGB:(uint8_t*)dstARGB
-108     dstStrideARGB:(int)dstStrideARGB
-109             width:(int)width
-110            height:(int)height {
-111   return libyuv::I420ToARGB(
-112       srcY, srcStrideY, srcU, srcStrideU, srcV, srcStrideV, dstARGB, dstStrideARGB, width, height);
-113 }
-114 
-115 + (int)I420ToBGRA:(const uint8_t*)srcY
-116        srcStrideY:(int)srcStrideY
-117              srcU:(const uint8_t*)srcU
-118        srcStrideU:(int)srcStrideU
-119              srcV:(const uint8_t*)srcV
-120        srcStrideV:(int)srcStrideV
-121           dstBGRA:(uint8_t*)dstBGRA
-122     dstStrideBGRA:(int)dstStrideBGRA
-123             width:(int)width
-124            height:(int)height {
-125   return libyuv::I420ToBGRA(
-126       srcY, srcStrideY, srcU, srcStrideU, srcV, srcStrideV, dstBGRA, dstStrideBGRA, width, height);
-127 }
-128 
-129 + (int)I420ToABGR:(const uint8_t*)srcY
-130        srcStrideY:(int)srcStrideY
-131              srcU:(const uint8_t*)srcU
-132        srcStrideU:(int)srcStrideU
-133              srcV:(const uint8_t*)srcV
-134        srcStrideV:(int)srcStrideV
-135           dstABGR:(uint8_t*)dstABGR
-136     dstStrideABGR:(int)dstStrideABGR
-137             width:(int)width
-138            height:(int)height {
-139   return libyuv::I420ToABGR(
-140       srcY, srcStrideY, srcU, srcStrideU, srcV, srcStrideV, dstABGR, dstStrideABGR, width, height);
-141 }
-142 
-143 + (int)I420ToRGBA:(const uint8_t*)srcY
-144        srcStrideY:(int)srcStrideY
-145              srcU:(const uint8_t*)srcU
-146        srcStrideU:(int)srcStrideU
-147              srcV:(const uint8_t*)srcV
-148        srcStrideV:(int)srcStrideV
-149           dstRGBA:(uint8_t*)dstRGBA
-150     dstStrideRGBA:(int)dstStrideRGBA
-151             width:(int)width
-152            height:(int)height {
-153   return libyuv::I420ToRGBA(
-154       srcY, srcStrideY, srcU, srcStrideU, srcV, srcStrideV, dstRGBA, dstStrideRGBA, width, height);
-155 }
-156 
-157 + (int)I420ToRGB24:(const uint8_t*)srcY
-158         srcStrideY:(int)srcStrideY
-159               srcU:(const uint8_t*)srcU
-160         srcStrideU:(int)srcStrideU
-161               srcV:(const uint8_t*)srcV
-162         srcStrideV:(int)srcStrideV
-163           dstRGB24:(uint8_t*)dstRGB24
-164     dstStrideRGB24:(int)dstStrideRGB24
-165              width:(int)width
-166             height:(int)height {
-167   return libyuv::I420ToRGB24(srcY,
-168                              srcStrideY,
-169                              srcU,
-170                              srcStrideU,
-171                              srcV,
-172                              srcStrideV,
-173                              dstRGB24,
-174                              dstStrideRGB24,
-175                              width,
-176                              height);
-177 }
-178 
-179 @end
-
+diff --git a/src/sdk/BUILD.gn b/src/sdk/BUILD.gn
+index 683d8e5..4602a59 100644
+--- a/src/sdk/BUILD.gn
++++ b/src/sdk/BUILD.gn
+@@ -143,12 +143,15 @@ if (is_ios || is_mac) {
+       "objc/helpers/RTCDispatcher+Private.h",
+       "objc/helpers/RTCDispatcher.h",
+       "objc/helpers/RTCDispatcher.m",
++      "objc/helpers/RTCYUVHelper.h",
++      "objc/helpers/RTCYUVHelper.mm",
+       "objc/helpers/scoped_cftyperef.h",
+     ]
+ 
+     deps = [
+       ":base_objc",
+       "../rtc_base:checks",
++      "//third_party/libyuv",
+       "//third_party/abseil-cpp/absl/strings:string_view",
+     ]
+ 
+@@ -1300,6 +1303,7 @@ if (is_ios || is_mac) {
+           "objc/components/video_frame_buffer/RTCCVPixelBuffer.h",
+           "objc/helpers/RTCCameraPreviewView.h",
+           "objc/helpers/RTCDispatcher.h",
++          "objc/helpers/RTCYUVHelper.h",
+           "objc/helpers/UIDevice+RTCDevice.h",
+           "objc/api/peerconnection/RTCAudioSource.h",
+           "objc/api/peerconnection/RTCAudioTrack.h",
+@@ -1498,6 +1502,7 @@ if (is_ios || is_mac) {
+           "objc/components/video_codec/RTCVideoEncoderH264.h",
+           "objc/components/video_frame_buffer/RTCCVPixelBuffer.h",
+           "objc/helpers/RTCDispatcher.h",
++          "objc/helpers/RTCYUVHelper.h",
+         ]
+         if (!build_with_chromium) {
+           sources += [
+diff --git a/src/sdk/objc/helpers/RTCYUVHelper.h b/src/sdk/objc/helpers/RTCYUVHelper.h
+new file mode 100644
+index 0000000..2e6309c
+--- /dev/null
++++ b/src/sdk/objc/helpers/RTCYUVHelper.h
+@@ -0,0 +1,118 @@
++/*
++ *  Copyright 2016 The WebRTC project authors. All Rights Reserved.
++ *
++ *  Use of this source code is governed by a BSD-style license
++ *  that can be found in the LICENSE file in the root of the source
++ *  tree. An additional intellectual property rights grant can be found
++ *  in the file PATENTS.  All contributing project authors may
++ *  be found in the AUTHORS file in the root of the source tree.
++ */
++
++#import <Foundation/Foundation.h>
++
++#import "RTCMacros.h"
++#import "RTCVideoFrame.h"
++
++RTC_OBJC_EXPORT
++@interface RTC_OBJC_TYPE (RTCYUVHelper) : NSObject
++
++- (instancetype)init NS_UNAVAILABLE;
++
+++ (void)I420Rotate:(const uint8_t*)srcY
++        srcStrideY:(int)srcStrideY
++              srcU:(const uint8_t*)srcU
++        srcStrideU:(int)srcStrideU
++              srcV:(const uint8_t*)srcV
++        srcStrideV:(int)srcStrideV
++              dstY:(uint8_t*)dstY
++        dstStrideY:(int)dstStrideY
++              dstU:(uint8_t*)dstU
++        dstStrideU:(int)dstStrideU
++              dstV:(uint8_t*)dstV
++        dstStrideV:(int)dstStrideV
++             width:(int)width
++             width:(int)height
++              mode:(RTCVideoRotation)mode;
++
+++ (int)I420ToNV12:(const uint8_t*)srcY
++       srcStrideY:(int)srcStrideY
++             srcU:(const uint8_t*)srcU
++       srcStrideU:(int)srcStrideU
++             srcV:(const uint8_t*)srcV
++       srcStrideV:(int)srcStrideV
++             dstY:(uint8_t*)dstY
++       dstStrideY:(int)dstStrideY
++            dstUV:(uint8_t*)dstUV
++      dstStrideUV:(int)dstStrideUV
++            width:(int)width
++            width:(int)height;
++
+++ (int)I420ToNV21:(const uint8_t*)srcY
++       srcStrideY:(int)srcStrideY
++             srcU:(const uint8_t*)srcU
++       srcStrideU:(int)srcStrideU
++             srcV:(const uint8_t*)srcV
++       srcStrideV:(int)srcStrideV
++             dstY:(uint8_t*)dstY
++       dstStrideY:(int)dstStrideY
++            dstUV:(uint8_t*)dstUV
++      dstStrideUV:(int)dstStrideUV
++            width:(int)width
++            width:(int)height;
++
+++ (int)I420ToARGB:(const uint8_t*)srcY
++       srcStrideY:(int)srcStrideY
++             srcU:(const uint8_t*)srcU
++       srcStrideU:(int)srcStrideU
++             srcV:(const uint8_t*)srcV
++       srcStrideV:(int)srcStrideV
++          dstARGB:(uint8_t*)dstARGB
++    dstStrideARGB:(int)dstStrideARGB
++            width:(int)width
++           height:(int)height;
++
+++ (int)I420ToBGRA:(const uint8_t*)srcY
++       srcStrideY:(int)srcStrideY
++             srcU:(const uint8_t*)srcU
++       srcStrideU:(int)srcStrideU
++             srcV:(const uint8_t*)srcV
++       srcStrideV:(int)srcStrideV
++          dstBGRA:(uint8_t*)dstBGRA
++    dstStrideBGRA:(int)dstStrideBGRA
++            width:(int)width
++           height:(int)height;
++
+++ (int)I420ToABGR:(const uint8_t*)srcY
++       srcStrideY:(int)srcStrideY
++             srcU:(const uint8_t*)srcU
++       srcStrideU:(int)srcStrideU
++             srcV:(const uint8_t*)srcV
++       srcStrideV:(int)srcStrideV
++          dstABGR:(uint8_t*)dstABGR
++    dstStrideABGR:(int)dstStrideABGR
++            width:(int)width
++           height:(int)height;
++
+++ (int)I420ToRGBA:(const uint8_t*)srcY
++       srcStrideY:(int)srcStrideY
++             srcU:(const uint8_t*)srcU
++       srcStrideU:(int)srcStrideU
++             srcV:(const uint8_t*)srcV
++       srcStrideV:(int)srcStrideV
++          dstRGBA:(uint8_t*)dstRGBA
++    dstStrideRGBA:(int)dstStrideRGBA
++            width:(int)width
++           height:(int)height;
++
+++ (int)I420ToRGB24:(const uint8_t*)srcY
++        srcStrideY:(int)srcStrideY
++              srcU:(const uint8_t*)srcU
++        srcStrideU:(int)srcStrideU
++              srcV:(const uint8_t*)srcV
++        srcStrideV:(int)srcStrideV
++          dstRGB24:(uint8_t*)dstRGB24
++    dstStrideRGB24:(int)dstStrideRGB24
++             width:(int)width
++            height:(int)height;
++
++@end
+diff --git a/src/sdk/objc/helpers/RTCYUVHelper.mm b/src/sdk/objc/helpers/RTCYUVHelper.mm
+new file mode 100644
+index 0000000..3f610ff
+--- /dev/null
++++ b/src/sdk/objc/helpers/RTCYUVHelper.mm
+@@ -0,0 +1,179 @@
++/*
++ *  Copyright 2016 The WebRTC project authors. All Rights Reserved.
++ *
++ *  Use of this source code is governed by a BSD-style license
++ *  that can be found in the LICENSE file in the root of the source
++ *  tree. An additional intellectual property rights grant can be found
++ *  in the file PATENTS.  All contributing project authors may
++ *  be found in the AUTHORS file in the root of the source tree.
++ */
++
++#import "RTCYUVHelper.h"
++
++#include "third_party/libyuv/include/libyuv.h"
++
++@implementation RTC_OBJC_TYPE (RTCYUVHelper)
++
+++ (void)I420Rotate:(const uint8_t*)srcY
++        srcStrideY:(int)srcStrideY
++              srcU:(const uint8_t*)srcU
++        srcStrideU:(int)srcStrideU
++              srcV:(const uint8_t*)srcV
++        srcStrideV:(int)srcStrideV
++              dstY:(uint8_t*)dstY
++        dstStrideY:(int)dstStrideY
++              dstU:(uint8_t*)dstU
++        dstStrideU:(int)dstStrideU
++              dstV:(uint8_t*)dstV
++        dstStrideV:(int)dstStrideV
++             width:(int)width
++             width:(int)height
++              mode:(RTCVideoRotation)mode {
++  libyuv::I420Rotate(srcY,
++                     srcStrideY,
++                     srcU,
++                     srcStrideU,
++                     srcV,
++                     srcStrideV,
++                     dstY,
++                     dstStrideY,
++                     dstU,
++                     dstStrideU,
++                     dstV,
++                     dstStrideV,
++                     width,
++                     height,
++                     (libyuv::RotationMode)mode);
++}
++
+++ (int)I420ToNV12:(const uint8_t*)srcY
++       srcStrideY:(int)srcStrideY
++             srcU:(const uint8_t*)srcU
++       srcStrideU:(int)srcStrideU
++             srcV:(const uint8_t*)srcV
++       srcStrideV:(int)srcStrideV
++             dstY:(uint8_t*)dstY
++       dstStrideY:(int)dstStrideY
++            dstUV:(uint8_t*)dstUV
++      dstStrideUV:(int)dstStrideUV
++            width:(int)width
++            width:(int)height {
++  return libyuv::I420ToNV12(srcY,
++                            srcStrideY,
++                            srcU,
++                            srcStrideU,
++                            srcV,
++                            srcStrideV,
++                            dstY,
++                            dstStrideY,
++                            dstUV,
++                            dstStrideUV,
++                            width,
++                            height);
++}
++
+++ (int)I420ToNV21:(const uint8_t*)srcY
++       srcStrideY:(int)srcStrideY
++             srcU:(const uint8_t*)srcU
++       srcStrideU:(int)srcStrideU
++             srcV:(const uint8_t*)srcV
++       srcStrideV:(int)srcStrideV
++             dstY:(uint8_t*)dstY
++       dstStrideY:(int)dstStrideY
++            dstUV:(uint8_t*)dstUV
++      dstStrideUV:(int)dstStrideUV
++            width:(int)width
++            width:(int)height {
++  return libyuv::I420ToNV21(srcY,
++                            srcStrideY,
++                            srcU,
++                            srcStrideU,
++                            srcV,
++                            srcStrideV,
++                            dstY,
++                            dstStrideY,
++                            dstUV,
++                            dstStrideUV,
++                            width,
++                            height);
++}
++
+++ (int)I420ToARGB:(const uint8_t*)srcY
++       srcStrideY:(int)srcStrideY
++             srcU:(const uint8_t*)srcU
++       srcStrideU:(int)srcStrideU
++             srcV:(const uint8_t*)srcV
++       srcStrideV:(int)srcStrideV
++          dstARGB:(uint8_t*)dstARGB
++    dstStrideARGB:(int)dstStrideARGB
++            width:(int)width
++           height:(int)height {
++  return libyuv::I420ToARGB(
++      srcY, srcStrideY, srcU, srcStrideU, srcV, srcStrideV, dstARGB, dstStrideARGB, width, height);
++}
++
+++ (int)I420ToBGRA:(const uint8_t*)srcY
++       srcStrideY:(int)srcStrideY
++             srcU:(const uint8_t*)srcU
++       srcStrideU:(int)srcStrideU
++             srcV:(const uint8_t*)srcV
++       srcStrideV:(int)srcStrideV
++          dstBGRA:(uint8_t*)dstBGRA
++    dstStrideBGRA:(int)dstStrideBGRA
++            width:(int)width
++           height:(int)height {
++  return libyuv::I420ToBGRA(
++      srcY, srcStrideY, srcU, srcStrideU, srcV, srcStrideV, dstBGRA, dstStrideBGRA, width, height);
++}
++
+++ (int)I420ToABGR:(const uint8_t*)srcY
++       srcStrideY:(int)srcStrideY
++             srcU:(const uint8_t*)srcU
++       srcStrideU:(int)srcStrideU
++             srcV:(const uint8_t*)srcV
++       srcStrideV:(int)srcStrideV
++          dstABGR:(uint8_t*)dstABGR
++    dstStrideABGR:(int)dstStrideABGR
++            width:(int)width
++           height:(int)height {
++  return libyuv::I420ToABGR(
++      srcY, srcStrideY, srcU, srcStrideU, srcV, srcStrideV, dstABGR, dstStrideABGR, width, height);
++}
++
+++ (int)I420ToRGBA:(const uint8_t*)srcY
++       srcStrideY:(int)srcStrideY
++             srcU:(const uint8_t*)srcU
++       srcStrideU:(int)srcStrideU
++             srcV:(const uint8_t*)srcV
++       srcStrideV:(int)srcStrideV
++          dstRGBA:(uint8_t*)dstRGBA
++    dstStrideRGBA:(int)dstStrideRGBA
++            width:(int)width
++           height:(int)height {
++  return libyuv::I420ToRGBA(
++      srcY, srcStrideY, srcU, srcStrideU, srcV, srcStrideV, dstRGBA, dstStrideRGBA, width, height);
++}
++
+++ (int)I420ToRGB24:(const uint8_t*)srcY
++        srcStrideY:(int)srcStrideY
++              srcU:(const uint8_t*)srcU
++        srcStrideU:(int)srcStrideU
++              srcV:(const uint8_t*)srcV
++        srcStrideV:(int)srcStrideV
++          dstRGB24:(uint8_t*)dstRGB24
++    dstStrideRGB24:(int)dstStrideRGB24
++             width:(int)width
++            height:(int)height {
++  return libyuv::I420ToRGB24(srcY,
++                             srcStrideY,
++                             srcU,
++                             srcStrideU,
++                             srcV,
++                             srcStrideV,
++                             dstRGB24,
++                             dstStrideRGB24,
++                             width,
++                             height);
++}
++
++@end
