@@ -1,0 +1,21 @@
+diff --git a/src/pc/proxy.h b/src/pc/proxy.h
+index eecd601..744f822 100644
+--- a/src/pc/proxy.h
++++ b/src/pc/proxy.h
+@@ -70,12 +70,15 @@
+ #include "rtc_base/string_utils.h"
+ #include "rtc_base/system/rtc_export.h"
+ #include "rtc_base/thread.h"
+-#include "rtc_base/trace_event.h"
+ 
+ #if !defined(RTC_DISABLE_PROXY_TRACE_EVENTS) && !defined(WEBRTC_CHROMIUM_BUILD)
+ #define RTC_DISABLE_PROXY_TRACE_EVENTS
+ #endif
+ 
++#if !defined(RTC_DISABLE_PROXY_TRACE_EVENTS)
++#include "rtc_base/trace_event.h"
++#endif
++
+ namespace webrtc {
+ 
+ template <typename R>

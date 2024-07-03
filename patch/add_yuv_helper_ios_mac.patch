@@ -1,8 +1,8 @@
 diff --git a/src/sdk/BUILD.gn b/src/sdk/BUILD.gn
-index 4fe4bff..e3d2d44 100644
+index 7620217..89498be 100644
 --- a/src/sdk/BUILD.gn
 +++ b/src/sdk/BUILD.gn
-@@ -146,11 +146,14 @@ if (is_ios || is_mac) {
+@@ -144,11 +144,14 @@ if (is_ios || is_mac) {
        "objc/helpers/RTCDispatcher.h",
        "objc/helpers/RTCDispatcher.m",
        "objc/helpers/scoped_cftyperef.h",
@@ -17,7 +17,7 @@ index 4fe4bff..e3d2d44 100644
      ]
  
      absl_deps = [ "//third_party/abseil-cpp/absl/strings" ]
-@@ -1303,6 +1306,7 @@ if (is_ios || is_mac) {
+@@ -1296,6 +1299,7 @@ if (is_ios || is_mac) {
            "objc/components/video_frame_buffer/RTCCVPixelBuffer.h",
            "objc/helpers/RTCCameraPreviewView.h",
            "objc/helpers/RTCDispatcher.h",
@@ -25,7 +25,7 @@ index 4fe4bff..e3d2d44 100644
            "objc/helpers/UIDevice+RTCDevice.h",
            "objc/api/peerconnection/RTCAudioSource.h",
            "objc/api/peerconnection/RTCAudioTrack.h",
-@@ -1503,6 +1507,7 @@ if (is_ios || is_mac) {
+@@ -1492,6 +1496,7 @@ if (is_ios || is_mac) {
            "objc/components/video_codec/RTCVideoEncoderH264.h",
            "objc/components/video_frame_buffer/RTCCVPixelBuffer.h",
            "objc/helpers/RTCDispatcher.h",
@@ -35,7 +35,7 @@ index 4fe4bff..e3d2d44 100644
            sources += [
 diff --git a/src/sdk/objc/helpers/RTCYUVHelper.h b/src/sdk/objc/helpers/RTCYUVHelper.h
 new file mode 100644
-index 0000000..2e6309c
+index 0000000..ec8ce48
 --- /dev/null
 +++ b/src/sdk/objc/helpers/RTCYUVHelper.h
 @@ -0,0 +1,118 @@
@@ -72,7 +72,7 @@ index 0000000..2e6309c
 +              dstV:(uint8_t*)dstV
 +        dstStrideV:(int)dstStrideV
 +             width:(int)width
-+             width:(int)height
++             height:(int)height
 +              mode:(RTCVideoRotation)mode;
 +
 ++ (int)I420ToNV12:(const uint8_t*)srcY
@@ -86,7 +86,7 @@ index 0000000..2e6309c
 +            dstUV:(uint8_t*)dstUV
 +      dstStrideUV:(int)dstStrideUV
 +            width:(int)width
-+            width:(int)height;
++            height:(int)height;
 +
 ++ (int)I420ToNV21:(const uint8_t*)srcY
 +       srcStrideY:(int)srcStrideY
@@ -99,7 +99,7 @@ index 0000000..2e6309c
 +            dstUV:(uint8_t*)dstUV
 +      dstStrideUV:(int)dstStrideUV
 +            width:(int)width
-+            width:(int)height;
++            height:(int)height;
 +
 ++ (int)I420ToARGB:(const uint8_t*)srcY
 +       srcStrideY:(int)srcStrideY
@@ -159,7 +159,7 @@ index 0000000..2e6309c
 +@end
 diff --git a/src/sdk/objc/helpers/RTCYUVHelper.mm b/src/sdk/objc/helpers/RTCYUVHelper.mm
 new file mode 100644
-index 0000000..3f610ff
+index 0000000..4a39d46
 --- /dev/null
 +++ b/src/sdk/objc/helpers/RTCYUVHelper.mm
 @@ -0,0 +1,179 @@
@@ -192,7 +192,7 @@ index 0000000..3f610ff
 +              dstV:(uint8_t*)dstV
 +        dstStrideV:(int)dstStrideV
 +             width:(int)width
-+             width:(int)height
++             height:(int)height
 +              mode:(RTCVideoRotation)mode {
 +  libyuv::I420Rotate(srcY,
 +                     srcStrideY,
@@ -222,7 +222,7 @@ index 0000000..3f610ff
 +            dstUV:(uint8_t*)dstUV
 +      dstStrideUV:(int)dstStrideUV
 +            width:(int)width
-+            width:(int)height {
++            height:(int)height {
 +  return libyuv::I420ToNV12(srcY,
 +                            srcStrideY,
 +                            srcU,
@@ -248,7 +248,7 @@ index 0000000..3f610ff
 +            dstUV:(uint8_t*)dstUV
 +      dstStrideUV:(int)dstStrideUV
 +            width:(int)width
-+            width:(int)height {
++            height:(int)height {
 +  return libyuv::I420ToNV21(srcY,
 +                            srcStrideY,
 +                            srcU,
