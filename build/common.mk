@@ -35,7 +35,8 @@ common-patch:
 	&& cd $(SRC_DIR) \
 	&& patch -p1 < $(PATCH_DIR)/nacl_armv6_2.patch \
 	&& patch -p2 < $(PATCH_DIR)/add_licenses.patch \
-	&& patch -p2 < $(PATCH_DIR)/4k.patch
+	&& patch -p2 < $(PATCH_DIR)/4k.patch \
+	&& patch -p2 < $(PATCH_DIR)/fix_disable_proxy_trace_events.patch
 
 .PHONY: common-package
 common-package: copy
