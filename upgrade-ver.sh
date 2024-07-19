@@ -9,6 +9,13 @@ extract_old_version() {
     echo "$old_version"
 }
 
+# Extracts the old revision from the VERSION file.
+extract_old_revision() {
+    local version_file=$1
+    local old_version=$(grep '^REVISION=' "$version_file" | sed -E 's/^REVISION=//')
+    echo "$old_version"
+}
+
 # Extracts the current commit from the VERSION file.
 extract_old_commit() {
     local version_file=$1
@@ -35,18 +42,10 @@ fetch_new_version_and_commit() {
     echo "$new_version" "$new_commit"
 }
 
-# Parses the version string and normalizes it (removes `.rc.*` part from it).
-parse_version() {
-    local version=$1
-    # Remove the .rc.1 suffix if it exists
-    local normalized_version=$(echo "$version" | sed -E 's/\.rc\.[0-9]+$//')
-    echo "$normalized_version"
-}
-
-# Compares two unnormalized versions.
+# Compares two versions.
 compare_versions() {
-    local version1=$(parse_version "$1")
-    local version2=$(parse_version "$2")
+    local version1=$1
+    local version2=$2
 
     # Split the version into an array by '.'
     IFS='.' read -r -a ver1_array <<< "$version1"
@@ -69,46 +68,50 @@ compare_versions() {
 version_file="./VERSION"
 old_version=$(extract_old_version "$version_file")
 old_commit=$(extract_old_commit "$version_file")
+revision=$(extract_old_revision "$version_file")
 
-# Check if new version is provided as an argument
-if [ -n "$1" ]; then
-    new_version=$1
-    new_commit=$old_commit
+if [[ "$1" == "--current" ]]; then
+  new_version=$old_version
+  new_commit=$old_commit
 else
-    read new_version new_commit < <(fetch_new_version_and_commit)
-
-    comparison_result=$(compare_versions "$old_version" "$new_version")
-    if [[ "$comparison_result" == "less" ]]; then
-        result=1
-    else
-        result=0
-    fi
+  read new_version new_commit < <(fetch_new_version_and_commit)
 fi
 
-if [[ -n "$1" || $result -eq 1 ]]; then
-    echo "Upgrading to new version..."
-
-    # Update the VERSION file
-    sed -i.bk -e "s/^WEBRTC_VERSION=.*$/WEBRTC_VERSION=$new_version/g" \
-              -e "s/^WEBRTC_COMMIT=.*$/WEBRTC_COMMIT=$new_commit/g" \
-        "$version_file"
-
-    # Update the instrumentisto-libwebrtc-bin.podspec file
-    sed -i.bk -e "s/spec\.version =.*$/spec.version = \"$new_version\"/g" \
-              -e "s/\/download\/.*\//\/download\/$new_version\//g" \
-        ./instrumentisto-libwebrtc-bin.podspec
+comparison_result=$(compare_versions "$old_version" "$new_version")
+if [[ "$comparison_result" == "less" ]]; then
+    result=1
 else
-    echo "Current version is up to date."
+    result=0
+fi
 
-    new_version=$old_version
+if [[ $result -eq 1 ]]; then
+    revision=""
+    sed -i.bk 's/^REVISION/# REVISION/' "$version_file"
+else
+    new_version="$old_version"
     new_commit=$old_commit
 fi
 
+if [ -n "$revision" ]; then
+  new_version_rev="$new_version-r$revision"
+else
+  new_version_rev=$new_version
+fi
 
-echo "version=$new_version"
+# Update the VERSION file
+sed -i.bk -e "s/^WEBRTC_VERSION=.*$/WEBRTC_VERSION=$new_version/g" \
+          -e "s/^WEBRTC_COMMIT=.*$/WEBRTC_COMMIT=$new_commit/g" \
+    "$version_file"
+
+# Update the instrumentisto-libwebrtc-bin.podspec file
+sed -i.bk -e "s/spec\.version =.*$/spec.version = \"$new_version_rev\"/g" \
+          -e "s/\/download\/.*\//\/download\/$new_version_rev\//g" \
+    ./instrumentisto-libwebrtc-bin.podspec
+
+echo "version=$new_version_rev"
 echo "commit=$new_commit"
 
 if [ ! -z "$GITHUB_OUTPUT" ]; then
-  echo "version=$new_version" >> $GITHUB_OUTPUT
+  echo "version=$new_version_rev" >> $GITHUB_OUTPUT
   echo "commit=$new_commit" >> $GITHUB_OUTPUT
 fi
