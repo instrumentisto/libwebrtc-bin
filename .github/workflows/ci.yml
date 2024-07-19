@@ -270,4 +270,3 @@ jobs:
             package/libwebrtc-*.zip
             package/libwebrtc-*.zip.sha256sum
           fail_on_unmatched_files: true
-          prerelease: ${{ contains(steps.release.outputs.version, '-') }}
