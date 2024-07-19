@@ -7,6 +7,13 @@ WEBRTC_VERSION=126.0.6478.182
 # https://chromium.googlesource.com/chromium/src/+/refs/tags/<WEBRTC_VERSION>/DEPS
 WEBRTC_COMMIT=a18e38fed2307edd6382760213fa3ddf199fa181
 
+# Additional revision of the `WEBRTC_VERSION` added as `-rN` suffix to it, and
+# tracking additional changes applied on top of it.
+# Required for being able to release new versions without waiting for the
+# `WEBRTC_VERSION` bump. If absent or is commented out, then no `REVISION` is
+# added to the `WEBRTC_VERSION`.
+REVISION=1
+
 PACKAGE_NAMES= \
   linux-arm64 \
   linux-x64 \

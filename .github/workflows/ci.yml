@@ -221,8 +221,7 @@ jobs:
       - name: Verify release version matches VERSION file
         run: |
           test "${{ steps.release.outputs.version }}" \
-            == "$(grep 'WEBRTC_VERSION=' VERSION | cut -d '=' -f2 | tr -d '\n')"
-        if: ${{ !contains(steps.release.outputs.version, '-') }}
+            == "$(grep 'WEBRTC_VERSION=' VERSION | cut -d '=' -f2 | tr -d '\n')$(grep -e '^REVISION=.*$' VERSION | cut -d '=' -f2 | sed -e 's/^/-r/' | tr -d '\n')"
 
       - uses: actions/download-artifact@v4
         with:
@@ -270,4 +269,3 @@ jobs:
             package/libwebrtc-*.zip
             package/libwebrtc-*.zip.sha256sum
           fail_on_unmatched_files: true
-          prerelease: ${{ contains(steps.release.outputs.version, '-') }}
