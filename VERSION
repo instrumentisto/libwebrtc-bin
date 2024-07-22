@@ -12,7 +12,7 @@ WEBRTC_COMMIT=a18e38fed2307edd6382760213fa3ddf199fa181
 # Required for being able to release new versions without waiting for the
 # `WEBRTC_VERSION` bump. If absent or is commented out, then no `REVISION` is
 # added to the `WEBRTC_VERSION`.
-REVISION=1
+REVISION=2
 
 PACKAGE_NAMES= \
   linux-arm64 \
