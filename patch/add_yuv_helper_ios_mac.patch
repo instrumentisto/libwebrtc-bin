@@ -1,8 +1,8 @@
 diff --git a/src/sdk/BUILD.gn b/src/sdk/BUILD.gn
-index 7620217..89498be 100644
+index 7b637c8..86588ef 100644
 --- a/src/sdk/BUILD.gn
 +++ b/src/sdk/BUILD.gn
-@@ -144,11 +144,14 @@ if (is_ios || is_mac) {
+@@ -146,12 +146,15 @@ if (is_ios || is_mac) {
        "objc/helpers/RTCDispatcher.h",
        "objc/helpers/RTCDispatcher.m",
        "objc/helpers/scoped_cftyperef.h",
@@ -13,11 +13,12 @@ index 7620217..89498be 100644
      deps = [
        ":base_objc",
        "../rtc_base:checks",
+       "//third_party/abseil-cpp/absl/strings:string_view",
 +      "//third_party/libyuv",
      ]
  
-     absl_deps = [ "//third_party/abseil-cpp/absl/strings" ]
-@@ -1296,6 +1299,7 @@ if (is_ios || is_mac) {
+     frameworks = [
+@@ -1303,6 +1306,7 @@ if (is_ios || is_mac) {
            "objc/components/video_frame_buffer/RTCCVPixelBuffer.h",
            "objc/helpers/RTCCameraPreviewView.h",
            "objc/helpers/RTCDispatcher.h",
@@ -25,7 +26,7 @@ index 7620217..89498be 100644
            "objc/helpers/UIDevice+RTCDevice.h",
            "objc/api/peerconnection/RTCAudioSource.h",
            "objc/api/peerconnection/RTCAudioTrack.h",
-@@ -1492,6 +1496,7 @@ if (is_ios || is_mac) {
+@@ -1505,6 +1509,7 @@ if (is_ios || is_mac) {
            "objc/components/video_codec/RTCVideoEncoderH264.h",
            "objc/components/video_frame_buffer/RTCCVPixelBuffer.h",
            "objc/helpers/RTCDispatcher.h",
