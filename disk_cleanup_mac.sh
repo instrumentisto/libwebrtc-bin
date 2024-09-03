@@ -7,9 +7,9 @@ df -h
 docker rmi $(docker images -q -a)
 docker image prune --all --force
 
-# Remove Homebrew cache
-brew cleanup -s
-brew autoremove -s
+# Remove Homebrew cache and unused packages
+brew cleanup
+brew autoremove
 rm -rf $(brew --cache)
 
 # Remove unused Xcode versions and simulators
