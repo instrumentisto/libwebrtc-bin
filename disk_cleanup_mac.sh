@@ -3,19 +3,12 @@
 # Display disk usage before cleanup
 df -h
 
-# Removing cached Docker images
-docker rmi $(docker images -q -a)
-docker image prune --all --force
-
 # Remove Homebrew cache and unused packages
 brew cleanup
 brew autoremove
 rm -rf $(brew --cache)
 
-# Remove unused Xcode versions and simulators
-# sudo rm -rf /Applications/Xcode*
-# sudo rm -rf ~/Library/Developer/Xcode/DerivedData/*
-# sudo rm -rf ~/Library/Caches/com.apple.dt.Xcode
+# Remove XCode simulators
 sudo rm -rf ~/Library/Developer/Xcode/iOS\ DeviceSupport/*
 sudo rm -rf ~/Library/Developer/CoreSimulator/Caches/*
 sudo rm -rf ~/Library/Developer/CoreSimulator/Devices/*
