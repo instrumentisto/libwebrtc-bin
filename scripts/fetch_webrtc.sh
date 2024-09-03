@@ -45,5 +45,5 @@ git fetch
 echo "Fetched!"
 git checkout -f "$WEBRTC_COMMIT"
 echo "Sync with gclient"
-yes | gclient sync -D
+yes | gclient sync --no-history -D
 echo "Synced"
