@@ -13,9 +13,9 @@ brew autoremove
 rm -rf $(brew --cache)
 
 # Remove unused Xcode versions and simulators
-sudo rm -rf /Applications/Xcode*
-sudo rm -rf ~/Library/Developer/Xcode/DerivedData/*
-sudo rm -rf ~/Library/Caches/com.apple.dt.Xcode
+# sudo rm -rf /Applications/Xcode*
+# sudo rm -rf ~/Library/Developer/Xcode/DerivedData/*
+# sudo rm -rf ~/Library/Caches/com.apple.dt.Xcode
 sudo rm -rf ~/Library/Developer/Xcode/iOS\ DeviceSupport/*
 sudo rm -rf ~/Library/Developer/CoreSimulator/Caches/*
 sudo rm -rf ~/Library/Developer/CoreSimulator/Devices/*
