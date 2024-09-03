@@ -57,6 +57,8 @@ jobs:
 
       - run: ./disk_cleanup.sh
         if: ${{ contains('android linux', matrix.os) }}
+      - run: ./disk_cleanup_mac.sh
+        if: ${{ contains('macos ios', matrix.os) }}
       - run: powershell .\disk_cleanup.bat
         if: ${{ contains('windows', matrix.os) }}
 
