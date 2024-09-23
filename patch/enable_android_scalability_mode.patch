@@ -1,8 +1,8 @@
 diff --git a/src/sdk/android/BUILD.gn b/src/sdk/android/BUILD.gn
-index 593ed36..eab1b0e 100644
+index 82aabac..3856891 100644
 --- a/src/sdk/android/BUILD.gn
 +++ b/src/sdk/android/BUILD.gn
-@@ -192,6 +192,8 @@ if (is_android) {
+@@ -196,6 +196,8 @@ if (is_android) {
        "api/org/webrtc/CapturerObserver.java",
        "api/org/webrtc/EncodedImage.java",
        "api/org/webrtc/VideoCodecInfo.java",
@@ -11,7 +11,7 @@ index 593ed36..eab1b0e 100644
        "api/org/webrtc/VideoCodecStatus.java",
        "api/org/webrtc/VideoDecoder.java",
        "api/org/webrtc/VideoDecoderFactory.java",
-@@ -1319,6 +1321,8 @@ if (current_os == "linux" || is_android) {
+@@ -1330,6 +1332,8 @@ if (current_os == "linux" || is_android) {
        "api/org/webrtc/JavaI420Buffer.java",
        "api/org/webrtc/TimestampAligner.java",
        "api/org/webrtc/VideoCodecInfo.java",
@@ -296,7 +296,7 @@ index fe608c7..313ca8c 100644
 +  }
  }
 diff --git a/src/sdk/android/instrumentationtests/src/org/webrtc/RtpCapabilitiesTest.java b/src/sdk/android/instrumentationtests/src/org/webrtc/RtpCapabilitiesTest.java
-index 961ecd5..888723e 100644
+index e04b236..5c667a7 100644
 --- a/src/sdk/android/instrumentationtests/src/org/webrtc/RtpCapabilitiesTest.java
 +++ b/src/sdk/android/instrumentationtests/src/org/webrtc/RtpCapabilitiesTest.java
 @@ -82,8 +82,8 @@ public class RtpCapabilitiesTest {
@@ -310,7 +310,7 @@ index 961ecd5..888723e 100644
      List<VideoCodecInfo> supportedCodecs = new ArrayList<>();
      supportedCodecs.add(vp8Codec);
      supportedCodecs.add(h264Codec);
-@@ -214,4 +214,9 @@ public class RtpCapabilitiesTest {
+@@ -227,4 +227,9 @@ public class RtpCapabilitiesTest {
  
      return rtpMaps;
    }
@@ -529,10 +529,10 @@ index 4bd9ee0..1f5957b 100644
        Java_Encoding_getScaleResolutionDownBy(jni, j_encoding_parameters);
    encoding.scale_resolution_down_by =
 diff --git a/src/sdk/android/src/jni/software_video_decoder_factory.cc b/src/sdk/android/src/jni/software_video_decoder_factory.cc
-index 6e711e8..d7d885f 100644
+index 08e94a9..d75c5c7 100644
 --- a/src/sdk/android/src/jni/software_video_decoder_factory.cc
 +++ b/src/sdk/android/src/jni/software_video_decoder_factory.cc
-@@ -11,21 +11,31 @@
+@@ -11,7 +11,6 @@
  #include <memory>
  
  #include "api/environment/environment.h"
@@ -540,9 +540,10 @@ index 6e711e8..d7d885f 100644
  #include "api/video_codecs/video_decoder.h"
  #include "api/video_codecs/video_decoder_factory.h"
  #include "sdk/android/generated_swcodecs_jni/SoftwareVideoDecoderFactory_jni.h"
- #include "sdk/android/native_api/jni/java_types.h"
+@@ -19,13 +18,24 @@
  #include "sdk/android/src/jni/jni_helpers.h"
  #include "sdk/android/src/jni/video_codec_info.h"
+ #include "third_party/jni_zero/jni_zero.h"
 +#include "api/video_codecs/video_decoder_factory_template.h"
 +#include "api/video_codecs/video_decoder_factory_template_dav1d_adapter.h"
 +#include "api/video_codecs/video_decoder_factory_template_libvpx_vp8_adapter.h"
@@ -552,28 +553,24 @@ index 6e711e8..d7d885f 100644
  namespace webrtc {
  namespace jni {
  
--static jlong JNI_SoftwareVideoDecoderFactory_CreateFactory(JNIEnv* env) {
--  return webrtc::NativeToJavaPointer(
+ static jlong JNI_SoftwareVideoDecoderFactory_CreateFactory(JNIEnv* env) {
++ std::unique_ptr<webrtc::VideoDecoderFactory> video_decoder_factory =
++     std::make_unique<webrtc::VideoDecoderFactoryTemplate<
++         webrtc::LibvpxVp8DecoderTemplateAdapter,
++         webrtc::LibvpxVp9DecoderTemplateAdapter,
++         webrtc::OpenH264DecoderTemplateAdapter,
++         webrtc::Dav1dDecoderTemplateAdapter>>();
+   return webrtc::NativeToJavaPointer(
 -      CreateBuiltinVideoDecoderFactory().release());
--}
-+ static jlong JNI_SoftwareVideoDecoderFactory_CreateFactory(JNIEnv* env) {
-+  std::unique_ptr<webrtc::VideoDecoderFactory> video_decoder_factory =
-+      std::make_unique<webrtc::VideoDecoderFactoryTemplate<
-+          webrtc::LibvpxVp8DecoderTemplateAdapter,
-+          webrtc::LibvpxVp9DecoderTemplateAdapter,
-+          webrtc::OpenH264DecoderTemplateAdapter,
-+          webrtc::Dav1dDecoderTemplateAdapter>>();
-+   return webrtc::NativeToJavaPointer(
-+      video_decoder_factory.release());
-+ }
++     video_decoder_factory.release());
+ }
  
  jboolean JNI_SoftwareVideoDecoderFactory_IsSupported(
-     JNIEnv* env,
 diff --git a/src/sdk/android/src/jni/software_video_encoder_factory.cc b/src/sdk/android/src/jni/software_video_encoder_factory.cc
-index bcd4c1d..7ba74c0 100644
+index a2d44d9..19aa60a 100644
 --- a/src/sdk/android/src/jni/software_video_encoder_factory.cc
 +++ b/src/sdk/android/src/jni/software_video_encoder_factory.cc
-@@ -9,19 +9,30 @@
+@@ -9,20 +9,31 @@
   */
  
  #include "api/environment/environment.h"
@@ -584,6 +581,7 @@ index bcd4c1d..7ba74c0 100644
  #include "sdk/android/native_api/jni/java_types.h"
  #include "sdk/android/src/jni/jni_helpers.h"
  #include "sdk/android/src/jni/video_codec_info.h"
+ #include "third_party/jni_zero/jni_zero.h"
 +#include "api/video_codecs/video_encoder_factory_template.h"
 +#include "api/video_codecs/video_encoder_factory_template_libaom_av1_adapter.h"
 +#include "api/video_codecs/video_encoder_factory_template_libvpx_vp8_adapter.h"
@@ -594,19 +592,19 @@ index bcd4c1d..7ba74c0 100644
  namespace jni {
  
  static jlong JNI_SoftwareVideoEncoderFactory_CreateFactory(JNIEnv* env) {
-+    std::unique_ptr<webrtc::VideoEncoderFactory> video_encoder_factory =
-+      std::make_unique<webrtc::VideoEncoderFactoryTemplate<
-+          webrtc::LibvpxVp8EncoderTemplateAdapter,
-+          webrtc::LibvpxVp9EncoderTemplateAdapter,
-+          webrtc::OpenH264EncoderTemplateAdapter,
-+          webrtc::LibaomAv1EncoderTemplateAdapter>>();
++   std::unique_ptr<webrtc::VideoEncoderFactory> video_encoder_factory =
++     std::make_unique<webrtc::VideoEncoderFactoryTemplate<
++         webrtc::LibvpxVp8EncoderTemplateAdapter,
++         webrtc::LibvpxVp9EncoderTemplateAdapter,
++         webrtc::OpenH264EncoderTemplateAdapter,
++         webrtc::LibaomAv1EncoderTemplateAdapter>>();
    return webrtc::NativeToJavaPointer(
 -      CreateBuiltinVideoEncoderFactory().release());
-+      video_encoder_factory.release());
++     video_encoder_factory.release());
  }
  
  jboolean JNI_SoftwareVideoEncoderFactory_IsSupported(
-@@ -55,5 +66,29 @@ JNI_SoftwareVideoEncoderFactory_GetSupportedCodecs(JNIEnv* env,
+@@ -56,5 +67,29 @@ JNI_SoftwareVideoEncoderFactory_GetSupportedCodecs(JNIEnv* env,
                                    &webrtc::jni::SdpVideoFormatToVideoCodecInfo);
  }
  
