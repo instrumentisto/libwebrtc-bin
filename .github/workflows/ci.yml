@@ -50,7 +50,7 @@ jobs:
     #       The minimum macOS version required to build `libwebrtc` is macOS 14
     #       due to the use of Screen Capture Kit in the `libwebrtc` source code.
     runs-on: ${{ (contains('ios macos', matrix.os) && 'macos-14')
-              || (contains('windows', matrix.os)   && 'windows-2019')
+              || (contains('windows', matrix.os)   && 'windows-2022')
               ||                                      'ubuntu-latest' }}
     steps:
       - uses: actions/checkout@v4
