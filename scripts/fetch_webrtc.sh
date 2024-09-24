@@ -32,6 +32,11 @@ if [ -f "$WEBRTC_DIR/.gclient" ]; then
     git reset --hard;
     git clean -xdf;
   fi
+  if [ -d "$WEBRTC_DIR/src/third_party/boringssl/src" ]; then
+    cd "$WEBRTC_DIR/src/third_party/boringssl/src"
+    git reset --hard;
+    git clean -xdf;
+  fi
 else
   echo "Getting WebRTC...";
   rm -f "$DEPOT_TOOLS_DIR/metrics.cfg"
