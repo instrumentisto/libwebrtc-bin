@@ -15,6 +15,7 @@ EXTRA_GN_ARGS := \
 	rtc_include_tests=false \
 	rtc_build_tools=false \
 	rtc_build_examples=false \
+	rtc_use_perfetto=false \
 	proprietary_codecs=false
 
 .PHONY: all
