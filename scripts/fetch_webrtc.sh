@@ -41,9 +41,11 @@ else
   echo "Getting WebRTC...";
   rm -f "$DEPOT_TOOLS_DIR/metrics.cfg"
   rm -rf "$WEBRTC_DIR/src"
-  fetch --nohooks "$FETCH_TARGET"
+  `$DEPOT_TOOLS_DIR/fetch --nohooks --nohistory "$FETCH_TARGET"`
+  echo "WebRTC fetched"
 fi
 cd "$WEBRTC_DIR/src/"
 git fetch
 git checkout -f "$WEBRTC_COMMIT"
-yes | gclient sync -D
+echo "Running gclient sync"
+yes | `$DEPOT_TOOLS_DIR/gclient sync -D`
