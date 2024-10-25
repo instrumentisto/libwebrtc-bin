@@ -286,7 +286,7 @@ index 0000000000..ae4b2f5a16
 +NS_ASSUME_NONNULL_END
 diff --git a/src/sdk/objc/api/video_codec/RTCWrappedNativeVideoEncoderFactory.mm b/src/sdk/objc/api/video_codec/RTCWrappedNativeVideoEncoderFactory.mm
 new file mode 100644
-index 0000000000..791afa9a83
+index 0000000000..0958a38d80
 --- /dev/null
 +++ b/src/sdk/objc/api/video_codec/RTCWrappedNativeVideoEncoderFactory.mm
 @@ -0,0 +1,158 @@
@@ -329,7 +329,7 @@ index 0000000000..791afa9a83
 +@synthesize HWVideoEncoderFactory = _HWVideoEncoderFactory;
 +
 +- (instancetype)initWithTemplateFactory {
-+  if (self = [super init]) {
++  if ((self = [super init])) {
 +    _wrappedFactory = std::make_shared<webrtc::VideoEncoderFactoryTemplate<
 +        webrtc::LibvpxVp8EncoderTemplateAdapter,
 +        webrtc::LibvpxVp9EncoderTemplateAdapter,
