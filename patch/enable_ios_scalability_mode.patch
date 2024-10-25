@@ -123,7 +123,7 @@ index 07f6b7a39c..d055115ae2 100644
   * implementation default scaling factor will be used.
   */
 diff --git a/src/sdk/objc/api/peerconnection/RTCRtpEncodingParameters.mm b/src/sdk/objc/api/peerconnection/RTCRtpEncodingParameters.mm
-index 69f8885f4c..b8bc617f26 100644
+index 69f8885f4c..2a79c30edb 100644
 --- a/src/sdk/objc/api/peerconnection/RTCRtpEncodingParameters.mm
 +++ b/src/sdk/objc/api/peerconnection/RTCRtpEncodingParameters.mm
 @@ -20,6 +20,7 @@ @implementation RTC_OBJC_TYPE (RTCRtpEncodingParameters)
@@ -151,7 +151,7 @@ index 69f8885f4c..b8bc617f26 100644
    }
 +  if (_scalabilityMode != nil) {
 +    parameters.scalability_mode =
-+        absl::optional<std::string>(std::string([_scalabilityMode UTF8String]));
++        std::optional<std::string>(std::string([_scalabilityMode UTF8String]));
 +  }
    if (_scaleResolutionDownBy != nil) {
      parameters.scale_resolution_down_by = std::optional<double>(_scaleResolutionDownBy.doubleValue);
@@ -286,7 +286,7 @@ index 0000000000..ae4b2f5a16
 +NS_ASSUME_NONNULL_END
 diff --git a/src/sdk/objc/api/video_codec/RTCWrappedNativeVideoEncoderFactory.mm b/src/sdk/objc/api/video_codec/RTCWrappedNativeVideoEncoderFactory.mm
 new file mode 100644
-index 0000000000..2c0cbbcf45
+index 0000000000..791afa9a83
 --- /dev/null
 +++ b/src/sdk/objc/api/video_codec/RTCWrappedNativeVideoEncoderFactory.mm
 @@ -0,0 +1,158 @@
@@ -426,7 +426,7 @@ index 0000000000..2c0cbbcf45
 +
 +  auto format = webrtc::SdpVideoFormat([NSString stdStringForString:info.name],
 +                                       parameters, scalability_modes);
-+  absl::optional<std::string> scalability_mode;
++  std::optional<std::string> scalability_mode;
 +
 +  if (!scalabilityMode) {
 +    std::string scalability = [NSString stdStringForString:scalabilityMode];
@@ -857,22 +857,8 @@ index 9843849307..1c897b4e7b 100644
 +}
 +
  @end
-diff --git a/src/sdk/objc/native/src/objc_video_encoder_factory.h b/src/sdk/objc/native/src/objc_video_encoder_factory.h
-index 62af09cb8f..cc1b6a80ef 100644
---- a/src/sdk/objc/native/src/objc_video_encoder_factory.h
-+++ b/src/sdk/objc/native/src/objc_video_encoder_factory.h
-@@ -40,6 +40,9 @@ class ObjCVideoEncoderFactory : public VideoEncoderFactory {
-   std::unique_ptr<VideoEncoder> Create(const Environment& env,
-                                        const SdpVideoFormat& format) override;
-   std::unique_ptr<EncoderSelectorInterface> GetEncoderSelector() const override;
-+  VideoEncoderFactory::CodecSupport QueryCodecSupport(
-+      const SdpVideoFormat& format,
-+      absl::optional<std::string> scalability_mode) const override;
- 
-  private:
-   id<RTC_OBJC_TYPE(RTCVideoEncoderFactory)> encoder_factory_;
 diff --git a/src/sdk/objc/native/src/objc_video_encoder_factory.mm b/src/sdk/objc/native/src/objc_video_encoder_factory.mm
-index bc8c532539..738dee9d0e 100644
+index bc8c532539..5bd3823750 100644
 --- a/src/sdk/objc/native/src/objc_video_encoder_factory.mm
 +++ b/src/sdk/objc/native/src/objc_video_encoder_factory.mm
 @@ -227,4 +227,23 @@ void OnCurrentEncoder(const SdpVideoFormat &format) override {
@@ -881,7 +867,7 @@ index bc8c532539..738dee9d0e 100644
  
 +VideoEncoderFactory::CodecSupport ObjCVideoEncoderFactory::QueryCodecSupport(
 +    const SdpVideoFormat& format,
-+    absl::optional<std::string> scalability_mode) const {
++    std::optional<std::string> scalability_mode) const {
 +  RTC_OBJC_TYPE(RTCVideoCodecInfo)* info = [[RTC_OBJC_TYPE(RTCVideoCodecInfo)
 +      alloc] initWithNativeSdpVideoFormat:format];
 +  NSString* scalabilityMode = nil;
