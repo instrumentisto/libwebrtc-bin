@@ -199,7 +199,7 @@ index 0000000000..d639eaee31
 +@end
 diff --git a/src/sdk/objc/api/video_codec/RTCWrappedNativeVideoEncoder.mm b/src/sdk/objc/api/video_codec/RTCWrappedNativeVideoEncoder.mm
 new file mode 100644
-index 0000000000..4b9ef7cc67
+index 0000000000..85857fbf2c
 --- /dev/null
 +++ b/src/sdk/objc/api/video_codec/RTCWrappedNativeVideoEncoder.mm
 @@ -0,0 +1,45 @@
@@ -230,7 +230,7 @@ index 0000000000..4b9ef7cc67
 +
 +    -(id)initWithParams:(std::shared_ptr<webrtc::VideoEncoderFactory>)factory :(webrtc::SdpVideoFormat)format
 +    {
-+        if(self = [super init]) {
++        if((self = [super init])) {
 +            _factory = factory;
 +            _format = format;
 +        }
