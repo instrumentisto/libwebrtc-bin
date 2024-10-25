@@ -857,34 +857,6 @@ index 9843849307..1c897b4e7b 100644
 +}
 +
  @end
-diff --git a/src/sdk/objc/native/src/objc_video_encoder_factory.mm b/src/sdk/objc/native/src/objc_video_encoder_factory.mm
-index bc8c532539..5bd3823750 100644
---- a/src/sdk/objc/native/src/objc_video_encoder_factory.mm
-+++ b/src/sdk/objc/native/src/objc_video_encoder_factory.mm
-@@ -227,4 +227,23 @@ void OnCurrentEncoder(const SdpVideoFormat &format) override {
-   return nullptr;
- }
- 
-+VideoEncoderFactory::CodecSupport ObjCVideoEncoderFactory::QueryCodecSupport(
-+    const SdpVideoFormat& format,
-+    std::optional<std::string> scalability_mode) const {
-+  RTC_OBJC_TYPE(RTCVideoCodecInfo)* info = [[RTC_OBJC_TYPE(RTCVideoCodecInfo)
-+      alloc] initWithNativeSdpVideoFormat:format];
-+  NSString* scalabilityMode = nil;
-+
-+  if (scalability_mode.has_value()) {
-+    scalabilityMode =
-+        [NSString stringWithUTF8String:scalability_mode.value().c_str()];
-+  }
-+
-+  RTC_OBJC_TYPE(RTCCodecSupport*)
-+  support = [encoder_factory_ queryCodecSupport:info:scalabilityMode];
-+
-+  return VideoEncoderFactory::CodecSupport{[support isSupported],
-+                                           [support isPowerEfficient]};
-+}
-+
- }  // namespace webrtc
 diff --git a/src/sdk/objc/unittests/objc_video_encoder_factory_tests.mm b/src/sdk/objc/unittests/objc_video_encoder_factory_tests.mm
 index 2f469bb4a6..8da6f1f9ca 100644
 --- a/src/sdk/objc/unittests/objc_video_encoder_factory_tests.mm
