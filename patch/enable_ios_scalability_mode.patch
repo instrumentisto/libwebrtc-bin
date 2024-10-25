@@ -666,7 +666,7 @@ index 92ab40c95b..e0344d0f97 100644
  @end
  
 diff --git a/src/sdk/objc/components/video_codec/RTCDefaultVideoEncoderFactory.m b/src/sdk/objc/components/video_codec/RTCDefaultVideoEncoderFactory.m
-index 8de55bde4a..0cd6379f73 100644
+index 8de55bde4a..230e265322 100644
 --- a/src/sdk/objc/components/video_codec/RTCDefaultVideoEncoderFactory.m
 +++ b/src/sdk/objc/components/video_codec/RTCDefaultVideoEncoderFactory.m
 @@ -10,93 +10,31 @@
@@ -721,7 +721,7 @@ index 8de55bde4a..0cd6379f73 100644
 -    [result
 -        addObject:[[RTC_OBJC_TYPE(RTCVideoCodecInfo) alloc] initWithName:kRTCVideoCodecVp9Name]];
 +- (instancetype)init {
-+  if (self = [super init]) {
++  if ((self = [super init])) {
 +    _factory = [[RTC_OBJC_TYPE(RTCWrapperNativeVideoEncoderFactory) alloc]
 +        initWithTemplateFactory];
    }
