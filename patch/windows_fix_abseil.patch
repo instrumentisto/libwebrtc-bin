@@ -12,4 +12,17 @@ index 6ed0c669..681acb7a 100644
 +              std::is_trivially_copy_assignable<typename std::remove_cv<
                    T>::type>::value&& std::is_trivially_destructible<T>::value>
  class optional_data;
- 
+
+diff --git a/src/rtc_base/ssl_stream_adapter.h b/src/rtc_base/ssl_stream_adapter.h
+index 6ed0c669..681acb7a 100644
+--- a/src/rtc_base/ssl_stream_adapter.h
++++ b/src/rtc_base/ssl_stream_adapter.h
+@@ -187,7 +187,7 @@ class SSLStreamAdapter : public StreamInterface {
+   virtual bool GetSslCipherSuite(int* cipher_suite) const = 0;
+   // Returns the name of the cipher suite used for the DTLS transport,
+   // as defined in the "Description" column of the IANA cipher suite registry.
+-  virtual std::optional<absl::string_view> GetTlsCipherSuiteName() const = 0;
++  virtual absl::optional<absl::string_view> GetTlsCipherSuiteName() const = 0;
+
+   // Retrieves the enum value for SSL version.
+   // Will return -1 until the version has been negotiated.
