@@ -11,6 +11,7 @@ diff --git a/src/third_party/abseil-cpp/absl/types/internal/optional.h b/src/thi
 +              std::is_trivially_copy_assignable<typename std::remove_cv<
                    T>::type>::value&& std::is_trivially_destructible<T>::value>
  class optional_data;
+
 diff --git a/src/rtc_base/ssl_stream_adapter.h b/src/rtc_base/ssl_stream_adapter.h
 --- a/src/rtc_base/ssl_stream_adapter.h
 +++ b/src/rtc_base/ssl_stream_adapter.h
