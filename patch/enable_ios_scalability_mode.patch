@@ -643,10 +643,18 @@ index 6e3baa8750..8c2a8b1f39 100644
    RTC_OBJC_TYPE(RTCVideoCodecInfo) *vp8Info =
        [[RTC_OBJC_TYPE(RTCVideoCodecInfo) alloc] initWithName:kRTCVideoCodecVp8Name];
 diff --git a/src/sdk/objc/components/video_codec/RTCDefaultVideoEncoderFactory.h b/src/sdk/objc/components/video_codec/RTCDefaultVideoEncoderFactory.h
-index 4dc2d6c8a8..9ece56a86b 100644
+index 4dc2d6c8a8..bd82652321 100644
 --- a/src/sdk/objc/components/video_codec/RTCDefaultVideoEncoderFactory.h
 +++ b/src/sdk/objc/components/video_codec/RTCDefaultVideoEncoderFactory.h
-@@ -23,8 +23,9 @@ RTC_OBJC_EXPORT
+@@ -11,6 +11,7 @@
+ #import <Foundation/Foundation.h>
+ 
+ #import "RTCVideoEncoderFactory.h"
++#import "api/video_codec/RTCWrappedNativeVideoEncoderFactory.h"
+ #import "sdk/objc/base/RTCMacros.h"
+ 
+ NS_ASSUME_NONNULL_BEGIN
+@@ -23,8 +24,9 @@ RTC_OBJC_EXPORT
  @interface RTC_OBJC_TYPE (RTCDefaultVideoEncoderFactory) : NSObject <RTC_OBJC_TYPE(RTCVideoEncoderFactory)>
  
  @property(nonatomic, retain) RTC_OBJC_TYPE(RTCVideoCodecInfo) *preferredCodec;
