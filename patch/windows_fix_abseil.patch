@@ -1,5 +1,4 @@
 diff --git a/src/third_party/abseil-cpp/absl/types/internal/optional.h b/src/third_party/abseil-cpp/absl/types/internal/optional.h
-index 6ed0c669..681acb7a 100644
 --- a/src/third_party/abseil-cpp/absl/types/internal/optional.h
 +++ b/src/third_party/abseil-cpp/absl/types/internal/optional.h
 @@ -179,8 +179,8 @@ class optional_data_base : public optional_data_dtor_base<T> {
@@ -14,7 +13,6 @@ index 6ed0c669..681acb7a 100644
  class optional_data;
 
 diff --git a/src/rtc_base/ssl_stream_adapter.h b/src/rtc_base/ssl_stream_adapter.h
-index dcaaf3a0d1..51a3e6fe59 100644
 --- a/src/rtc_base/ssl_stream_adapter.h
 +++ b/src/rtc_base/ssl_stream_adapter.h
 @@ -187,7 +187,7 @@ class SSLStreamAdapter : public StreamInterface {
