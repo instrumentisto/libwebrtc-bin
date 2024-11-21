@@ -120,6 +120,7 @@ Exec { git apply --ignore-space-change -v $PATCH_DIR\fix_disable_proxy_trace_eve
 Exec { git apply --ignore-space-change -v $PATCH_DIR\webrtc_voice_engine.patch }
 Exec { git apply --ignore-space-change -v $PATCH_DIR\win_dynamic_crt.patch }
 Exec { git apply --ignore-space-change -v $PATCH_DIR\windows_fix_abseil.patch }
+Exec { git apply --ignore-space-change -v $PATCH_DIR\windows_fix_optional.patch }
 Pop-Location
 
 Get-PSDrive
