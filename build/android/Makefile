@@ -54,7 +54,7 @@ copy:
 	mkdir -p $(PACKAGE_DIR)/include
 	cp -f $(BUILD_DIR)/libwebrtc.jar $(PACKAGE_DIR)/jar/
 	cp -f $(BUILD_DIR)/libwebrtc.aar $(PACKAGE_DIR)/aar/
-	rsync -amv '--include=*/' '--include=*.h' '--include=*.hpp' '--exclude=*' $(SRC_DIR)/. $(PACKAGE_DIR)/include/.
+	rsync -amv '--include=*/' '--include=*.h' '--include=*.hpp' '--include=*.inc' '--exclude=*' $(SRC_DIR)/. $(PACKAGE_DIR)/include/.
 	rm -rf $(PACKAGE_DIR)/include/rtc_tools
 	cp -f $(BUILD_DIR)/LICENSE.md $(PACKAGE_DIR)/NOTICE
 	echo '$(WEBRTC_VERSION)' > $(PACKAGE_DIR)/VERSION
