@@ -162,7 +162,7 @@ if (Test-Path $BUILD_DIR\package) {
   Remove-Item -Force -Recurse -Path $BUILD_DIR\package
 }
 New-Item $BUILD_DIR\package\webrtc\include -ItemType Directory -Force
-Exec { robocopy "$WEBRTC_DIR\src" "$BUILD_DIR\package\webrtc\include" *.h *.hpp /S /NP /NS /NC /NFL /NDL } -SuccessCodes @(1)
+Exec { robocopy "$WEBRTC_DIR\src" "$BUILD_DIR\package\webrtc\include" *.h *.hpp *.inc /S /NP /NS /NC /NFL /NDL } -SuccessCodes @(1)
 
 # ライブラリディレクトリ作成
 New-Item $BUILD_DIR\package\webrtc\debug -ItemType Directory -Force
