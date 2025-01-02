@@ -1,6 +1,6 @@
 # Copyright 2019, Shiguredo Inc, melpon and enm10k
 # Copyright 2019, Zenichi Amano
-# Copyright 2022-2024, Instrumentisto Team, rogurotus and tyranron
+# Copyright 2022-2025, Instrumentisto Team, rogurotus and tyranron
 # original: https://github.com/shiguredo/shiguredo-webrtc-windows/blob/master/gabuild.ps1
 
 $ErrorActionPreference = "Stop"
