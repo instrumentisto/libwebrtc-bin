@@ -38,8 +38,7 @@ patch: common-patch
 	patch -p2 < $(PATCH_DIR)/4k_linux.patch && \
 	patch -p2 < $(PATCH_DIR)/disable_use_hermetic_xcode_on_linux.patch && \
 	patch -p2 < $(PATCH_DIR)/linux_clang_optional.patch && \
-	patch -p2 < $(PATCH_DIR)/linux_fix_enable_safe_libstdcxx.patch && \
-	patch -p2 < $(PATCH_DIR)/linux_emplace.patch
+	patch -p2 < $(PATCH_DIR)/linux_fix_enable_safe_libstdcxx.patch
 
 .PHONY: build
 build: download patch
