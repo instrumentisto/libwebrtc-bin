@@ -3,7 +3,7 @@
   <groupId>com.github.instrumentisto</groupId>
   <artifactId>libwebrtc-bin</artifactId>
   <versioning>
-    <release>132.0.6834.110</release>
+    <release>132.0.6834.159</release>
     <versions>
       <version>117.0.5938.92</version>
       <version>117.0.5938.132</version>
@@ -69,7 +69,8 @@
       <version>131.0.6778.264</version>
       <version>132.0.6834.83</version>
       <version>132.0.6834.110</version>
+      <version>132.0.6834.159</version>
     </versions>
-    <lastUpdated>20250127114836</lastUpdated>
+    <lastUpdated>20250203125519</lastUpdated>
   </versioning>
 </metadata>
