@@ -1,12 +1,13 @@
 diff --git a/src/modules/congestion_controller/goog_cc/loss_based_bwe_v2.h b/src/modules/congestion_controller/goog_cc/loss_based_bwe_v2.h
-index a81e206..ee1c2ad 100644
+index 425ca2a0c8..b45c6dd777 100644
 --- a/src/modules/congestion_controller/goog_cc/loss_based_bwe_v2.h
 +++ b/src/modules/congestion_controller/goog_cc/loss_based_bwe_v2.h
-@@ -129,6 +129,7 @@ class LossBasedBweV2 {
+@@ -128,7 +128,8 @@ class LossBasedBweV2 {
+     TimeDelta padding_duration = TimeDelta::Zero();
      bool bound_best_candidate = false;
      bool pace_at_loss_based_estimate = false;
      double median_sending_rate_factor = 0.0;
 +    Config() { }
    };
- 
+
    struct Derivatives {
