@@ -77,6 +77,10 @@ if (Test-Path $DEPOT_TOOLS_DIR) {
   Exec { git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git }
 }
 
+# Git設定
+git config --global core.longpaths true
+git config --global depot-tools.allowGlobalGitConfig true
+
 $Env:PATH = "$DEPOT_TOOLS_DIR;$Env:PATH"
 # Choco へのパスを削除
 $Env:PATH = $Env:Path.Replace("C:\ProgramData\Chocolatey\bin;", "");
