@@ -1,7 +1,7 @@
-diff --git a/src/third_party/abseil-cpp/absl/types/internal/optional.h b/src/third_party/abseil-cpp/absl/types/internal/optional.h
+diff --git a/third_party/abseil-cpp/absl/types/internal/optional.h b/third_party/abseil-cpp/absl/types/internal/optional.h
 index 6ed0c669..681acb7a 100644
---- a/src/third_party/abseil-cpp/absl/types/internal/optional.h
-+++ b/src/third_party/abseil-cpp/absl/types/internal/optional.h
+--- a/third_party/abseil-cpp/absl/types/internal/optional.h
++++ b/third_party/abseil-cpp/absl/types/internal/optional.h
 @@ -179,8 +179,8 @@ class optional_data_base : public optional_data_dtor_base<T> {
  // Also, we should be checking is_trivially_copyable here, which is not
  // supported now, so we use is_trivially_* traits instead.
@@ -12,4 +12,4 @@ index 6ed0c669..681acb7a 100644
 +              std::is_trivially_copy_assignable<typename std::remove_cv<
                    T>::type>::value&& std::is_trivially_destructible<T>::value>
  class optional_data;
- 
+
