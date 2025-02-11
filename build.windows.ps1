@@ -77,10 +77,6 @@ if (Test-Path $DEPOT_TOOLS_DIR) {
   Exec { git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git }
 }
 
-# Git設定
-git config --global core.longpaths true
-git config --global depot-tools.allowGlobalGitConfig true
-
 $Env:PATH = "$DEPOT_TOOLS_DIR;$Env:PATH"
 # Choco へのパスを削除
 $Env:PATH = $Env:Path.Replace("C:\ProgramData\Chocolatey\bin;", "");
@@ -137,16 +133,9 @@ Push-Location $WEBRTC_DIR\src
   # WebRTC Releaseビルド x64
   Exec { gn gen $BUILD_DIR\release_x64 --args="is_debug=false treat_warnings_as_errors=false rtc_use_h264=true rtc_include_tests=false rtc_build_tools=false rtc_build_examples=false is_component_build=false use_rtti=true strip_debug_info=true symbol_level=0 use_custom_libcxx=false" }
   Exec { ninja -C "$BUILD_DIR\release_x64" }
-
-  Exec { gn gen $BUILD_DIR\debug_x86 --args="target_os=win target_cpu=x86 treat_warnings_as_errors=false rtc_use_h264=true rtc_include_tests=false rtc_build_tools=false rtc_build_examples=false is_component_build=false use_rtti=true use_custom_libcxx=false" }
-  Exec { ninja -C "$BUILD_DIR\debug_x64" }
-
-  # WebRTC Releaseビルド x64
-  Exec { gn gen $BUILD_DIR\release_x86 --args="is_debug=false target_os=win target_cpu=x86 treat_warnings_as_errors=false rtc_use_h264=true rtc_include_tests=false rtc_build_tools=false rtc_build_examples=false is_component_build=false use_rtti=true strip_debug_info=true symbol_level=0 use_custom_libcxx=false" }
-  Exec { ninja -C "$BUILD_DIR\release_x64" }
 Pop-Location
 
-foreach ($build in @("debug_x64", "release_x64", "debug_x86", "release_x86")) {
+foreach ($build in @("debug_x64", "release_x64")) {
   Exec { ninja -C "$BUILD_DIR\$build" audio_device_module_from_input_and_output }
 
   # このままだと webrtc.lib に含まれないファイルがあるので、いくつか追加する
