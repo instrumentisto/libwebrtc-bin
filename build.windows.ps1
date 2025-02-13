@@ -114,13 +114,22 @@ if (!(Test-Path $BUILD_DIR)) {
 }
 
 Exec { gclient sync --with_branch_heads -r $WEBRTC_COMMIT }
+Write-Output "Start to apply patches..."
+Write-Output "Applying add_licenses.patch"
 Exec { git apply --ignore-space-change -v $PATCH_DIR\add_licenses.patch }
+Write-Output "Applying 4k.patch"
 Exec { git apply --ignore-space-change -v $PATCH_DIR\4k.patch }
+Write-Output "Applying fix_disable_proxy_trace_events.patch"
 Exec { git apply --ignore-space-change -v $PATCH_DIR\fix_disable_proxy_trace_events.patch }
+Write-Output "Applying webrtc_voice_engine.patch"
 Exec { git apply --ignore-space-change -v $PATCH_DIR\webrtc_voice_engine.patch }
+Write-Output "Applying win_dynamic_crt.patch"
 Exec { git apply --ignore-space-change -v $PATCH_DIR\win_dynamic_crt.patch }
+Write-Output "Applying windows_fix_abseil.patch"
 Exec { git apply --ignore-space-change -v $PATCH_DIR\windows_fix_abseil.patch }
-# Exec { git apply --ignore-space-change -v $PATCH_DIR\windows_fix_optional.patch }
+Write-Output "Applying windows_fix_optional.patch"
+Exec { git apply --ignore-space-change -v $PATCH_DIR\windows_fix_optional.patch }
+Write-Output "All patches are applied"
 Pop-Location
 
 Get-PSDrive

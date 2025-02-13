@@ -1,7 +1,7 @@
-diff --git a/third_party/perfetto/include/perfetto/tracing/track.h b/third_party/perfetto/include/perfetto/tracing/track.h
+diff --git a/src/third_party/perfetto/include/perfetto/tracing/track.h b/src/third_party/perfetto/include/perfetto/tracing/track.h
 index dcaaf3a0d1..3b06516011 100644
---- a/third_party/perfetto/include/perfetto/tracing/track.h
-+++ b/third_party/perfetto/include/perfetto/tracing/track.h
+--- a/src/third_party/perfetto/include/perfetto/tracing/track.h
++++ b/src/third_party/perfetto/include/perfetto/tracing/track.h
 @@ -33,6 +33,7 @@
  #include <stdint.h>
  #include <map>
