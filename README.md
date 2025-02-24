@@ -2,7 +2,7 @@
 ======================
 
 [![CocoaPods](https://img.shields.io/cocoapods/v/instrumentisto-libwebrtc-bin "CocoaPods")](https://cocoapods.org/pods/instrumentisto-libwebrtc-bin)
-[![CI](https://github.com/instrumentisto/libwebrtc-bin/workflows/CI/badge.svg?branch=main "CI")](https://github.com/instrumentisto/libwebrtc-bin/actions?query=workflow%3ACI+branch%3Amain)
+[![CI](https://github.com/instrumentisto/libwebrtc-bin/actions/workflows/ci.yml/badge.svg?branch=main "CI")](https://github.com/instrumentisto/libwebrtc-bin/actions?query=workflow%3ACI+branch%3Amain)
 
 Build scripts for statically linked [`libwebrtc`] binaries, used by [Medea Flutter-WebRTC].
 
