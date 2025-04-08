@@ -129,6 +129,8 @@ Write-Output "Applying windows_fix_abseil.patch"
 Exec { git apply --ignore-space-change -v $PATCH_DIR\windows_fix_abseil.patch }
 Write-Output "Applying windows_fix_optional.patch"
 Exec { git apply --ignore-space-change -v $PATCH_DIR\windows_fix_optional.patch }
+Write-Output "Applying windows_add_deps.patch"
+Exec { git apply --ignore-space-change -v $PATCH_DIR\windows_add_deps.patch }
 Write-Output "All patches are applied"
 Pop-Location
 

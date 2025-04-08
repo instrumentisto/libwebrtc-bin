@@ -21,7 +21,9 @@ EXTRA_GN_ARGS := \
 	rtc_build_json=true \
 	use_rtti=true \
 	use_custom_libcxx=false \
-	use_custom_libcxx_for_host=false
+	use_custom_libcxx_for_host=false \
+	use_rtti=true \
+	libyuv_include_tests=false
 
 .PHONY: all
 all: clean build package
@@ -35,11 +37,10 @@ copy: common-copy
 .PHONY: patch
 patch: common-patch
 	cd $(SRC_DIR) && \
-	patch -p2 < $(PATCH_DIR)/4k_linux.patch && \
-	patch -p2 < $(PATCH_DIR)/disable_use_hermetic_xcode_on_linux.patch && \
-	patch -p2 < $(PATCH_DIR)/linux_clang_optional.patch && \
-	patch -p2 < $(PATCH_DIR)/linux_fix_enable_safe_libstdcxx.patch && \
-	patch -p2 < $(PATCH_DIR)/linux_emplace.patch
+	patch -p1 < $(PATCH_DIR)/4k_linux.patch && \
+	patch -p1 < $(PATCH_DIR)/disable_use_hermetic_xcode_on_linux.patch && \
+	patch -p1 < $(PATCH_DIR)/linux_clang_optional.patch && \
+	patch -p1 < $(PATCH_DIR)/linux_fix_enable_safe_libstdcxx.patch
 
 .PHONY: build
 build: download patch
