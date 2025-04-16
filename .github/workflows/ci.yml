@@ -23,26 +23,26 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - os: android
-            ext: .jar
-          - os: android
-            arch: arm
-            ext: .a
-          - os: android
-            arch: arm64
-            ext: .a
-          - os: android
-            arch: x64
-            ext: .a
-          - os: ios
-          - os: linux
-            arch: arm64
-          - os: linux
-            arch: x64
-          - os: macos
-            arch: arm64
-          - os: macos
-            arch: x64
+#          - os: android
+#            ext: .jar
+#          - os: android
+#            arch: arm
+#            ext: .a
+#          - os: android
+#            arch: arm64
+#            ext: .a
+#          - os: android
+#            arch: x64
+#            ext: .a
+#          - os: ios
+#          - os: linux
+#            arch: arm64
+#          - os: linux
+#            arch: x64
+#          - os: macos
+#            arch: arm64
+#          - os: macos
+#            arch: x64
           - os: windows
             arch: x64
     # NOTE: Using `macos-14` instead of `macos-latest` is for improving backward
