@@ -12,4 +12,3 @@ index 6ed0c669..681acb7a 100644
 +              std::is_trivially_copy_assignable<typename std::remove_cv<
                    T>::type>::value&& std::is_trivially_destructible<T>::value>
  class optional_data;
-
