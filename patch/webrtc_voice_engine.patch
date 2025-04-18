@@ -3,7 +3,7 @@
 @@ -471,6 +471,7 @@ void WebRtcVoiceEngine::ApplyOptions(const AudioOptions& options_in) {
    }
  #endif
-
+ 
 +#if !defined(WEBRTC_WIN)
    if (options.echo_cancellation) {
      // Check if platform supports built-in EC. Currently only supported on
@@ -13,6 +13,6 @@
      }
    }
 +#endif
-
+ 
    if (options.auto_gain_control) {
      bool built_in_agc_avaliable = adm()->BuiltInAGCIsAvailable();
