@@ -1,5 +1,5 @@
---- a/media/engine/webrtc_voice_engine.cc
-+++ b/media/engine/webrtc_voice_engine.cc
+--- a/src/media/engine/webrtc_voice_engine.cc
++++ b/src/media/engine/webrtc_voice_engine.cc
 @@ -471,6 +471,7 @@ void WebRtcVoiceEngine::ApplyOptions(const AudioOptions& options_in) {
    }
  #endif
