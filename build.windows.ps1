@@ -117,19 +117,19 @@ if (!(Test-Path $BUILD_DIR)) {
   New-Item $BUILD_DIR -ItemType Directory -Force
 }
 
-  Push-Location $WEBRTC_DIR\src
-    Exec { gclient sync --with_branch_heads -r $WEBRTC_COMMIT }
-    Write-Output "Start to apply patches..."
-    Write-Output "Applying add_licenses.patch"
-    Exec { git apply -p1 --ignore-space-change --ignore-whitespace --whitespace=nowarn --reject -v $PATCH_DIR\add_licenses.patch }
-    Write-Output "Applying 4k.patch"
-    Exec { git apply -p1 --ignore-space-change --ignore-whitespace --whitespace=nowarn --reject -v $PATCH_DIR\4k.patch }
-    Write-Output "Applying windows_fix_optional.patch"
-    Exec { git apply -p1 --ignore-space-change --ignore-whitespace --whitespace=nowarn --reject -v $PATCH_DIR\windows_fix_optional.patch }
-    Write-Output "Applying windows_add_deps.patch"
-    Exec { git apply -p1 --ignore-space-change --ignore-whitespace --whitespace=nowarn --reject -v $PATCH_DIR\windows_add_deps.patch }
-    Write-Output "All patches are applied"
-  Pop-Location
+Push-Location $WEBRTC_DIR\src
+  Exec { gclient sync --with_branch_heads -r $WEBRTC_COMMIT }
+  Write-Output "Start to apply patches..."
+  Write-Output "Applying add_licenses.patch"
+  Exec { git apply -p1 --ignore-space-change --ignore-whitespace --whitespace=nowarn --reject -v $PATCH_DIR\add_licenses.patch }
+  Write-Output "Applying 4k.patch"
+  Exec { git apply -p1 --ignore-space-change --ignore-whitespace --whitespace=nowarn --reject -v $PATCH_DIR\4k.patch }
+  Write-Output "Applying windows_fix_optional.patch"
+  Exec { git apply -p1 --ignore-space-change --ignore-whitespace --whitespace=nowarn --reject -v $PATCH_DIR\windows_fix_optional.patch }
+  Write-Output "Applying windows_add_deps.patch"
+  Exec { git apply -p1 --ignore-space-change --ignore-whitespace --whitespace=nowarn --reject -v $PATCH_DIR\windows_add_deps.patch }
+  Write-Output "All patches are applied"
+Pop-Location
 Pop-Location
 
 Get-PSDrive
