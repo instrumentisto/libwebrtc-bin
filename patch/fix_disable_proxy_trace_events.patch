@@ -1,7 +1,7 @@
 diff --git a/src/pc/proxy.h b/src/pc/proxy.h
 index eecd601..744f822 100644
---- a/src/pc/proxy.h
-+++ b/src/pc/proxy.h
+--- a/pc/proxy.h
++++ b/pc/proxy.h
 @@ -70,12 +70,15 @@
  #include "rtc_base/string_utils.h"
  #include "rtc_base/system/rtc_export.h"
