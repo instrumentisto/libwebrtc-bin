@@ -16,7 +16,8 @@ EXTRA_GN_ARGS := \
 	rtc_build_tools=false \
 	rtc_build_examples=false \
 	rtc_use_perfetto=false \
-	proprietary_codecs=false
+	proprietary_codecs=false \
+	libyuv_include_tests=false
 
 .PHONY: all
 all: clean build package
