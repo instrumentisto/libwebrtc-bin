@@ -117,6 +117,8 @@ if (!(Test-Path $BUILD_DIR)) {
   New-Item $BUILD_DIR -ItemType Directory -Force
 }
 
+Write-Output "Applying fix_disable_proxy_trace_events.patch"
+Exec { git apply -p1 --ignore-space-change -v $PATCH_DIR\fix_disable_proxy_trace_events.patch }
 Push-Location $WEBRTC_DIR\src
   Exec { gclient sync --with_branch_heads -r $WEBRTC_COMMIT }
   Write-Output "Start to apply patches..."
@@ -124,8 +126,6 @@ Push-Location $WEBRTC_DIR\src
   Exec { git apply -p1 --ignore-space-change --ignore-whitespace --whitespace=nowarn --reject -v $PATCH_DIR\add_licenses.patch }
   Write-Output "Applying 4k.patch"
   Exec { git apply -p1 --ignore-space-change --ignore-whitespace --whitespace=nowarn --reject -v $PATCH_DIR\4k.patch }
-  Write-Output "Applying fix_disable_proxy_trace_events.patch"
-  Exec { git apply -p1 --ignore-space-change -v $PATCH_DIR\fix_disable_proxy_trace_events.patch }
   Write-Output "Applying windows_fix_optional.patch"
   Exec { git apply -p1 --ignore-space-change --ignore-whitespace --whitespace=nowarn --reject -v $PATCH_DIR\windows_fix_optional.patch }
   Write-Output "Applying windows_add_deps.patch"
