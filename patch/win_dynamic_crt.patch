@@ -1,5 +1,5 @@
---- a/src/build/config/win/BUILD.gn
-+++ b/src/build/config/win/BUILD.gn
+--- a/build/config/win/BUILD.gn
++++ b/build/config/win/BUILD.gn
 @@ -470,7 +470,7 @@ config("default_crt") {
        configs = [ ":dynamic_crt" ]
      } else {
