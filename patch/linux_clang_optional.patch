@@ -7,7 +7,7 @@ index 425ca2a0c8..b45c6dd777 100644
      bool bound_best_candidate = false;
      bool pace_at_loss_based_estimate = false;
      double median_sending_rate_factor = 0.0;
-+    Config();
++    Config() = default;
    };
 
    struct Derivatives {
@@ -19,7 +19,7 @@ index d77289febc..87b9fee1a3 100644
    int payload_type = -1;
    bool raw_payload = false;
    struct Rtx {
-+    Rtx();
++    constexpr Rtx() noexcept = default;
      std::string ToString() const;
      // SSRC to use for the RTX stream.
      uint32_t ssrc = 0;

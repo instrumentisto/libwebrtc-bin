@@ -128,6 +128,8 @@ Push-Location $WEBRTC_DIR\src
   Exec { git apply -p1 --ignore-space-change --ignore-whitespace --whitespace=nowarn --reject -v $PATCH_DIR\windows_fix_optional.patch }
   Write-Output "Applying windows_add_deps.patch"
   Exec { git apply -p1 --ignore-space-change --ignore-whitespace --whitespace=nowarn --reject -v $PATCH_DIR\windows_add_deps.patch }
+  Write-Output "Applying win_dynamic_crt.patch"
+  Exec { git apply -p1 --ignore-space-change --ignore-whitespace --whitespace=nowarn --reject -v $PATCH_DIR\win_dynamic_crt.patch }
 Pop-Location
 Write-Output "Applying fix_disable_proxy_trace_events.patch"
 Exec { git apply -p1 --ignore-space-change --ignore-whitespace --whitespace=nowarn --reject -v $PATCH_DIR\fix_disable_proxy_trace_events.patch }
