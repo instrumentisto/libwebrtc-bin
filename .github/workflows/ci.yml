@@ -45,11 +45,7 @@ jobs:
             arch: x64
           - os: windows
             arch: x64
-    # NOTE: Using `macos-14` instead of `macos-latest` is for improving backward
-    #       compatibility with older iOS/macOS versions.
-    #       The minimum macOS version required to build `libwebrtc` is macOS 14
-    #       due to the use of Screen Capture Kit in the `libwebrtc` source code.
-    runs-on: ${{ (contains('ios macos', matrix.os) && 'macos-14')
+    runs-on: ${{ (contains('ios macos', matrix.os) && 'macos-15')
               || (contains('windows', matrix.os)   && 'windows-2022')
               ||                                      'ubuntu-latest' }}
     steps:

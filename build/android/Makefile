@@ -73,8 +73,8 @@ patch: common-patch
 define build-android
 	cd $(SRC_DIR) && \
 	gn gen $(BUILD_DIR)/static/$1 --args='$(EXTRA_GN_ARGS) use_custom_libcxx=false use_remoteexec=false $(CC_WRAPPER) target_os="android" target_cpu="$2" $3' && \
-	ninja -C $(BUILD_DIR)/static/$1 && \
-	ninja -C $(BUILD_DIR)/static/$1 native_api
+	autoninja -C $(BUILD_DIR)/static/$1 && \
+	autoninja -C $(BUILD_DIR)/static/$1 native_api
 
 	cd $(BUILD_DIR)/static/$1/obj && \
 	rm -f sdk/android/libjingle_peerconnection_so/jni_onload.o && \
