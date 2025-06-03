@@ -12,7 +12,7 @@ include ../common.mk
 EXTRA_GN_ARGS := \
 	target_os="mac" \
 	target_cpu="$(TARGET_CPU)" \
-	mac_deployment_target="10.14" \
+	mac_deployment_target="10.15" \
 	enable_stripping=true \
 	enable_dsyms=true \
 	treat_warnings_as_errors=false \
