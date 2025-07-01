@@ -20,6 +20,43 @@ index 226e653892..7e1e34eb53 100644
        "api/org/webrtc/VideoCodecStatus.java",
        "api/org/webrtc/VideoDecoder.java",
        "api/org/webrtc/VideoDecoderFactory.java",
+diff --git a/src/sdk/android/api/org/webrtc/CodecSupport.java b/src/sdk/android/api/org/webrtc/CodecSupport.java
+new file mode 100644
+index 0000000000..61002368b3
+--- /dev/null
++++ b/src/sdk/android/api/org/webrtc/CodecSupport.java
+@@ -0,0 +1,12 @@
++package org.webrtc;
++
++public class CodecSupport {
++  public boolean is_supported;
++  public boolean is_power_efficient;
++
++  @CalledByNative
++  public CodecSupport(boolean is_supported, boolean is_power_efficient) {
++    this.is_supported = is_supported;
++    this.is_power_efficient = is_power_efficient;
++  }
++}
+diff --git a/src/sdk/android/api/org/webrtc/CodecSupportUtils.java b/src/sdk/android/api/org/webrtc/CodecSupportUtils.java
+new file mode 100644
+index 0000000000..41545de307
+--- /dev/null
++++ b/src/sdk/android/api/org/webrtc/CodecSupportUtils.java
+@@ -0,0 +1,13 @@
++package org.webrtc;
++
++public class CodecSupportUtils {
++  @CalledByNative
++  public static boolean getIsSupported(CodecSupport codec) {
++    return codec.is_supported;
++  }
++
++  @CalledByNative
++  public static boolean getIsPowerEfficient(CodecSupport codec) {
++    return codec.is_power_efficient;
++  }
++}
 diff --git a/src/sdk/android/api/org/webrtc/DefaultVideoEncoderFactory.java b/src/sdk/android/api/org/webrtc/DefaultVideoEncoderFactory.java
 index 76896b6b2d..9be1c7e012 100644
 --- a/src/sdk/android/api/org/webrtc/DefaultVideoEncoderFactory.java
