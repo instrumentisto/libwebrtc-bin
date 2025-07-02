@@ -385,9 +385,9 @@ index 0000000..0958a38
 +  NSMutableArray<RTC_OBJC_TYPE(RTCVideoCodecInfo) *> *result = [@[] mutableCopy];
 +  auto HWSupportedCodecs = [_HWVideoEncoderFactory supportedCodecs];
 +
-+  NSUInteger i;
-+  for (i = 0; i < [HWSupportedCodecs count]; i++) {
-+    [result addObject:[HWSupportedCodecs objectAtIndex:i]];
++  NSUInteger index;
++  for (index = 0; index < [HWSupportedCodecs count]; index++) {
++    [result addObject:[HWSupportedCodecs objectAtIndex:index]];
 +  }
 +
 +  for (size_t i = 0; i < formats.size(); ++i) {
