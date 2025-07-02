@@ -12,6 +12,7 @@ include ../common.mk
 EXTRA_GN_ARGS := \
 	is_debug=false \
 	is_java_debug=false \
+	treat_warnings_as_errors=false \
 	rtc_build_tools=false \
 	rtc_build_examples=false \
 	rtc_include_tests=false \

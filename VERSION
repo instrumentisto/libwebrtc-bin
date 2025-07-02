@@ -1,4 +1,4 @@
-CCACHE_VERSION=4.8.3
+CCACHE_VERSION=4.11.3
 
 # WebRTC doesn't have its own versioning, so we use Chromium versions:
 # https://chromiumdash.appspot.com/releases
