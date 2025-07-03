@@ -12,17 +12,19 @@ include ../common.mk
 EXTRA_GN_ARGS := \
 	target_os="$(TARGET_OS)" \
 	target_cpu="$(TARGET_CPU)" \
-	proprietary_codecs=false \
-	rtc_use_x11=true \
-	rtc_include_tests=false \
-	rtc_build_tools=false \
+	is_debug=false \
 	rtc_build_examples=false \
-	rtc_use_pipewire=false \
 	rtc_build_json=true \
-	use_rtti=true \
+	rtc_build_tools=false \
+	rtc_include_tests=false \
+	rtc_use_perfetto=false \
+	rtc_use_pipewire=false \
 	use_custom_libcxx=false \
 	use_custom_libcxx_for_host=false \
-	libyuv_include_tests=false
+	use_rtti=true \
+	libyuv_include_tests=false \
+	proprietary_codecs=false \
+	rtc_use_x11=true
 
 .PHONY: all
 all: clean build package
@@ -46,7 +48,7 @@ patch: common-patch
 build: download patch
 	cd $(SRC_DIR) && \
 	gn gen $(BUILD_DIR_DEBUG) --args='$(EXTRA_GN_ARGS) $(CC_WRAPPER)' && \
-	gn gen $(BUILD_DIR_RELEASE) --args='$(EXTRA_GN_ARGS) is_debug=false $(CC_WRAPPER)' && \
+	gn gen $(BUILD_DIR_RELEASE) --args='$(EXTRA_GN_ARGS) $(CC_WRAPPER)' && \
 	ninja -C $(BUILD_DIR_DEBUG) && \
 	ninja -C $(BUILD_DIR_RELEASE)
 

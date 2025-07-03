@@ -10,7 +10,7 @@ TARGET_CPU =
 include ../common.mk
 
 EXTRA_GN_ARGS := \
-    is_debug=false \
+	is_debug=false \
 	rtc_libvpx_build_vp9=true \
 	rtc_include_tests=false \
 	rtc_build_examples=false \
@@ -46,4 +46,4 @@ build: patch
 	mkdir -p $(BUILD_DIR) && \
 	cd $(SRC_DIR)/tools_webrtc/ios && \
 	python3 build_ios_libs.py --output-dir out --build_config release --extra-gn-args '$(EXTRA_GN_ARGS) $(CC_WRAPPER)' && \
-    mv $(SRC_DIR)/tools_webrtc/ios/out/WebRTC.xcframework $(BUILD_DIR)/
+	mv $(SRC_DIR)/tools_webrtc/ios/out/WebRTC.xcframework $(BUILD_DIR)/
