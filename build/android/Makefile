@@ -12,16 +12,16 @@ include ../common.mk
 EXTRA_GN_ARGS := \
 	is_debug=false \
 	is_java_debug=false \
-	treat_warnings_as_errors=false \
-	rtc_build_tools=false \
-	rtc_build_examples=false \
-	rtc_include_tests=false \
-	proprietary_codecs=false \
 	is_clang=true \
 	is_component_build=false \
-	rtc_enable_protobuf=false \
+	rtc_build_examples=false \
 	rtc_build_json=true \
-	use_rtti=true
+	rtc_build_tools=false \
+	rtc_enable_protobuf=false \
+	rtc_include_tests=false \
+	rtc_use_perfetto=false \
+	use_rtti=true \
+	proprietary_codecs=false \
 
 .PHONY: all
 all: clean build package
@@ -74,7 +74,7 @@ patch: common-patch
 
 define build-android
 	cd $(SRC_DIR) && \
-	gn gen $(BUILD_DIR)/static/$1 --args='$(EXTRA_GN_ARGS) use_custom_libcxx=false use_remoteexec=false $(CC_WRAPPER) target_os="android" target_cpu="$2" $3' && \
+	gn gen $(BUILD_DIR)/static/$1 --args='$(EXTRA_GN_ARGS) use_custom_libcxx=false android_static_analysis="off" $(CC_WRAPPER) target_os="android" target_cpu="$2" $3' && \
 	autoninja -C $(BUILD_DIR)/static/$1 && \
 	autoninja -C $(BUILD_DIR)/static/$1 native_api
 
