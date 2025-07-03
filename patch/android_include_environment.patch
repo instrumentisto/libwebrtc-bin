@@ -1,4 +1,4 @@
-diff --git a/sdk/android/BUILD.gn b/sdk/android/BUILD.gn
+diff --git a/src/sdk/android/BUILD.gn b/src/sdk/android/BUILD.gn
 index 226e653892..7e1e34eb53 100644
 --- a/src/sdk/android/BUILD.gn
 +++ b/src/sdk/android/BUILD.gn
