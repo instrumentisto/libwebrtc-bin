@@ -10,14 +10,15 @@ TARGET_CPU =
 include ../common.mk
 
 EXTRA_GN_ARGS := \
-	use_rtti=true \
+	is_debug=false \
 	rtc_libvpx_build_vp9=true \
 	rtc_include_tests=false \
-	rtc_build_tools=false \
 	rtc_build_examples=false \
+	rtc_build_tools=false \
 	rtc_use_perfetto=false \
-	proprietary_codecs=false \
-	libyuv_include_tests=false
+	use_rtti=true \
+	libyuv_include_tests=false \
+	proprietary_codecs=false
 
 .PHONY: all
 all: clean build package
@@ -41,5 +42,8 @@ patch: common-patch
 
 .PHONY: build
 build: patch
+	mkdir -p $(SRC_DIR)/out && \
+	mkdir -p $(BUILD_DIR) && \
 	cd $(SRC_DIR)/tools_webrtc/ios && \
-	python3 build_ios_libs.py -o $(BUILD_DIR) --build_config release --extra-gn-args '$(EXTRA_GN_ARGS) $(CC_WRAPPER)'
+	python3 build_ios_libs.py --output-dir out --build_config release --extra-gn-args '$(EXTRA_GN_ARGS) $(CC_WRAPPER)' && \
+	mv $(SRC_DIR)/tools_webrtc/ios/out/WebRTC.xcframework $(BUILD_DIR)/

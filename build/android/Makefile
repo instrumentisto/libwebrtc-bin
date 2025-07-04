@@ -12,15 +12,17 @@ include ../common.mk
 EXTRA_GN_ARGS := \
 	is_debug=false \
 	is_java_debug=false \
-	rtc_build_tools=false \
-	rtc_build_examples=false \
-	rtc_include_tests=false \
-	proprietary_codecs=false \
 	is_clang=true \
 	is_component_build=false \
-	rtc_enable_protobuf=false \
+	rtc_build_examples=false \
 	rtc_build_json=true \
-	use_rtti=true
+	rtc_build_tools=false \
+	rtc_enable_protobuf=false \
+	rtc_include_tests=false \
+	rtc_use_perfetto=false \
+	use_rtti=true \
+	libyuv_include_tests=false \
+	proprietary_codecs=false
 
 .PHONY: all
 all: clean build package
@@ -65,14 +67,15 @@ patch: common-patch
 	patch -p1 < $(PATCH_DIR)/disable_use_hermetic_xcode_on_linux.patch && \
 	patch -p1 < $(PATCH_DIR)/android_version.patch && \
 	patch -p1 < $(PATCH_DIR)/android_use_libunwind.patch && \
-	patch -p2 < $(PATCH_DIR)/enable_android_scalability_mode.patch && \
 	patch -p1 < $(PATCH_DIR)/linux_fix_enable_safe_libstdcxx.patch && \
+	patch -p2 < $(PATCH_DIR)/enable_android_scalability_mode.patch && \
+	patch -p1 < $(PATCH_DIR)/android_include_environment.patch && \
 	$(SCRIPTS_DIR)/generate_android_version.sh $(SRC_DIR) $(WEBRTC_COMMIT) $(WEBRTC_VERSION)
 
 
 define build-android
 	cd $(SRC_DIR) && \
-	gn gen $(BUILD_DIR)/static/$1 --args='$(EXTRA_GN_ARGS) use_custom_libcxx=false use_remoteexec=false $(CC_WRAPPER) target_os="android" target_cpu="$2" $3' && \
+	gn gen $(BUILD_DIR)/static/$1 --args='$(EXTRA_GN_ARGS) use_custom_libcxx=false android_static_analysis="off" $(CC_WRAPPER) target_os="android" target_cpu="$2" $3' && \
 	autoninja -C $(BUILD_DIR)/static/$1 && \
 	autoninja -C $(BUILD_DIR)/static/$1 native_api
 
@@ -87,8 +90,10 @@ ifeq ($(static),yes)
 	$(call build-android,$(arch),$(target_cpu),$(version))
 else
 	cd $(SRC_DIR) && \
+	mkdir -p $(SRC_DIR)/out/ && \
+	mkdir -p $(BUILD_DIR) && \
 	vpython3 $(SRC_DIR)/tools_webrtc/android/build_aar.py \
-		--build-dir $(BUILD_DIR)/aar \
+		--build-dir $(SRC_DIR)/out \
 		--output $(BUILD_DIR)/libwebrtc.aar \
 		--arch armeabi-v7a arm64-v8a x86_64 \
 		--extra-gn-args '$(EXTRA_GN_ARGS) $(CC_WRAPPER)'

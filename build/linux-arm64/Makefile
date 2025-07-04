@@ -12,17 +12,18 @@ include ../common.mk
 EXTRA_GN_ARGS := \
 	target_os="$(TARGET_OS)" \
 	target_cpu="$(TARGET_CPU)" \
-	proprietary_codecs=false \
-	rtc_use_x11=true \
-	rtc_include_tests=false \
-	rtc_build_tools=false \
 	rtc_build_examples=false \
-	rtc_use_pipewire=false \
 	rtc_build_json=true \
-	use_rtti=true \
+	rtc_build_tools=false \
+	rtc_include_tests=false \
+	rtc_use_perfetto=false \
+	rtc_use_pipewire=false \
 	use_custom_libcxx=false \
 	use_custom_libcxx_for_host=false \
-	libyuv_include_tests=false
+	use_rtti=true \
+	libyuv_include_tests=false \
+	proprietary_codecs=false \
+	rtc_use_x11=true
 
 .PHONY: all
 all: clean build package

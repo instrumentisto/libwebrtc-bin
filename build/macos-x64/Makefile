@@ -12,22 +12,23 @@ include ../common.mk
 EXTRA_GN_ARGS := \
 	target_os="mac" \
 	target_cpu="$(TARGET_CPU)" \
-	mac_deployment_target="10.15" \
 	enable_stripping=true \
 	enable_dsyms=true \
-	treat_warnings_as_errors=false \
-	proprietary_codecs=false \
-	rtc_include_tests=false \
-	rtc_build_tools=false \
-	rtc_build_examples=false \
-	rtc_libvpx_build_vp9=true \
-	rtc_enable_symbol_export=true \
-	rtc_enable_objc_symbol_export=true \
 	is_component_build=false \
-	use_rtti=true \
+	treat_warnings_as_errors=false \
+	rtc_build_examples=false \
+	rtc_build_tools=false \
+	rtc_enable_objc_symbol_export=true \
+	rtc_enable_symbol_export=true \
+	rtc_include_tests=false \
+	rtc_libvpx_build_vp9=true \
+	rtc_use_perfetto=false \
 	use_custom_libcxx=false \
 	use_custom_libcxx_for_host=false \
-	libyuv_include_tests=false
+	use_rtti=true \
+	libyuv_include_tests=false \
+	proprietary_codecs=false \
+	mac_deployment_target="10.15"
 
 .PHONY: all
 all: clean build package
