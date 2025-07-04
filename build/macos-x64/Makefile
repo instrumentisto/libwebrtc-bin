@@ -14,7 +14,6 @@ EXTRA_GN_ARGS := \
 	target_cpu="$(TARGET_CPU)" \
 	enable_stripping=true \
 	enable_dsyms=true \
-	is_debug=false \
 	is_component_build=false \
 	treat_warnings_as_errors=false \
 	rtc_build_examples=false \
@@ -58,7 +57,7 @@ patch: common-patch
 build: patch
 	cd $(SRC_DIR) && \
 	gn gen $(BUILD_DIR_DEBUG) --args='$(EXTRA_GN_ARGS) $(CC_WRAPPER)' && \
-	gn gen $(BUILD_DIR_RELEASE) --args='$(EXTRA_GN_ARGS) $(CC_WRAPPER)' && \
+	gn gen $(BUILD_DIR_RELEASE) --args='$(EXTRA_GN_ARGS) is_debug=false $(CC_WRAPPER)' && \
 	ninja -C $(BUILD_DIR_DEBUG) && \
 	ninja -C $(BUILD_DIR_DEBUG) \
 		api/audio_codecs:builtin_audio_decoder_factory \

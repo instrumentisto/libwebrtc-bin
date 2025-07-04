@@ -12,7 +12,6 @@ include ../common.mk
 EXTRA_GN_ARGS := \
 	target_os="$(TARGET_OS)" \
 	target_cpu="$(TARGET_CPU)" \
-	is_debug=false \
 	rtc_build_examples=false \
 	rtc_build_json=true \
 	rtc_build_tools=false \
@@ -47,7 +46,7 @@ patch: common-patch
 build: download patch
 	cd $(SRC_DIR) && \
 	gn gen $(BUILD_DIR_DEBUG) --args='$(EXTRA_GN_ARGS) $(CC_WRAPPER)' && \
-	gn gen $(BUILD_DIR_RELEASE) --args='$(EXTRA_GN_ARGS) $(CC_WRAPPER)' && \
+	gn gen $(BUILD_DIR_RELEASE) --args='$(EXTRA_GN_ARGS) is_debug=false $(CC_WRAPPER)' && \
 	ninja -C $(BUILD_DIR_DEBUG) && \
 	ninja -C $(BUILD_DIR_RELEASE)
 
