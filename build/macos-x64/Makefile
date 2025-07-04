@@ -76,7 +76,6 @@ build: patch
 		pc:peer_connection \
 		sdk:videocapture_objc \
 		sdk:mac_framework_objc
-
 	cd $(BUILD_DIR_DEBUG)/obj && \
 	/usr/bin/ar -rc $(BUILD_DIR_DEBUG)/obj/libwebrtc.a `find . -name '*.o'`
 	cd $(BUILD_DIR_RELEASE)/obj && \

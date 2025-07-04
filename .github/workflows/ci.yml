@@ -45,8 +45,7 @@ jobs:
             arch: x64
           - os: windows
             arch: x64
-    runs-on: ${{ (contains('ios', matrix.os)       && 'macos-15')
-              || (contains('macos', matrix.os)     && 'macos-15')
+    runs-on: ${{ (contains('ios macos', matrix.os) && 'macos-15')
               || (contains('windows', matrix.os)   && 'windows-2022')
               ||                                      'ubuntu-latest' }}
     steps:
