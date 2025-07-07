@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
   spec.name = "instrumentisto-libwebrtc-bin"
-  spec.version = "138.0.7204.49"
+  spec.version = "138.0.7204.92"
   spec.summary = "Pre-compiled `libwebrtc` library for Darwin used by Medea Flutter-WebRTC."
 
   spec.homepage = "https://github.com/instrumentisto/libwebrtc-bin"
@@ -8,7 +8,7 @@ Pod::Spec.new do |spec|
   spec.author = { 'Instrumentisto Team' => 'developer@instrumentisto.com' }
   spec.ios.deployment_target = '10.0'
 
-  spec.source = { :http => "https://github.com/instrumentisto/libwebrtc-bin/releases/download/138.0.7204.49/libwebrtc-ios.zip" }
+  spec.source = { :http => "https://github.com/instrumentisto/libwebrtc-bin/releases/download/138.0.7204.92/libwebrtc-ios.zip" }
   spec.vendored_frameworks = "WebRTC.xcframework"
 
   spec.pod_target_xcconfig = {
