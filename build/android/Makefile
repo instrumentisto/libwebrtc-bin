@@ -22,7 +22,8 @@ EXTRA_GN_ARGS := \
 	rtc_use_perfetto=false \
 	use_rtti=true \
 	libyuv_include_tests=false \
-	proprietary_codecs=false
+	proprietary_codecs=false \
+	use_siso=false
 
 .PHONY: all
 all: clean build package
