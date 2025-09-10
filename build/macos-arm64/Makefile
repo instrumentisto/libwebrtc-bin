@@ -51,15 +51,16 @@ copy: common-copy
 .PHONY: patch
 patch: common-patch
 	cd $(SRC_DIR) && \
-	patch -p2 < $(PATCH_DIR)/add_yuv_helper_ios_mac.patch
+	patch -p2 < $(PATCH_DIR)/add_yuv_helper_ios_mac.patch && \
+	patch -p2 < $(PATCH_DIR)/mac_disable_26_platform_ldflag.patch
 
 .PHONY: build
 build: patch
 	cd $(SRC_DIR) && \
 	gn gen $(BUILD_DIR_DEBUG) --args='$(EXTRA_GN_ARGS) $(CC_WRAPPER)' && \
 	gn gen $(BUILD_DIR_RELEASE) --args='$(EXTRA_GN_ARGS) is_debug=false $(CC_WRAPPER)' && \
-	ninja -v -C $(BUILD_DIR_DEBUG) && \
-	ninja -v -C $(BUILD_DIR_DEBUG) \
+	ninja -C $(BUILD_DIR_DEBUG) && \
+	ninja -C $(BUILD_DIR_DEBUG) \
 		api/audio_codecs:builtin_audio_decoder_factory \
 		api/task_queue:default_task_queue_factory \
 		sdk:native_api \
@@ -67,8 +68,8 @@ build: patch
 		pc:peer_connection \
 		sdk:videocapture_objc \
 		sdk:mac_framework_objc && \
-	ninja -v -C $(BUILD_DIR_RELEASE) && \
-	ninja -v -C $(BUILD_DIR_RELEASE) \
+	ninja -C $(BUILD_DIR_RELEASE) && \
+	ninja -C $(BUILD_DIR_RELEASE) \
 		api/audio_codecs:builtin_audio_decoder_factory \
 		api/task_queue:default_task_queue_factory \
 		sdk:native_api \
