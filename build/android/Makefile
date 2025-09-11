@@ -70,7 +70,7 @@ patch: common-patch
 	patch -p1 < $(PATCH_DIR)/android_use_libunwind.patch && \
 	patch -p1 < $(PATCH_DIR)/linux_fix_enable_safe_libstdcxx.patch && \
 	patch -p2 < $(PATCH_DIR)/enable_android_scalability_mode.patch && \
-	patch -p1 < $(PATCH_DIR)/android_include_environment.patch && \
+	patch -p1 < $(PATCH_DIR)/android_add_environment.patch && \
 	$(SCRIPTS_DIR)/generate_android_version.sh $(SRC_DIR) $(WEBRTC_COMMIT) $(WEBRTC_VERSION)
 
 
