@@ -59,8 +59,8 @@ build: patch
 	cd $(SRC_DIR) && \
 	gn gen $(BUILD_DIR_DEBUG) --args='$(EXTRA_GN_ARGS) $(CC_WRAPPER)' && \
 	gn gen $(BUILD_DIR_RELEASE) --args='$(EXTRA_GN_ARGS) is_debug=false $(CC_WRAPPER)' && \
-	ninja -v -C $(BUILD_DIR_DEBUG) && \
-	ninja -v -C $(BUILD_DIR_DEBUG) \
+	ninja -C $(BUILD_DIR_DEBUG) && \
+	ninja -C $(BUILD_DIR_DEBUG) \
 		api/audio_codecs:builtin_audio_decoder_factory \
 		api/task_queue:default_task_queue_factory \
 		sdk:native_api \
@@ -68,8 +68,8 @@ build: patch
 		pc:peer_connection \
 		sdk:videocapture_objc \
 		sdk:mac_framework_objc && \
-	ninja -v -C $(BUILD_DIR_RELEASE) && \
-	ninja -v -C $(BUILD_DIR_RELEASE) \
+	ninja -C $(BUILD_DIR_RELEASE) && \
+	ninja -C $(BUILD_DIR_RELEASE) \
 		api/audio_codecs:builtin_audio_decoder_factory \
 		api/task_queue:default_task_queue_factory \
 		sdk:native_api \
