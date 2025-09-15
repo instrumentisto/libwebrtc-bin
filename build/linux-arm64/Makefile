@@ -21,7 +21,10 @@ EXTRA_GN_ARGS := \
 	use_rtti=true \
 	libyuv_include_tests=false \
 	proprietary_codecs=false \
-	rtc_use_x11=true
+	rtc_use_x11=true \
+	use_custom_libcxx=false \
+	use_custom_libcxx_for_host=false \
+	use_clang_modules=false
 
 .PHONY: all
 all: clean build package

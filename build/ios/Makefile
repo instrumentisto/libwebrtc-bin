@@ -19,7 +19,7 @@ EXTRA_GN_ARGS := \
 	use_rtti=true \
 	libyuv_include_tests=false \
 	proprietary_codecs=false \
-	ios_deployment_target="13.0"
+	ios_deployment_target="15.0"
 
 .PHONY: all
 all: clean build package
