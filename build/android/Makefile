@@ -22,7 +22,8 @@ EXTRA_GN_ARGS := \
 	rtc_use_perfetto=false \
 	use_rtti=true \
 	libyuv_include_tests=false \
-	proprietary_codecs=false
+	proprietary_codecs=false \
+	use_siso=false
 
 .PHONY: all
 all: clean build package
@@ -67,9 +68,9 @@ patch: common-patch
 	patch -p1 < $(PATCH_DIR)/disable_use_hermetic_xcode_on_linux.patch && \
 	patch -p1 < $(PATCH_DIR)/android_version.patch && \
 	patch -p1 < $(PATCH_DIR)/android_use_libunwind.patch && \
+	patch -p1 < $(PATCH_DIR)/android_add_environment_java.patch && \
 	patch -p1 < $(PATCH_DIR)/linux_fix_enable_safe_libstdcxx.patch && \
 	patch -p2 < $(PATCH_DIR)/enable_android_scalability_mode.patch && \
-	patch -p1 < $(PATCH_DIR)/android_include_environment.patch && \
 	$(SCRIPTS_DIR)/generate_android_version.sh $(SRC_DIR) $(WEBRTC_COMMIT) $(WEBRTC_VERSION)
 
 

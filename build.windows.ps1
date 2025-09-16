@@ -124,8 +124,6 @@ Push-Location $WEBRTC_DIR\src
   Exec { git apply -p1 --ignore-space-change --ignore-whitespace --whitespace=nowarn --reject -v $PATCH_DIR\add_licenses.patch }
   Write-Output "Applying 4k.patch"
   Exec { git apply -p1 --ignore-space-change --ignore-whitespace --whitespace=nowarn --reject -v $PATCH_DIR\4k.patch }
-  Write-Output "Applying windows_fix_optional.patch"
-  Exec { git apply -p1 --ignore-space-change --ignore-whitespace --whitespace=nowarn --reject -v $PATCH_DIR\windows_fix_optional.patch }
   Write-Output "Applying windows_add_deps.patch"
   Exec { git apply -p1 --ignore-space-change --ignore-whitespace --whitespace=nowarn --reject -v $PATCH_DIR\windows_add_deps.patch }
   Write-Output "Applying win_dynamic_crt.patch"
