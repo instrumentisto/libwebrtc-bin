@@ -1,8 +1,8 @@
 diff --git a/src/sdk/android/BUILD.gn b/src/sdk/android/BUILD.gn
-index 226e653892..7e1e34eb53 100644
+index 7435dadc7d..885fd8a7b6 100644
 --- a/src/sdk/android/BUILD.gn
 +++ b/src/sdk/android/BUILD.gn
-@@ -213,6 +213,8 @@ if (is_android) {
+@@ -216,6 +216,8 @@ if (is_android) {
        "api/org/webrtc/CapturerObserver.java",
        "api/org/webrtc/EncodedImage.java",
        "api/org/webrtc/VideoCodecInfo.java",
@@ -11,7 +11,7 @@ index 226e653892..7e1e34eb53 100644
        "api/org/webrtc/VideoCodecStatus.java",
        "api/org/webrtc/VideoDecoder.java",
        "api/org/webrtc/VideoDecoderFactory.java",
-@@ -1387,6 +1389,8 @@ if (current_os == "linux" || is_android) {
+@@ -1425,6 +1427,8 @@ if (current_os == "linux" || is_android) {
        "api/org/webrtc/JavaI420Buffer.java",
        "api/org/webrtc/TimestampAligner.java",
        "api/org/webrtc/VideoCodecInfo.java",
@@ -496,10 +496,10 @@ index 875d781abd..4da8e129ec 100644
      }
 
 diff --git a/src/sdk/android/src/jni/pc/rtp_parameters.cc b/src/sdk/android/src/jni/pc/rtp_parameters.cc
-index c83ea8599c..132e332645 100644
+index 3259f6840c..a890d037e4 100644
 --- a/src/sdk/android/src/jni/pc/rtp_parameters.cc
 +++ b/src/sdk/android/src/jni/pc/rtp_parameters.cc
-@@ -52,6 +52,7 @@ ScopedJavaLocalRef<jobject> NativeToJavaRtpEncodingParameter(
+@@ -59,6 +59,7 @@ ScopedJavaLocalRef<jobject> NativeToJavaRtpEncodingParameter(
        NativeToJavaInteger(env, encoding.min_bitrate_bps),
        NativeToJavaInteger(env, encoding.max_framerate),
        NativeToJavaInteger(env, encoding.num_temporal_layers),
@@ -507,7 +507,7 @@ index c83ea8599c..132e332645 100644
        NativeToJavaDouble(env, encoding.scale_resolution_down_by),
        encoding.ssrc ? NativeToJavaLong(env, *encoding.ssrc) : nullptr,
        encoding.adaptive_ptime);
-@@ -112,6 +113,11 @@ RtpEncodingParameters JavaToNativeRtpEncodingParameters(
+@@ -119,6 +120,11 @@ RtpEncodingParameters JavaToNativeRtpEncodingParameters(
        Java_Encoding_getNumTemporalLayers(jni, j_encoding_parameters);
    encoding.num_temporal_layers =
        JavaToNativeOptionalInt(jni, j_num_temporal_layers);
@@ -520,19 +520,19 @@ index c83ea8599c..132e332645 100644
        Java_Encoding_getScaleResolutionDownBy(jni, j_encoding_parameters);
    encoding.scale_resolution_down_by =
 diff --git a/src/sdk/android/src/jni/software_video_decoder_factory.cc b/src/sdk/android/src/jni/software_video_decoder_factory.cc
-index cc82e51481..07a3f5adff 100644
+index 8ce033303b..9967f24de3 100644
 --- a/src/sdk/android/src/jni/software_video_decoder_factory.cc
 +++ b/src/sdk/android/src/jni/software_video_decoder_factory.cc
-@@ -11,7 +11,6 @@
+@@ -13,18 +13,30 @@
  #include <memory>
 
  #include "api/environment/environment.h"
 -#include "api/video_codecs/builtin_video_decoder_factory.h"
- #include "api/video_codecs/video_decoder.h"
++#include "api/video_codecs/video_decoder.h"
  #include "api/video_codecs/video_decoder_factory.h"
  #include "sdk/android/generated_swcodecs_jni/SoftwareVideoDecoderFactory_jni.h"
-@@ -19,12 +18,23 @@
- #include "sdk/android/src/jni/jni_helpers.h"
+ #include "sdk/android/native_api/jni/java_types.h"
++#include "sdk/android/src/jni/jni_helpers.h"
  #include "sdk/android/src/jni/video_codec_info.h"
  #include "third_party/jni_zero/jni_zero.h"
 +#include "api/video_codecs/video_decoder_factory_template.h"
@@ -557,19 +557,20 @@ index cc82e51481..07a3f5adff 100644
 
  jboolean JNI_SoftwareVideoDecoderFactory_IsSupported(
 diff --git a/src/sdk/android/src/jni/software_video_encoder_factory.cc b/src/sdk/android/src/jni/software_video_encoder_factory.cc
-index 344a459259..41fb259074 100644
+index e288256f06..718a74d938 100644
 --- a/src/sdk/android/src/jni/software_video_encoder_factory.cc
 +++ b/src/sdk/android/src/jni/software_video_encoder_factory.cc
-@@ -9,19 +9,31 @@
-  */
+@@ -11,18 +11,31 @@
+ #include <jni.h>
 
  #include "api/environment/environment.h"
 -#include "api/video_codecs/builtin_video_encoder_factory.h"
- #include "api/video_codecs/video_encoder.h"
+-#include "api/video_codecs/video_encoder_factory.h"
++#include "api/video_codecs/video_encoder.h"
  #include "sdk/android/generated_swcodecs_jni/SoftwareVideoEncoderFactory_jni.h"
 +#include "sdk/android/generated_video_jni/CodecSupport_jni.h"
  #include "sdk/android/native_api/jni/java_types.h"
- #include "sdk/android/src/jni/jni_helpers.h"
++#include "sdk/android/src/jni/jni_helpers.h"
  #include "sdk/android/src/jni/video_codec_info.h"
  #include "third_party/jni_zero/jni_zero.h"
 +#include "api/video_codecs/video_encoder_factory_template.h"
@@ -594,7 +595,7 @@ index 344a459259..41fb259074 100644
  }
 
  jboolean JNI_SoftwareVideoEncoderFactory_IsSupported(
-@@ -55,5 +67,29 @@ JNI_SoftwareVideoEncoderFactory_GetSupportedCodecs(JNIEnv* env,
+@@ -56,5 +69,29 @@ JNI_SoftwareVideoEncoderFactory_GetSupportedCodecs(JNIEnv* env,
                            &jni::SdpVideoFormatToVideoCodecInfo);
  }
 
@@ -625,13 +626,14 @@ index 344a459259..41fb259074 100644
  }  // namespace jni
  }  // namespace webrtc
 diff --git a/src/sdk/android/src/jni/video_codec_info.cc b/src/sdk/android/src/jni/video_codec_info.cc
-index a218a1d23f..c5d4cf3529 100644
+index 8ba7274721..d1aa78bd2f 100644
 --- a/src/sdk/android/src/jni/video_codec_info.cc
 +++ b/src/sdk/android/src/jni/video_codec_info.cc
-@@ -13,15 +13,36 @@
+@@ -16,15 +16,37 @@
  #include "sdk/android/generated_video_jni/VideoCodecInfo_jni.h"
  #include "sdk/android/native_api/jni/java_types.h"
- #include "sdk/android/src/jni/jni_helpers.h"
+ #include "sdk/android/native_api/jni/scoped_java_ref.h"
++#include "sdk/android/src/jni/jni_helpers.h"
 +#include "absl/container/inlined_vector.h"
 +#include "absl/types/optional.h"
 +#include "api/video_codecs/scalability_mode.h"
@@ -666,7 +668,7 @@ index a218a1d23f..c5d4cf3529 100644
  }
 
  ScopedJavaLocalRef<jobject> SdpVideoFormatToVideoCodecInfo(
-@@ -29,8 +50,10 @@ ScopedJavaLocalRef<jobject> SdpVideoFormatToVideoCodecInfo(
+@@ -32,8 +54,10 @@ ScopedJavaLocalRef<jobject> SdpVideoFormatToVideoCodecInfo(
      const SdpVideoFormat& format) {
    ScopedJavaLocalRef<jobject> j_params =
        NativeToJavaStringMap(jni, format.parameters);
@@ -679,18 +681,19 @@ index a218a1d23f..c5d4cf3529 100644
 
  }  // namespace jni
 diff --git a/src/sdk/android/src/jni/video_encoder_factory_wrapper.cc b/src/sdk/android/src/jni/video_encoder_factory_wrapper.cc
-index 709fa5894e..45d367ea86 100644
+index 6a0e62ae23..c73e7025b5 100644
 --- a/src/sdk/android/src/jni/video_encoder_factory_wrapper.cc
 +++ b/src/sdk/android/src/jni/video_encoder_factory_wrapper.cc
-@@ -14,6 +14,7 @@
+@@ -23,6 +23,8 @@
  #include "api/video_codecs/video_encoder.h"
- #include "rtc_base/logging.h"
+ #include "api/video_codecs/video_encoder_factory.h"
  #include "sdk/android/generated_video_jni/VideoEncoderFactory_jni.h"
 +#include "sdk/android/generated_video_jni/CodecSupportUtils_jni.h"
- #include "sdk/android/native_api/jni/class_loader.h"
++#include "sdk/android/native_api/jni/class_loader.h"
  #include "sdk/android/native_api/jni/java_types.h"
- #include "sdk/android/src/jni/video_codec_info.h"
-@@ -127,5 +128,27 @@ VideoEncoderFactoryWrapper::GetEncoderSelector() const {
+ #include "sdk/android/native_api/jni/jvm.h"
+ #include "sdk/android/native_api/jni/scoped_java_ref.h"
+@@ -137,5 +139,27 @@ VideoEncoderFactoryWrapper::GetEncoderSelector() const {
    return std::make_unique<VideoEncoderSelectorWrapper>(jni, selector);
  }
 
@@ -719,10 +722,10 @@ index 709fa5894e..45d367ea86 100644
  }  // namespace jni
  }  // namespace webrtc
 diff --git a/src/sdk/android/src/jni/video_encoder_factory_wrapper.h b/src/sdk/android/src/jni/video_encoder_factory_wrapper.h
-index 9b383a88e9..0f06c87354 100644
+index 3c5137a438..74250a9cf1 100644
 --- a/src/sdk/android/src/jni/video_encoder_factory_wrapper.h
 +++ b/src/sdk/android/src/jni/video_encoder_factory_wrapper.h
-@@ -41,6 +41,9 @@ class VideoEncoderFactoryWrapper : public VideoEncoderFactory {
+@@ -43,6 +43,9 @@ class VideoEncoderFactoryWrapper : public VideoEncoderFactory {
 
    std::unique_ptr<EncoderSelectorInterface> GetEncoderSelector() const override;
 
