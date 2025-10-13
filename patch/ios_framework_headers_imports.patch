@@ -11,7 +11,7 @@ index 1dc6534db8..5ad893bd69 100644
          ldflags = [
            "-all_load",
 diff --git a/src/webrtc.gni b/src/webrtc.gni
-index ac905cea7c..72b8afd43b 100644
+index ac905cea7c..e3b170e959 100644
 --- a/src/webrtc.gni
 +++ b/src/webrtc.gni
 @@ -1055,6 +1055,22 @@ if (is_mac || is_ios) {
@@ -37,14 +37,12 @@ index ac905cea7c..72b8afd43b 100644
      action("umbrella_header_$this_target_name") {
        script = "//tools_webrtc/ios/generate_umbrella_header.py"
        sources = invoker.sources
-@@ -1162,11 +1178,12 @@ if (is_mac || is_ios) {
-         } else {
-           public_headers = []
+@@ -1164,9 +1180,12 @@ if (is_mac || is_ios) {
          }
--        public_headers +=
--            get_target_outputs(":umbrella_header_$this_target_name")
-+        public_headers += get_target_outputs(
-+                ":create_bracket_include_headers_$this_target_name")
+         public_headers +=
+             get_target_outputs(":umbrella_header_$this_target_name")
++        public_headers +=
++            get_target_outputs(":create_bracket_include_headers_$this_target_name")
 
          deps += [
            ":create_privacy_manifest_$this_target_name",
