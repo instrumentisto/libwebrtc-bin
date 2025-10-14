@@ -39,7 +39,8 @@ patch: common-patch
 	cd $(SRC_DIR) && \
 	patch -p2 < $(PATCH_DIR)/enable_ios_scalability_mode.patch && \
 	patch -p2 < $(PATCH_DIR)/fix_ios_capability.patch && \
-	patch -p2 < $(PATCH_DIR)/add_yuv_helper_ios_mac.patch
+	patch -p2 < $(PATCH_DIR)/add_yuv_helper_ios_mac.patch && \
+	patch -p2 < $(PATCH_DIR)/ios_framework_headers_imports.patch
 
 .PHONY: build
 build: patch

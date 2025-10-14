@@ -1,0 +1,52 @@
+diff --git a/src/sdk/BUILD.gn b/src/sdk/BUILD.gn
+index 1dc6534db8..5ad893bd69 100644
+--- a/src/sdk/BUILD.gn
++++ b/src/sdk/BUILD.gn
+@@ -1434,7 +1434,6 @@ if (is_ios || is_mac) {
+         }
+
+         sources = common_objc_headers
+-        public_headers = common_objc_headers
+
+         ldflags = [
+           "-all_load",
+diff --git a/src/webrtc.gni b/src/webrtc.gni
+index ac905cea7c..e3b170e959 100644
+--- a/src/webrtc.gni
++++ b/src/webrtc.gni
+@@ -1055,6 +1055,22 @@ if (is_mac || is_ios) {
+     privacy_manifest_path =
+         "$target_gen_dir/$this_target_name/PrivacyInfo.xcprivacy"
+
++    action_foreach("create_bracket_include_headers_$this_target_name") {
++      script = "//tools_webrtc/apple/copy_framework_header.py"
++      sources = invoker.sources
++      output_name = invoker.output_name
++      outputs = [
++        "$target_gen_dir/$output_name.framework/WebRTC/{{source_file_part}}",
++      ]
++      args = [
++        "--input",
++        "{{source}}",
++        "--output",
++        rebase_path(target_gen_dir, root_build_dir) +
++            "/$output_name.framework/WebRTC/{{source_file_part}}",
++      ]
++    }
++
+     action("umbrella_header_$this_target_name") {
+       script = "//tools_webrtc/ios/generate_umbrella_header.py"
+       sources = invoker.sources
+@@ -1164,9 +1180,12 @@ if (is_mac || is_ios) {
+         }
+         public_headers +=
+             get_target_outputs(":umbrella_header_$this_target_name")
++        public_headers +=
++            get_target_outputs(":create_bracket_include_headers_$this_target_name")
+
+         deps += [
+           ":create_privacy_manifest_$this_target_name",
++          ":create_bracket_include_headers_$this_target_name",
+           ":umbrella_header_$this_target_name",
+         ]
+
