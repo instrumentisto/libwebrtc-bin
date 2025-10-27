@@ -92,7 +92,7 @@ jobs:
       - run: powershell .\build.windows.bat
         if: ${{ contains('windows', matrix.os) }}
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         with:
           name: build-${{ matrix.os }}${{ matrix.arch != '' && format('-{0}', matrix.arch) || '' }}
           path: package/libwebrtc-${{ matrix.os }}${{ matrix.arch != '' && format('-{0}', matrix.arch) || '' }}.${{ (matrix.os == 'ios' && 'zip') || 'tar.gz' }}
@@ -135,7 +135,7 @@ jobs:
                   aar jar include lib NOTICE VERSION
         working-directory: package/
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         with:
           name: repack-android
           path: package/libwebrtc-android.tar.gz
