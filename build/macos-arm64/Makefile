@@ -28,6 +28,7 @@ EXTRA_GN_ARGS := \
 	use_rtti=true \
 	libyuv_include_tests=false \
 	proprietary_codecs=false \
+	use_clang_modules=false \
 	mac_deployment_target="10.15"
 
 .PHONY: all
@@ -51,8 +52,7 @@ copy: common-copy
 .PHONY: patch
 patch: common-patch
 	cd $(SRC_DIR) && \
-	patch -p2 < $(PATCH_DIR)/add_yuv_helper_ios_mac.patch && \
-	patch -p2 < $(PATCH_DIR)/mac_disable_26_platform_ldflag.patch
+	patch -p2 < $(PATCH_DIR)/add_yuv_helper_ios_mac.patch
 
 .PHONY: build
 build: patch
