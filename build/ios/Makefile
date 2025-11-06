@@ -35,6 +35,8 @@ package:
 #                  `RtpCodecCapability` from raw values.
 #                  Remove when deleting readonly attributes from
 #                  `objc/api/peerconnection/RTCRtpCodecCapability.h`.
+# TODO: Tracking for `ios_framework_headers_imports.patch`:
+#		https://issues.webrtc.org/issues/450130875
 patch: common-patch
 	cd $(SRC_DIR) && \
 	patch -p2 < $(PATCH_DIR)/enable_ios_scalability_mode.patch && \
