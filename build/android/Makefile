@@ -23,6 +23,7 @@ EXTRA_GN_ARGS := \
 	use_rtti=true \
 	libyuv_include_tests=false \
 	proprietary_codecs=false \
+	use_clang_modules=false \
 	use_siso=false
 
 .PHONY: all
