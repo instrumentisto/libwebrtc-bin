@@ -45,9 +45,10 @@ jobs:
             arch: x64
           - os: windows
             arch: x64
-    runs-on: ${{ (contains('ios macos', matrix.os) && 'macos-15')
-              || (contains('windows', matrix.os)   && 'windows-2022')
-              ||                                      'ubuntu-latest' }}
+    runs-on: ${{ (contains('macos', matrix.os)    && 'macos-15')
+              || (contains('ios', matrix.os)      && 'macos-26')
+              || (contains('windows', matrix.os)  && 'windows-2022')
+              ||                                     'ubuntu-latest' }}
     steps:
       - uses: actions/checkout@v5
 
@@ -63,11 +64,17 @@ jobs:
       - run: pip install setuptools
         if: ${{ contains('ios macos', matrix.os) }}
 
-      # Xcode 16.4 is the last version supporting macOS 10.15.
-      - uses: maxim-lobanov/setup-xcode@v1
-        with:
-          xcode-version: "16.4"
-        if: ${{ contains('ios macos', matrix.os) }}
+      # Our targets are iOS 15 and macOS 10.15 (see `mac_deployment_target`
+      # and `ios_deployment_target` gn args).
+      # Xcode 16.4 is the last version supporting macOS 10.15 (see
+      # https://developer.apple.com/support/xcode/ to match minos to
+      # Xcode version).
+      - name: Select Xcode 16.4 for macOS build
+        run: sudo xcode-select --switch /Applications/Xcode_16.4.0.app/Contents/Developer
+        if: ${{ contains('macos', matrix.os) }}
+      - name: Select Xcode 26 for iOS build
+        run: sudo xcode-select --switch /Applications/Xcode_26.0.1.app/Contents/Developer
+        if: ${{ contains('ios', matrix.os) }}
 
       - run: make -C docker ${{ matrix.os }}${{ (matrix.arch != '' && matrix.os != 'android')
                                              && format('-{0}', matrix.arch) || '' }}
