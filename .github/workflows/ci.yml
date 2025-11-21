@@ -67,7 +67,7 @@ jobs:
               || (contains('windows', matrix.os)  && 'windows-2022')
               ||                                     'ubuntu-latest' }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - run: ./disk_cleanup.sh
         if: ${{ contains('android linux', matrix.os) }}
@@ -127,7 +127,7 @@ jobs:
     needs: ["build"]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - uses: actions/download-artifact@v6
         with:
@@ -178,7 +178,7 @@ jobs:
     needs: ["build", "repack-android", "release-github"]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           ref: gh-pages
       - uses: actions/setup-java@v5
@@ -226,7 +226,7 @@ jobs:
     needs: ["release-github"]
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: maxim-lobanov/setup-cocoapods@v1
         with:
           version: latest
@@ -242,7 +242,7 @@ jobs:
     needs: ["build", "repack-android"]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - name: Parse release version
         id: release
