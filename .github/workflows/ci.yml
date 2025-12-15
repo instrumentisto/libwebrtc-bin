@@ -116,7 +116,7 @@ jobs:
       - run: powershell .\build.windows.bat
         if: ${{ contains('windows', matrix.os) }}
 
-      - uses: actions/upload-artifact@v5
+      - uses: actions/upload-artifact@v6
         with:
           name: build-${{ matrix.os }}${{ matrix.arch != '' && format('-{0}', matrix.arch) || '' }}
           path: package/libwebrtc-${{ matrix.os }}${{ matrix.arch != '' && format('-{0}', matrix.arch) || '' }}.${{ (matrix.os == 'ios' && 'zip') || 'tar.gz' }}
@@ -129,25 +129,25 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - uses: actions/download-artifact@v6
+      - uses: actions/download-artifact@v7
         with:
           name: build-android
           path: package/
       - run: tar -xzvf libwebrtc-android.tar.gz -C .
         working-directory: package/
-      - uses: actions/download-artifact@v6
+      - uses: actions/download-artifact@v7
         with:
           name: build-android-arm
           path: package/
       - run: tar -xzvf libwebrtc-android-arm.tar.gz -C .
         working-directory: package/
-      - uses: actions/download-artifact@v6
+      - uses: actions/download-artifact@v7
         with:
           name: build-android-arm64
           path: package/
       - run: tar -xzvf libwebrtc-android-arm64.tar.gz -C .
         working-directory: package/
-      - uses: actions/download-artifact@v6
+      - uses: actions/download-artifact@v7
         with:
           name: build-android-x64
           path: package/
@@ -159,7 +159,7 @@ jobs:
                   aar jar include lib NOTICE VERSION
         working-directory: package/
 
-      - uses: actions/upload-artifact@v5
+      - uses: actions/upload-artifact@v6
         with:
           name: repack-android
           path: package/libwebrtc-android.tar.gz
@@ -191,7 +191,7 @@ jobs:
         run: echo "version=${GITHUB_REF#refs/tags/}"
              >> $GITHUB_OUTPUT
 
-      - uses: actions/download-artifact@v6
+      - uses: actions/download-artifact@v7
         with:
           name: repack-android
           path: package/
@@ -253,31 +253,31 @@ jobs:
           test "${{ steps.release.outputs.version }}" \
             == "$(grep 'WEBRTC_VERSION=' VERSION | cut -d '=' -f2 | tr -d '\n')$(grep -e '^REVISION=.*$' VERSION | cut -d '=' -f2 | sed -e 's/^/-r/' | tr -d '\n')"
 
-      - uses: actions/download-artifact@v6
+      - uses: actions/download-artifact@v7
         with:
           name: repack-android
           path: package/
-      - uses: actions/download-artifact@v6
+      - uses: actions/download-artifact@v7
         with:
           name: build-ios
           path: package/
-      - uses: actions/download-artifact@v6
+      - uses: actions/download-artifact@v7
         with:
           name: build-linux-arm64
           path: package/
-      - uses: actions/download-artifact@v6
+      - uses: actions/download-artifact@v7
         with:
           name: build-linux-x64
           path: package/
-      - uses: actions/download-artifact@v6
+      - uses: actions/download-artifact@v7
         with:
           name: build-macos-arm64
           path: package/
-      - uses: actions/download-artifact@v6
+      - uses: actions/download-artifact@v7
         with:
           name: build-macos-x64
           path: package/
-      - uses: actions/download-artifact@v6
+      - uses: actions/download-artifact@v7
         with:
           name: build-windows-x64
           path: package/
