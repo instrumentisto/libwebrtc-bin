@@ -5,58 +5,9 @@
   <versioning>
     <release>143.0.7499.192</release>
     <versions>
-      <version>117.0.5938.92</version>
-      <version>117.0.5938.132</version>
-      <version>117.0.5938.149</version>
-      <version>118.0.5993.70</version>
       <version>118.0.5993.88</version>
-      <version>118.0.5993.117</version>
-      <version>119.0.6045.105</version>
-      <version>119.0.6045.123</version>
-      <version>119.0.6045.159</version>
-      <version>119.0.6045.199</version>
-      <version>120.0.6099.71</version>
-      <version>120.0.6099.109</version>
-      <version>120.0.6099.129</version>
-      <version>120.0.6099.199</version>
-      <version>120.0.6099.216</version>
-      <version>120.0.6099.224</version>
-      <version>121.0.6167.85</version>
-      <version>121.0.6167.139</version>
-      <version>121.0.6167.160</version>
-      <version>121.0.6167.184</version>
-      <version>122.0.6261.69</version>
-      <version>122.0.6261.94</version>
-      <version>122.0.6261.111</version>
-      <version>122.0.6261.128</version>
-      <version>123.0.6312.105</version>
-      <version>123.0.6312.122</version>
-      <version>124.0.6367.60</version>
-      <version>124.0.6367.91</version>
-      <version>124.0.6367.118</version>
-      <version>124.0.6367.201</version>
-      <version>125.0.6422.60</version>
-      <version>125.0.6422.112</version>
-      <version>125.0.6422.141</version>
-      <version>126.0.6478.61</version>
-      <version>126.0.6478.114</version>
-      <version>126.0.6478.126</version>
-      <version>126.0.6478.182</version>
-      <version>126.0.6478.182-r1</version>
-      <version>126.0.6478.182-r2</version>
       <version>127.0.6533.72</version>
-      <version>127.0.6533.88</version>
-      <version>127.0.6533.99</version>
-      <version>127.0.6533.119</version>
-      <version>128.0.6613.84</version>
-      <version>128.0.6613.113</version>
       <version>128.0.6613.119</version>
-      <version>128.0.6613.137</version>
-      <version>129.0.6668.58</version>
-      <version>129.0.6668.70</version>
-      <version>129.0.6668.89</version>
-      <version>129.0.6668.100</version>
-      <version>130.0.6723.58</version>
       <version>130.0.6723.69</version>
       <version>130.0.6723.91</version>
       <version>130.0.6723.116</version>
