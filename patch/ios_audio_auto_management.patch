@@ -1,0 +1,74 @@
+diff --git a/src/sdk/objc/components/audio/RTCAudioSession.h b/src/sdk/objc/components/audio/RTCAudioSession.h
+index 00a825f0a1..094479f7ae 100644
+--- a/src/sdk/objc/components/audio/RTCAudioSession.h
++++ b/src/sdk/objc/components/audio/RTCAudioSession.h
+@@ -209,6 +209,12 @@ RTC_OBJC_EXPORT
+  */
+ @property(nonatomic) BOOL ignoresPreferredAttributeConfigurationErrors;
+
++/** If YES, automatic audio session management is enabled and AVAudioSession
++ *  setCategory and setActive calls will be executed normally. If NO, these
++ *  calls will silently do nothing. The default value is YES.
++ */
++@property(atomic, assign) BOOL autoManagementEnabled;
++
+ /** Default constructor. */
+ + (instancetype)sharedInstance;
+ - (instancetype)init NS_UNAVAILABLE;
+diff --git a/src/sdk/objc/components/audio/RTCAudioSession.mm b/src/sdk/objc/components/audio/RTCAudioSession.mm
+index 69e90277fc..4e5f17e63a 100644
+--- a/src/sdk/objc/components/audio/RTCAudioSession.mm
++++ b/src/sdk/objc/components/audio/RTCAudioSession.mm
+@@ -57,12 +57,14 @@ ABSL_CONST_INIT thread_local bool mutex_locked = false;
+   BOOL _isAudioEnabled;
+   BOOL _canPlayOrRecord;
+   BOOL _isInterrupted;
++  BOOL _autoManagementEnabled;
+ }
+
+ @synthesize session = _session;
+ @synthesize delegates = _delegates;
+ @synthesize ignoresPreferredAttributeConfigurationErrors =
+     _ignoresPreferredAttributeConfigurationErrors;
++@synthesize autoManagementEnabled = _autoManagementEnabled;
+
+ + (instancetype)sharedInstance {
+   static dispatch_once_t onceToken;
+@@ -83,6 +85,7 @@ ABSL_CONST_INIT thread_local bool mutex_locked = false;
+   self = [super init];
+   if (self) {
+     _session = audioSession;
++    _autoManagementEnabled = YES;
+
+     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+     [center addObserver:self
+@@ -363,6 +366,9 @@ ABSL_CONST_INIT thread_local bool mutex_locked = false;
+   if (![self checkLock:outError]) {
+     return NO;
+   }
++  if (!self.autoManagementEnabled) {
++    return YES;
++  }
+   int activationCount = _activationCount.load();
+   if (!active && activationCount == 0) {
+     RTCLogWarning(@"Attempting to deactivate without prior activation.");
+@@ -427,6 +433,9 @@ ABSL_CONST_INIT thread_local bool mutex_locked = false;
+   if (![self checkLock:outError]) {
+     return NO;
+   }
++  if (!self.autoManagementEnabled) {
++    return YES;
++  }
+   return [self.session setCategory:category
+                               mode:mode
+                            options:options
+@@ -439,6 +448,9 @@ ABSL_CONST_INIT thread_local bool mutex_locked = false;
+   if (![self checkLock:outError]) {
+     return NO;
+   }
++  if (!self.autoManagementEnabled) {
++    return YES;
++  }
+   return [self.session setCategory:category withOptions:options error:outError];
+ }
+
