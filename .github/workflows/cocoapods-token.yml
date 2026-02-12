@@ -1,0 +1,25 @@
+name: CocoaPods Token
+
+on:
+  schedule:
+    # CocoaPods sessions currently expire after 3 days of inactivity
+    # (`VALIDITY_LENGTH`). This runs every day to keep the
+    # `COCOAPODS_TRUNK_TOKEN` alive:
+    # See: https://github.com/CocoaPods/trunk.cocoapods.org/pull/601
+    - cron: "7 7 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  keepalive:
+    runs-on: macos-latest
+    env:
+      COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
+    steps:
+      - uses: maxim-lobanov/setup-cocoapods@v1
+        with:
+          version: latest
+
+      - run: pod trunk me
