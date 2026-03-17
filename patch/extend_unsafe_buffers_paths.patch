@@ -1,7 +1,7 @@
-diff --git a/src/unsafe_buffers_paths.txt b/src/unsafe_buffers_paths.txt
+diff --git a/unsafe_buffers_paths.txt b/unsafe_buffers_paths.txt
 index 64c5244c7b..722866a507 100644
---- a/src/unsafe_buffers_paths.txt
-+++ b/src/unsafe_buffers_paths.txt
+--- a/unsafe_buffers_paths.txt
++++ b/unsafe_buffers_paths.txt
 @@ -10,6 +10,9 @@
  -common_audio/third_party/
  -modules/third_party/
