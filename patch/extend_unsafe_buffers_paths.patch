@@ -1,0 +1,14 @@
+diff --git a/unsafe_buffers_paths.txt b/unsafe_buffers_paths.txt
+index 64c5244c7b..722866a507 100644
+--- a/unsafe_buffers_paths.txt
++++ b/unsafe_buffers_paths.txt
+@@ -10,6 +10,9 @@
+ -common_audio/third_party/
+ -modules/third_party/
+ -third_party/
++-modules/audio_processing/agc2
++-modules/audio_processing/aec3
++-modules/audio_coding/codecs/opus
+ 
+ # Directory-level exceptions, to be worked on
+ -examples/objc/
