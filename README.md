@@ -9,6 +9,13 @@ Build scripts for statically linked [`libwebrtc`] binaries, used by [Medea Flutt
 
 
 
+## Status
+
+__PROJECT IS CLOSED AND ARCHIVED. NO MAINTAINING WILL BE CONTINUED.__
+
+
+
+
 ## Build matrix
 
 |         |          x64           |         arm64          |
