@@ -42,7 +42,8 @@ patch: common-patch
 	patch -p1 < $(PATCH_DIR)/disable_use_hermetic_xcode_on_linux.patch && \
 	patch -p1 < $(PATCH_DIR)/linux_clang_optional.patch && \
 	patch -p1 < $(PATCH_DIR)/linux_fix_enable_safe_libstdcxx.patch && \
-	patch -p1 < $(PATCH_DIR)/extend_unsafe_buffers_paths.patch
+	patch -p1 < $(PATCH_DIR)/extend_unsafe_buffers_paths.patch && \
+	patch -p1 < $(PATCH_DIR)/fix_make_unique_for_overwrite_unavailable.patch
 
 .PHONY: build
 build: download patch

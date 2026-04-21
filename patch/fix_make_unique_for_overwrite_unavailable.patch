@@ -1,0 +1,13 @@
+diff --git a/rtc_base/copy_on_write_buffer.cc b/rtc_base/copy_on_write_buffer.cc
+index be1fc302a6..337e33a111 100644
+--- a/rtc_base/copy_on_write_buffer.cc
++++ b/rtc_base/copy_on_write_buffer.cc
+@@ -28,7 +28,7 @@
+ namespace webrtc {
+ 
+ CopyOnWriteBuffer::RawBuffer::RawBuffer(size_t size)
+-    : size_(size), data_(std::make_unique_for_overwrite<uint8_t[]>(size)) {}
++    : size_(size), data_(std::unique_ptr<uint8_t[]>(new uint8_t[size])) {}
+ 
+ scoped_refptr<CopyOnWriteBuffer::RefCountedBuffer>
+ CopyOnWriteBuffer::CreateBuffer(size_t capacity) {
